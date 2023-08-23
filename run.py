@@ -23,7 +23,6 @@ def get_username():
         username = input('Please enter your name: ')
 
         if username_validation(username):
-            print(f'Hi {username}!')
             break
     return username
 
@@ -44,4 +43,32 @@ def username_validation(username):
         return True
 
 
+def choose_option():
+    print(f'\nHi {username}! What would you like to do today?\n')
+    print('1-enter income')
+    print('2-enter transactions')
+    print('3-analyse transactions\n')
+    while True:
+        option = input('Please pick an option between 1 and 3: ')
+        if option_validation(option):
+            break
+    return option
+
+
+def option_validation(option):
+    if option == "":
+        print('\nYou did not enter a number!\n')
+    else:
+        num_options = ['1', '2', '3']
+        try:
+            if option not in num_options:
+                raise NameError
+        except NameError:
+            print('Not a valid number. Please try again.\n')
+            return False
+        return True
+    return option
+
+
 username = get_username()
+option = choose_option()
