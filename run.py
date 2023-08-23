@@ -29,7 +29,7 @@ def get_username():
 
 def username_validation(username):
     """
-    Raises NameError if username does not only contain letters
+    Raises NameError if username does not contain only letters
     """
     if username == "":
         print("\nYou didn't enter a name. Please try again\n")
@@ -44,10 +44,13 @@ def username_validation(username):
 
 
 def choose_option():
+    """
+    gets the action option the user has chosen to do
+    """
     print(f'\nHi {username}! What would you like to do today?\n')
     print('1-enter income')
     print('2-enter transactions')
-    print('3-analyse transactions\n')
+    print('3-analyse spending\n')
     while True:
         option = input('Please pick an option between 1 and 3: ')
         if option_validation(option):
@@ -56,6 +59,9 @@ def choose_option():
 
 
 def option_validation(option):
+    """
+    Validates the option input
+    """
     if option == "":
         print('\nYou did not enter a number!\n')
     else:
