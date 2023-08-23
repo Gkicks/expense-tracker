@@ -22,6 +22,19 @@ def get_username():
     username = input('please enter your name: ')
     username_validation(username)
 
+def username_validation(username):
+    """
+    Raises NameError if username does not only contain letters
+    """
+    if username == "":
+        print("You didn't enter a name. Please try again")
+    else: 
+        try:
+            if username.isalpha() != True:
+                raise NameError('Your name should only contain letters')
+        except NameError as e:
+            print(f'{e}. {username} is not a valid name. Please try again')
+
 get_username()
 
 
