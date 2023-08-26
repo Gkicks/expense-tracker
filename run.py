@@ -20,8 +20,10 @@ def new_or_existing_user():
     Asks the user if they are a new or existing user
     """
     print('Are you a new or existing user?')
+    print('N - new user')
+    print('E - existing user')
     while True:
-        new_or_existing_choice = input('Enter N for new user and E for existing user: ').upper()
+        new_or_existing_choice = input('Enter N or E: ').upper()
         # validate_new_user_option(new_or_existing_choice)
         if validate_new_user_option(new_or_existing_choice):
             break
@@ -37,13 +39,40 @@ def validate_new_user_option(new_or_existing_choice):
     try:
         if new_or_existing_choice not in new_existing_options:
             raise ValueError
-    except:
+    except ValueError:
         print('You did not enter a correct value')
         return False
     return True
 
 
-# def get_username():
+def choose_username():
+    if new_or_existing_choice == 'N':
+        print('Please choose a username')
+        print('Username should be at least two characters in length')
+        print('Username must only contain letters or numbers')
+
+        while True:
+            new_username = input('Enter username: ')
+        
+            if validate_new_username(new_username):
+                print(f'Thank you. Your username is {new_username}')
+                choose_password()
+                break
+
+    return new_username
+
+
+def validate_new_username(new_username):
+    try:
+        if len(new_username) < 2:
+            raise ValueError
+    except ValueError:
+        print('Your username must contain at least two characters')
+        return False
+    return True
+    
+    
+    # def get_username():
 #     """
 #     get the user's name
 #     """
@@ -104,10 +133,10 @@ def option_validation(option):
     return option
 
 
-def add_income():
+# def add_income():
     
 
 new_or_existing_choice = new_or_existing_user()
-# new_username = choose_username()
-username = get_username()
+new_username = choose_username()
+# username = get_username()
 option = choose_option()
