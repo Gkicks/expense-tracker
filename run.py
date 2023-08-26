@@ -1,5 +1,6 @@
 import gspread
 from google.oauth2.service_account import Credentials
+import regex
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -11,6 +12,7 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('expense-tracker')
+new_user = ['username', 'password']
 
 print('Welcome to the Python expense tracker!\n')
 
@@ -24,7 +26,6 @@ def new_or_existing_user():
     print('E - existing user')
     while True:
         new_or_existing_choice = input('Enter N or E: ').upper()
-        # validate_new_user_option(new_or_existing_choice)
         if validate_new_user_option(new_or_existing_choice):
             break
     return new_or_existing_choice
@@ -46,18 +47,16 @@ def validate_new_user_option(new_or_existing_choice):
 
 
 def choose_username():
-    if new_or_existing_choice == 'N':
-        print('Please choose a username')
-        print('Username should be at least two characters in length')
-        print('Username must only contain letters or numbers')
-
-        while True:
-            new_username = input('Enter username: ')
-        
-            if validate_new_username(new_username):
-                print(f'Thank you. Your username is {new_username}')
-                choose_password()
-                break
+    print('\nPlease choose a username')
+    print('Username should be at least two characters in length')
+    print('Username must only contain letters or numbers')
+    while True:
+        new_username = input('Enter username: ')
+        if validate_new_username(new_username):
+            print(f'\nThank you. Your username is {new_username}')
+            new_user[0] = new_username
+            choose_password()
+            break
 
     return new_username
 
@@ -65,55 +64,84 @@ def choose_username():
 def validate_new_username(new_username):
     try:
         if len(new_username) < 2:
+            print('Your username must contain at least two characters')    
+            raise ValueError
+        current_usernames = SHEET.worksheet('users').col_values(1)
+        if new_username in current_usernames:
+            print('That username already exists')
             raise ValueError
     except ValueError:
-        print('Your username must contain at least two characters')
+        print('Please choose another username')
         return False
     return True
-    
-    
-    # def get_username():
-#     """
-#     get the user's name
-#     """
-#     while True:
-#         username = input('Please enter your name: ')
-
-#         if username_validation(username):
-#             break
-#     return username
 
 
-# def username_validation(username):
-#     """
-#     Raises NameError if username does not contain only letters
-#     """
-#     if username == "":
-#         print("\nYou didn't enter a name. Please try again\n")
-#     else:
-#         try:
-#             if username.isalpha() is not True:
-#                 raise NameError('Your name should only contain letters')
-#         except NameError as e:
-#             print(f'{e}. {username} is not a valid name. Please try again\n')
-#             return False
-#         return True
+def choose_password():
+    print('\nPlease choose a password')
+    print('Passwords must be at least 6 characters long')
+    print('and contain at least one uppercase letter,')
+    print('one lowercase letter,')
+    print('one number')
+    print('and one special character')
+    print('special characters accepted are £, $, %, ^ or &')
+
+    while True:
+        new_password = input('Enter password here: ')
+
+        if validate_new_password(new_password):
+            print('Thank you. That password is valid')
+            new_user[1] = new_password
+            print(new_user)
+            user_worksheet = SHEET.worksheet('users')
+            user_worksheet.append_row(new_user)
+            break
+
+
+def validate_new_password(new_password):
+    try:    
+        if len(new_password) < 6:
+            print(f'That password is only {len(new_password)} characters long')
+            print('Your password must be at least 6 characters long')
+            raise ValueError
+        if not any(x.isupper() for x in new_password):
+            print('Your password must contain at least one uppercase letter')
+            raise ValueError
+        if not any(x.islower() for x in new_password):
+            print('Your password must contain at least one lowercase letter')
+            raise ValueError
+        special_characters = ['£', '$', '%', '^', '&']
+        if not any(x in special_characters for x in new_password):
+            print('Your password must contain either £, $, %, ^ or &')
+            raise ValueError
+        if not any(x.isdigit() for x in new_password):
+            print('Your password must include at least one number')
+            raise ValueError
+    except ValueError:
+        print('Please try again')
+        return False
+    return True
 
 
 def choose_option():
     """
     gets the action option the user has chosen to do
     """
-    print(f'\nHi {username}! What would you like to do today?\n')
-    print('1-enter income')
-    print('2-enter transactions')
-    print('3-analyse spending\n')
+    print('1-enter transaction')
+    print('2-analyse spending\n')
     while True:
-        option = input('Please pick an option between 1 and 3: ')
+        option = input('Please pick an option between 1 and 2: ')
         if option_validation(option):
+            if option == '1':
+                print('option 1 chosen')
+                get_transaction()
+            elif option == '2':
+                print('option 2 chosen')
+                # spending = analyse_transaction()
+            else:
+                print('Error! Please restart program')        
             break
     return option
-
+    
 
 def option_validation(option):
     """
@@ -122,7 +150,7 @@ def option_validation(option):
     if option == "":
         print('\nYou did not enter a number!\n')
     else:
-        num_options = ['1', '2', '3']
+        num_options = ['1', '2']
         try:
             if option not in num_options:
                 raise ValueError
@@ -133,10 +161,46 @@ def option_validation(option):
     return option
 
 
-# def add_income():
-    
+def get_transaction():
+    print('\nPlease enter the date of the transaction')
+    print('This should be in the format DD/MM/YSY')
+    transaction_date = input('> ')
+    print('\nPlease enter the transaction category')
+    print('1 - Household Bills')
+    print('2 - Transportation')
+    print('3 - Food')
+    print('4 - Savings')
+    print('5 - Personal Spending')
+    print('6 - Other')
+    spend_category = input('Enter a number betweeen 1 and 6: ')
+    print('\nPlease enter the amount spent.')
+    print('This should be in the format £xx.xx')
+    spend_amount = input('£ ')
 
-new_or_existing_choice = new_or_existing_user()
-new_username = choose_username()
-# username = get_username()
-option = choose_option()
+
+# def get_transaction_category():
+#     print('')
+
+# def add_transaction():
+#     """
+#     Adds transaction to the Google Sheets Workbook
+#     """
+#     transaction_page = SHEET.worksheet('transactions')
+
+def main():
+    new_or_existing_choice = new_or_existing_user()
+    if new_or_existing_choice == 'N':
+        new_username = choose_username()
+        print(f'\nHi {new_username}! What would you like to do today?\n')
+        option = choose_option()
+    elif new_or_existing_choice == 'E':
+        # username = enter_username()
+        # password = enter_password()
+        print('\nWelcome back! What would you like to do today?\n')
+        option = choose_option()
+        # action = option_action()
+    else:
+        print('Error! Please restart program')
+
+
+main()
