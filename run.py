@@ -12,6 +12,7 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('expense-tracker')
+current_usernames = SHEET.worksheet('users').col_values(1)
 new_user = ['username', 'password']
 
 print('Welcome to the Python expense tracker!\n')
@@ -66,7 +67,6 @@ def validate_new_username(new_username):
         if len(new_username) < 2:
             print('Your username must contain at least two characters')    
             raise ValueError
-        current_usernames = SHEET.worksheet('users').col_values(1)
         if new_username in current_usernames:
             print('That username already exists')
             raise ValueError
@@ -117,6 +117,27 @@ def validate_new_password(new_password):
             print('Your password must include at least one number')
             raise ValueError
     except ValueError:
+        print('Please try again')
+        return False
+    return True
+
+
+def get_existing_username():
+    while True:
+        username = input('Please enter your username: ')
+    
+        if validate_existing_username(username):
+            print(f'\nWelcome back {username}!')
+            break
+    return username
+
+
+def validate_existing_username(username):
+    try:
+        if username not in current_usernames:
+            print(f'You entered {username}. That username does not exist')
+            raise ValueError
+    except ValueError: 
         print('Please try again')
         return False
     return True
@@ -194,9 +215,8 @@ def main():
         print(f'\nHi {new_username}! What would you like to do today?\n')
         option = choose_option()
     elif new_or_existing_choice == 'E':
-        # username = enter_username()
+        username = get_existing_username()
         # password = enter_password()
-        print('\nWelcome back! What would you like to do today?\n')
         option = choose_option()
         # action = option_action()
     else:
