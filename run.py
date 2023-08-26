@@ -15,32 +15,60 @@ SHEET = GSPREAD_CLIENT.open('expense-tracker')
 print('Welcome to the Python expense tracker!\n')
 
 
-def get_username():
+def new_or_existing_user():
     """
-    get the users name
+    Asks the user if they are a new or existing user
     """
+    print('Are you a new or existing user?')
     while True:
-        username = input('Please enter your name: ')
-
-        if username_validation(username):
+        new_or_existing_choice = input('Enter N for new user and E for existing user: ').upper()
+        # validate_new_user_option(new_or_existing_choice)
+        if validate_new_user_option(new_or_existing_choice):
             break
-    return username
+    return new_or_existing_choice
 
 
-def username_validation(username):
+def validate_new_user_option(new_or_existing_choice):
     """
-    Raises NameError if username does not contain only letters
+    Ensures the user only inputs one of the two options available.
+    These are whether they are a new (N) or existing (E) user
     """
-    if username == "":
-        print("\nYou didn't enter a name. Please try again\n")
-    else:
-        try:
-            if username.isalpha() is not True:
-                raise NameError('Your name should only contain letters')
-        except NameError as e:
-            print(f'{e}. {username} is not a valid name. Please try again\n')
-            return False
-        return True
+    new_existing_options = ['N', 'E']
+    try:
+        if new_or_existing_choice not in new_existing_options:
+            raise ValueError
+    except:
+        print('You did not enter a correct value')
+        return False
+    return True
+
+
+# def get_username():
+#     """
+#     get the user's name
+#     """
+#     while True:
+#         username = input('Please enter your name: ')
+
+#         if username_validation(username):
+#             break
+#     return username
+
+
+# def username_validation(username):
+#     """
+#     Raises NameError if username does not contain only letters
+#     """
+#     if username == "":
+#         print("\nYou didn't enter a name. Please try again\n")
+#     else:
+#         try:
+#             if username.isalpha() is not True:
+#                 raise NameError('Your name should only contain letters')
+#         except NameError as e:
+#             print(f'{e}. {username} is not a valid name. Please try again\n')
+#             return False
+#         return True
 
 
 def choose_option():
@@ -68,13 +96,18 @@ def option_validation(option):
         num_options = ['1', '2', '3']
         try:
             if option not in num_options:
-                raise NameError
-        except NameError:
+                raise ValueError
+        except ValueError:
             print('Not a valid number. Please try again.\n')
             return False
         return True
     return option
 
 
+def add_income():
+    
+
+new_or_existing_choice = new_or_existing_user()
+# new_username = choose_username()
 username = get_username()
 option = choose_option()
