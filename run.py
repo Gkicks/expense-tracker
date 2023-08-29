@@ -13,6 +13,7 @@ SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('expense-tracker')
 current_usernames = SHEET.worksheet('users').col_values(1)
+current_passwords = SHEET.worksheet('users').col_values(2)
 new_user = ['username', 'password']
 
 print('Welcome to the Python expense tracker!\n')
@@ -48,6 +49,9 @@ def validate_new_user_option(new_or_existing_choice):
 
 
 def choose_username():
+    """
+    Asks the user to choose a new username
+    """
     print('\nPlease choose a username')
     print('Username should be at least two characters in length')
     print('Username must only contain letters or numbers')
@@ -63,6 +67,11 @@ def choose_username():
 
 
 def validate_new_username(new_username):
+    """
+    Validates the users chosen username.
+    Checks username is at least two characters long
+    Checks username isn't already in use
+    """
     try:
         if len(new_username) < 2:
             print('Your username must contain at least two characters')    
@@ -77,6 +86,9 @@ def validate_new_username(new_username):
 
 
 def choose_password():
+    """
+    Asks the user to choose a password
+    """
     print('\nPlease choose a password')
     print('Passwords must be at least 6 characters long')
     print('and contain at least one uppercase letter,')
@@ -98,6 +110,12 @@ def choose_password():
 
 
 def validate_new_password(new_password):
+    """
+    Validates the chosen password.
+    Password must be at least six characters long.
+    Password must contain one uppercase and one lowercase letter,
+    one number and one special character
+    """
     try:    
         if len(new_password) < 6:
             print(f'That password is only {len(new_password)} characters long')
@@ -122,20 +140,34 @@ def validate_new_password(new_password):
     return True
 
 
-def get_existing_username():
+def get_existing_username_password():
+    """
+    Asks existing users to enter their username and password
+    """
     while True:
-        username = input('Please enter your username: ')
+        username = input('\nPlease enter your username: ')
+        password = input('Please enter your password: ')
     
-        if validate_existing_username(username):
-            print(f'\nWelcome back {username}!')
+        if validate_existing_username_password(username, password):
+            print(f'\nWelcome back {username}!\n')
             break
-    return username
+
+    return username, password
 
 
-def validate_existing_username(username):
+def validate_existing_username_password(username, password):
+    """
+    Checks that the username inputted exists.
+    Checks the password inputted matches the password stored
+    """
+    username_password = dict(zip(current_usernames, current_passwords))
+    users_password = username_password[username]
     try:
         if username not in current_usernames:
             print(f'You entered {username}. That username does not exist')
+            raise ValueError
+        if password != users_password:        
+            print('Your username and password do not match')
             raise ValueError
     except ValueError: 
         print('Please try again')
@@ -147,8 +179,9 @@ def choose_option():
     """
     gets the action option the user has chosen to do
     """
-    print('1-enter transaction')
-    print('2-analyse spending\n')
+    print('What would you like to do today?')
+    print('1 - Enter Transaction')
+    print('2 - Analyse Spending\n')
     while True:
         option = input('Please pick an option between 1 and 2: ')
         if option_validation(option):
@@ -215,7 +248,7 @@ def main():
         print(f'\nHi {new_username}! What would you like to do today?\n')
         option = choose_option()
     elif new_or_existing_choice == 'E':
-        username = get_existing_username()
+        username = get_existing_username_password()
         # password = enter_password()
         option = choose_option()
         # action = option_action()
