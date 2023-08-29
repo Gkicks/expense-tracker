@@ -1,6 +1,8 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import regex
+from dateutil.parser import parse
+# import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -153,7 +155,6 @@ def get_existing_username_password():
     while True:
         username = input('\nPlease enter your username: ')
         password = input('Please enter your password: ')
-    
         if validate_existing_username_password(username, password):
             print(f'\nWelcome back {username}!\n')
             break
@@ -166,12 +167,17 @@ def validate_existing_username_password(username, password):
     Checks that the username inputted exists.
     Checks the password inputted matches the password stored
     """
-    username_password = dict(zip(current_usernames, current_passwords))
-    users_password = username_password[username]
-    try:
+    try: 
+        if username == 'username':
+            print('username is not a valid option')
+            raise ValueError
         if username not in current_usernames:
             print(f'You entered {username}. That username does not exist')
             raise ValueError
+        # bug - had this at the start of the function.
+        # was causing a keyerror 
+        username_password = dict(zip(current_usernames, current_passwords))
+        users_password = username_password[username]
         if password != users_password:        
             print('Your username and password do not match')
             raise ValueError
@@ -223,7 +229,7 @@ def option_validation(option):
 
 def get_transaction():
     print('\nPlease enter the date of the transaction')
-    print('This should be in the format DD/MM/YSY')
+    print('This should be in the format DD/MM/YY')
     transaction_date = input('> ')
     print('\nPlease enter the transaction category')
     print('1 - Household Bills')
@@ -238,7 +244,14 @@ def get_transaction():
     spend_amount = input('£ ')
 
 
+def validate_date(date):
+    parse(DD/MM/YY)
 
+# def validate_transaction(date, category, amount):
+#     try:
+#         if len(transaction_date) != 8:
+#             print('Incorrect date entered')
+        # if 
 # def get_transaction_category():
 #     print('')
 
@@ -255,7 +268,7 @@ def main():
         print(f'\nHi {new_username}! What would you like to do today?\n')
         option = choose_option()
     elif new_or_existing_choice == 'E':
-        username = get_existing_username_password()
+        get_existing_username_password()
         # password = enter_password()
         option = choose_option()
         # action = option_action()
