@@ -232,28 +232,25 @@ def get_transaction():
     print('This should be in the format DD/MM/YY')
     while True:
         transaction_date = input('> ')
+        if validate_date(transaction_date):     
+            print('\nPlease enter the transaction category')
+            print('1 - Household Bills')
+            print('2 - Transportation')
+            print('3 - Food')
+            print('4 - Savings')
+            print('5 - Personal Spending')
+            print('6 - Other')
+            while True:
+                spend_category = input('Enter a number betweeen 1 and 6: ')
+            
+                if validate_spend_category(spend_category):
+                    print('\nPlease enter the amount spent.')
+                    print('This should be in the format £xx.xx')
+                    while True:
+                    spend_amount = input('£ ')
 
-        if validate_date(transaction_date):
-            break
-    
-    return transaction_date
-
-    print('\nPlease enter the transaction category')
-    print('1 - Household Bills')
-    print('2 - Transportation')
-    print('3 - Food')
-    print('4 - Savings')
-    print('5 - Personal Spending')
-    print('6 - Other')
-    
-    while True:
-        spend_category = input('Enter a number betweeen 1 and 6: ')
-    
-        if validate
-    print('\nPlease enter the amount spent.')
-    print('This should be in the format £xx.xx')
-    spend_amount = input('£ ')
-
+                    if validate_amount(spend_amount):
+                        break
 
 def validate_date(date):
     try:
@@ -264,7 +261,17 @@ def validate_date(date):
         print('Invalid date')
         return False
 
-    
+def validate_spend_category(number):
+    avail_options = ['1', '2', '3', '4', '5', '6']
+    try:
+        if number not in avail_options:
+            raise ValueError
+    except ValueError:
+        print('incorrect option chosen')
+        print('Please enter a number between 1 and 6')
+        return False
+    return True
+
 # validate_date()
     # return True
 
