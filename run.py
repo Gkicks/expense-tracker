@@ -247,10 +247,13 @@ def get_transaction():
                     print('\nPlease enter the amount spent.')
                     print('This should be in the format £xx.xx')
                     while True:
-                    spend_amount = input('£ ')
+                        spend_amount = input('£ ')
 
-                    if validate_amount(spend_amount):
-                        break
+                        if validate_amount(spend_amount):
+                            print('Adding transaction...')
+                            return False
+                            break
+
 
 def validate_date(date):
     try:
@@ -272,6 +275,15 @@ def validate_spend_category(number):
         return False
     return True
 
+def validate_amount(float):
+    try:
+        if len(float.rsplit('.')[-1]) != 2:
+            raise ValueError
+    except ValueError:
+        print('This is not a correct amount')
+        print('Please try again')
+        return False
+    return True
 # validate_date()
     # return True
 
