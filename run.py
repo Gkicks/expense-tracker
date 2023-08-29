@@ -106,6 +106,7 @@ def choose_password():
             print(new_user)
             user_worksheet = SHEET.worksheet('users')
             user_worksheet.append_row(new_user)
+            add_new_user_worksheet(new_user[0])
             break
 
 
@@ -138,6 +139,11 @@ def validate_new_password(new_password):
         print('Please try again')
         return False
     return True
+
+
+def add_new_user_worksheet(user):
+    SHEET.add_worksheet(user, rows="1", cols="7")
+    SHEET.worksheet(user).append_row(['Date', 'Household Bills', 'Transportation', 'Food', 'Savings', 'Personal Spending', 'Other'])
 
 
 def get_existing_username_password():
@@ -174,7 +180,7 @@ def validate_existing_username_password(username, password):
         return False
     return True
 
-
+  
 def choose_option():
     """
     gets the action option the user has chosen to do
@@ -230,6 +236,7 @@ def get_transaction():
     print('\nPlease enter the amount spent.')
     print('This should be in the format £xx.xx')
     spend_amount = input('£ ')
+
 
 
 # def get_transaction_category():
