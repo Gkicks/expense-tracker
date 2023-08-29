@@ -1,8 +1,8 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import regex
+from datetime import datetime
 from dateutil.parser import parse
-# import datetime
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -230,7 +230,14 @@ def option_validation(option):
 def get_transaction():
     print('\nPlease enter the date of the transaction')
     print('This should be in the format DD/MM/YY')
-    transaction_date = input('> ')
+    while True:
+        transaction_date = input('> ')
+
+        if validate_date(transaction_date):
+            break
+    
+    return transaction_date
+
     print('\nPlease enter the transaction category')
     print('1 - Household Bills')
     print('2 - Transportation')
@@ -238,14 +245,28 @@ def get_transaction():
     print('4 - Savings')
     print('5 - Personal Spending')
     print('6 - Other')
-    spend_category = input('Enter a number betweeen 1 and 6: ')
+    
+    while True:
+        spend_category = input('Enter a number betweeen 1 and 6: ')
+    
+        if validate
     print('\nPlease enter the amount spent.')
     print('This should be in the format £xx.xx')
     spend_amount = input('£ ')
 
 
 def validate_date(date):
-    parse(DD/MM/YY)
+    try:
+        date_str = datetime.strptime(date, '%d/%m/%y')
+        return True
+        print(date)
+    except ValueError:
+        print('Invalid date')
+        return False
+
+    
+# validate_date()
+    # return True
 
 # def validate_transaction(date, category, amount):
 #     try:
