@@ -18,7 +18,9 @@ current_usernames = SHEET.worksheet('users').col_values(1)
 current_passwords = SHEET.worksheet('users').col_values(2)
 new_user = ['username', 'password']
 
-print('Welcome to the Python expense tracker!\n')
+print(' __     __   __       __   __   ___  __   __   __     __  __')
+print('|__ \/ |__| |__ |\ | |__  |__    |  |__| |__| |   |/ |__ |__|')
+print('|__ /\ |    |__ | \|  __| |__    |  |  \ |  | |__ |\ |__ |  \ ')
 
 
 def new_or_existing_user():
@@ -191,7 +193,6 @@ def choose_option():
     """
     gets the action option the user has chosen to do
     """
-    print('What would you like to do today?')
     print('1 - Enter Transaction')
     print('2 - Analyse Spending\n')
     while True:
