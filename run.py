@@ -2,7 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 import regex
 from datetime import datetime
-from dateutil.parser import parse
+# from dateutil.parser import parse
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -29,7 +29,7 @@ def new_or_existing_user():
     print('N - new user')
     print('E - existing user')
     while True:
-        new_or_existing_choice = input('Enter N or E: ').upper()
+        new_or_existing_choice = input('Enter N or E: \n').upper()
         if validate_new_user_option(new_or_existing_choice):
             break
     return new_or_existing_choice
@@ -58,7 +58,7 @@ def choose_username():
     print('Username should be at least two characters in length')
     print('Username must only contain letters or numbers')
     while True:
-        new_username = input('Enter username: ')
+        new_username = input('Enter username: \n')
         if validate_new_username(new_username):
             print(f'\nThank you. Your username is {new_username}')
             new_user[0] = new_username
@@ -100,7 +100,7 @@ def choose_password():
     print('special characters accepted are £, $, %, ^ or &')
 
     while True:
-        new_password = input('Enter password here: ')
+        new_password = input('Enter password here: \n')
 
         if validate_new_password(new_password):
             print('Thank you. That password is valid')
@@ -153,8 +153,8 @@ def get_existing_username_password():
     Asks existing users to enter their username and password
     """
     while True:
-        username = input('\nPlease enter your username: ')
-        password = input('Please enter your password: ')
+        username = input('\nPlease enter your username: \n')
+        password = input('Please enter your password: \n')
         if validate_existing_username_password(username, password):
             print(f'\nWelcome back {username}!\n')
             break
@@ -195,7 +195,7 @@ def choose_option():
     print('1 - Enter Transaction')
     print('2 - Analyse Spending\n')
     while True:
-        option = input('Please pick an option between 1 and 2: ')
+        option = input('Please pick an option, either 1 or 2: \n')
         if option_validation(option):
             if option == '1':
                 print('option 1 chosen')
@@ -231,7 +231,7 @@ def get_transaction():
     print('\nPlease enter the date of the transaction')
     print('This should be in the format DD/MM/YY')
     while True:
-        transaction_date = input('> ')
+        transaction_date = input('> \n')
         if validate_date(transaction_date):     
             print('\nPlease enter the transaction category')
             print('1 - Household Bills')
@@ -241,13 +241,13 @@ def get_transaction():
             print('5 - Personal Spending')
             print('6 - Other')
             while True:
-                spend_category = input('Enter a number betweeen 1 and 6: ')
+                spend_category = input('Enter a number betweeen 1 and 6: \n')
             
                 if validate_spend_category(spend_category):
                     print('\nPlease enter the amount spent.')
                     print('This should be in the format £xx.xx')
                     while True:
-                        spend_amount = input('£ ')
+                        spend_amount = input('£ \n')
 
                         if validate_amount(spend_amount):
                             print('Adding transaction...')
@@ -284,22 +284,7 @@ def validate_amount(float):
         print('Please try again')
         return False
     return True
-# validate_date()
-    # return True
 
-# def validate_transaction(date, category, amount):
-#     try:
-#         if len(transaction_date) != 8:
-#             print('Incorrect date entered')
-        # if 
-# def get_transaction_category():
-#     print('')
-
-# def add_transaction():
-#     """
-#     Adds transaction to the Google Sheets Workbook
-#     """
-#     transaction_page = SHEET.worksheet('transactions')
 
 def main():
     new_or_existing_choice = new_or_existing_user()
