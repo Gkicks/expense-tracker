@@ -2,6 +2,7 @@ import gspread
 from google.oauth2.service_account import Credentials
 import regex
 from datetime import datetime
+from colorama import init, Fore, Back, Style
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -18,9 +19,13 @@ current_passwords = SHEET.worksheet('users').col_values(2)
 username_password = ['username', 'password']
 
 
-print(' __     __   __       __   __   ___  __   __   __     __  __')
-print('|__ \/ |__| |__ |\ | |__  |__    |  |__| |__| |   |/ |__ |__|')
-print('|__ /\ |    |__ | \|  __| |__    |  |  \ |  | |__ |\ |__ |  \ ')
+print(Fore.BLUE + ' __     __   __       __   __')
+print(Fore.MAGENTA + '|__ \/ |__| |__ |\ | |__  |__')
+print(Fore.RED + '|__ /\ |    |__ | \|  __| |__\n')
+print(Fore.BLUE + ' ___  __   __   __     __  __')
+print(Fore.MAGENTA + '  |  |__| |__| |   |/ |__ |__|')
+print(Fore.RED + '  |  |  \ |  | |__ |\ |__ |  \ ')
+print(Style.RESET_ALL)
 
 
 def new_or_existing_user():
@@ -47,7 +52,8 @@ def validate_new_user_option(new_or_existing_choice):
         if new_or_existing_choice not in new_existing_options:
             raise ValueError
     except ValueError:
-        print('You did not enter a correct value')
+        print(Fore.RED + 'You did not enter a correct value')
+        print(Style.RESET_ALL)
         return False
     return True
 
@@ -62,10 +68,9 @@ def choose_username():
     while True:
         username = input('Enter username: ')
         if validate_new_username(username):
-            print(f'\nThank you. Your username is {username}')
+            print(Fore.BLUE + f'\nThank you. Your username is {username}')
+            print(Style.RESET_ALL)
             username_password[0] = username
-            print(username_password)
-            print(username)
             choose_password()
             break
 
@@ -80,10 +85,12 @@ def validate_new_username(username):
     """
     try:
         if len(username) < 2:
-            print('Your username must contain at least two characters')    
+            print(Fore.RED + 'Username must contain at least two characters')    
+            print(Style.RESET_ALL)
             raise ValueError
         if username in current_usernames:
-            print('That username already exists')
+            print(Fore.RED + 'That username already exists')
+            print(Style.RESET_ALL)
             raise ValueError
     except ValueError:
         print('Please choose another username')
@@ -107,7 +114,8 @@ def choose_password():
         new_password = input('Enter password here: \n')
 
         if validate_new_password(new_password):
-            print('Thank you. That password is valid')
+            print(Fore.GREEN + 'Thank you. That password is valid')
+            print(Style.RESET_ALL)
             username_password[1] = new_password
             user_worksheet = SHEET.worksheet('users')
             user_worksheet.append_row(username_password)
@@ -124,24 +132,24 @@ def validate_new_password(new_password):
     """
     try:    
         if len(new_password) < 6:
-            print(f'That password is only {len(new_password)} characters long')
-            print('Your password must be at least 6 characters long')
+            print(Fore.RED + 'Password must be at least 6 characters long')
             raise ValueError
         if not any(x.isupper() for x in new_password):
-            print('Your password must contain at least one uppercase letter')
+            print(Fore.RED + 'Password must contain 1 uppercase letter')
             raise ValueError
         if not any(x.islower() for x in new_password):
-            print('Your password must contain at least one lowercase letter')
+            print(Fore.RED + 'Password must contain 1 lowercase letter')
             raise ValueError
         special_characters = ['£', '$', '%', '^', '&']
         if not any(x in special_characters for x in new_password):
-            print('Your password must contain either £, $, %, ^ or &')
+            print(Fore.RED + 'Password must contain either £, $, %, ^ or &')
             raise ValueError
         if not any(x.isdigit() for x in new_password):
-            print('Your password must include at least one number')
+            print(Fore.RED + 'Your password must include at least 1 number')
             raise ValueError
     except ValueError:
         print('Please try again')
+        print(Style.RESET_ALL)
         return False
     return True
 
@@ -165,7 +173,8 @@ def get_existing_username_password():
         if validate_existing_username_password(username, password):
             username_password[0] = username
             print(username_password)
-            print(f'\nWelcome back {username}!\n')
+            print(Fore.BLUE + f'\nWelcome back {username}!\n')
+            print(Style.RESET_ALL)
             break
 
     return username, password
@@ -178,18 +187,19 @@ def validate_existing_username_password(username, password):
     """
     try: 
         if username == 'username':
-            print('username is not a valid option')
+            print(Fore.RED + 'username is not a valid option')
             raise ValueError
         if username not in current_usernames:
-            print(f'You entered {username}. That username does not exist')
+            print(Fore.RED + f"You entered {username}. Username doesn't exist")
             raise ValueError
         username_password_dic = dict(zip(current_usernames, current_passwords))
         users_password = username_password_dic[username]
         if password != users_password:        
-            print('Your username and password do not match')
+            print(Fore.RED + 'Your username and password do not match')
             raise ValueError
     except ValueError: 
         print('Please try again')
+        print(Style.RESET_ALL)
         return False
     return True
 
@@ -221,14 +231,16 @@ def option_validation(option):
     Validates the option input
     """
     if option == "":
-        print('\nYou did not enter a number!\n')
+        print(Fore.RED + '\nYou did not enter a number!\n')
+        print(Style.RESET_ALL)
     else:
         num_options = ['1', '2']
         try:
             if option not in num_options:
                 raise ValueError
         except ValueError:
-            print('Not a valid number. Please try again.\n')
+            print(Fore.RED + 'Not a valid number. Please try again.\n')
+            print(Style.RESET_ALL)
             return False
         return True
     return option
@@ -264,10 +276,8 @@ def get_transaction():
                         spend_amount = input('£ ')
                         if validate_amount(spend_amount):
                             transaction.append(spend_amount)
-                            print(transaction)     
                             print('Adding transaction...')
                             add_transaction(transaction)
-                            # SHEET.worksheet(username_password[0]).append_row(transaction)
                             return False
                             break
 
@@ -280,10 +290,11 @@ def validate_date(date):
         today = datetime.now()
         date_str = datetime.strptime(date, '%d/%m/%Y')
         if date_str > today:
-            print('The date cannot be in the future')
+            print(Fore.RED + 'The date cannot be in the future')
             raise ValueError
     except ValueError:
-        print('That is not a valid date. Please enter valid date')
+        print(Fore.RED + 'That is not a valid date. Please enter valid date')
+        print(Style.RESET_ALL)
         return False
     return True
 
@@ -297,8 +308,9 @@ def validate_spend_category(number):
         if number not in avail_options:
             raise ValueError
     except ValueError:
-        print('incorrect option chosen')
-        print('Please enter a number between 1 and 6')
+        print(Fore.RED + 'incorrect option chosen')
+        print(Fore.RED + 'Please enter a number between 1 and 6')
+        print(Style.RESET_ALL)
         return False
     return True
 
@@ -311,8 +323,9 @@ def validate_amount(float):
         if len(float.rsplit('.')[-1]) != 2:
             raise ValueError
     except ValueError:
-        print('This is not a correct amount')
+        print(Fore.RED + 'This is not a correct amount')
         print('Please try again')
+        print(Style.RESET_ALL)
         return False
     return True
 
@@ -328,7 +341,7 @@ def main():
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
         username = choose_username()
-        print(f'\nHi {username}!\n')
+        print(Fore.BLUE + f'\nHi {username}!\n')
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
 
