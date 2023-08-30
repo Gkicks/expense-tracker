@@ -15,7 +15,8 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('expense-tracker')
 current_usernames = SHEET.worksheet('users').col_values(1)
 current_passwords = SHEET.worksheet('users').col_values(2)
-new_user = ['username', 'password']
+# username = ['username']
+username_password = ['username', 'password']
 
 
 print(' __     __   __       __   __   ___  __   __   __     __  __')
@@ -60,27 +61,30 @@ def choose_username():
     print('Username should be at least two characters in length')
     print('Username must only contain letters or numbers\n')
     while True:
-        new_username = input('Enter username: ')
-        if validate_new_username(new_username):
-            print(f'\nThank you. Your username is {new_username}')
-            new_user[0] = new_username
+        username = input('Enter username: ')
+        if validate_new_username(username):
+            print(f'\nThank you. Your username is {username}')
+            username_password[0] = username
+            print(username_password)
+            # username[0] = username
+            print(username)
             choose_password()
             break
 
-    return new_username
+    return username
 
 
-def validate_new_username(new_username):
+def validate_new_username(username):
     """
     Validates the users chosen username.
     Checks username is at least two characters long
     Checks username isn't already in use
     """
     try:
-        if len(new_username) < 2:
+        if len(username) < 2:
             print('Your username must contain at least two characters')    
             raise ValueError
-        if new_username in current_usernames:
+        if username in current_usernames:
             print('That username already exists')
             raise ValueError
     except ValueError:
@@ -106,10 +110,10 @@ def choose_password():
 
         if validate_new_password(new_password):
             print('Thank you. That password is valid')
-            new_user[1] = new_password
+            username_password[1] = new_password
             user_worksheet = SHEET.worksheet('users')
-            user_worksheet.append_row(new_user)
-            add_new_user_worksheet(new_user[0])
+            user_worksheet.append_row(username_password)
+            add_new_user_worksheet(username_password[0])
             break
 
 
@@ -144,13 +148,15 @@ def validate_new_password(new_password):
     return True
 
 
-def add_new_user_worksheet(user):
+def add_new_user_worksheet(username):
     """
     Adds new worksheet to the expense-tracker Google sheet
     Calls the worksheet the users username
     """ 
-    SHEET.add_worksheet(user, rows="1", cols="7")
-    SHEET.worksheet(user).append_row(['Date', 'Household Bills', 'Transportation', 'Food', 'Savings', 'Personal Spending', 'Other'])
+    SHEET.add_worksheet(username, rows="1", cols="7")
+    SHEET.worksheet(username).append_row(['Date', 'Catergory', 'Amount'])
+
+    # return username
 
 
 def get_existing_username_password():
@@ -161,6 +167,8 @@ def get_existing_username_password():
         username = input('\nPlease enter your username: \n')
         password = input('\nPlease enter your password: \n')
         if validate_existing_username_password(username, password):
+            username_password[0] = username
+            print(username_password)
             print(f'\nWelcome back {username}!\n')
             break
 
@@ -181,8 +189,8 @@ def validate_existing_username_password(username, password):
             raise ValueError
         # bug - had this at the start of the function.
         # was causing a keyerror 
-        username_password = dict(zip(current_usernames, current_passwords))
-        users_password = username_password[username]
+        username_password_dic = dict(zip(current_usernames, current_passwords))
+        users_password = username_password_dic[username]
         if password != users_password:        
             print('Your username and password do not match')
             raise ValueError
@@ -204,7 +212,7 @@ def choose_option():
         if option_validation(option):
             if option == '1':
                 print('option 1 chosen')
-                get_transaction()
+                # get_transaction()
             elif option == '2':
                 print('option 2 chosen')
                 # spending = analyse_transaction()
@@ -238,12 +246,13 @@ def get_transaction():
     the transaction category
     and the transaction amount
     """
-
     print('\nPlease enter the date of the transaction')
     print('This should be in the format DD/MM/YYYY')
+    transaction = [] 
     while True:
         transaction_date = input('> ')
-        if validate_date(transaction_date):     
+        if validate_date(transaction_date):
+            transaction.append(transaction_date)     
             print('\nPlease enter the transaction category\n')
             print('1 - Household Bills')
             print('2 - Transportation')
@@ -253,15 +262,17 @@ def get_transaction():
             print('6 - Other')
             while True:
                 spend_category = input('\nEnter a number betweeen 1 and 6: ')
-            
                 if validate_spend_category(spend_category):
+                    transaction.append(spend_category)     
                     print('\nPlease enter the amount spent.')
                     print('This should be in the format £xx.xx')
                     while True:
                         spend_amount = input('£ ')
-
                         if validate_amount(spend_amount):
+                            transaction.append(spend_amount)
+                            print(transaction)     
                             print('Adding transaction...')
+                            SHEET.worksheet(username_password[0]).append_row(transaction)
                             return False
                             break
 
@@ -317,12 +328,14 @@ def main():
     """
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
-        new_username = choose_username()
-        print(f'\nHi {new_username}!\n')
-        option = choose_option()
+        username = choose_username()
+        print(f'\nHi {username}!\n')
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
-        option = choose_option()
+
+    option = choose_option()
+    if option == '1':
+        get_transaction()  
     else:
         print('Error! Please restart program')
 
