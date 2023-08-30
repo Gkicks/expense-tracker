@@ -15,7 +15,6 @@ GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('expense-tracker')
 current_usernames = SHEET.worksheet('users').col_values(1)
 current_passwords = SHEET.worksheet('users').col_values(2)
-# username = ['username']
 username_password = ['username', 'password']
 
 
@@ -66,7 +65,6 @@ def choose_username():
             print(f'\nThank you. Your username is {username}')
             username_password[0] = username
             print(username_password)
-            # username[0] = username
             print(username)
             choose_password()
             break
@@ -156,8 +154,6 @@ def add_new_user_worksheet(username):
     SHEET.add_worksheet(username, rows="1", cols="7")
     SHEET.worksheet(username).append_row(['Date', 'Catergory', 'Amount'])
 
-    # return username
-
 
 def get_existing_username_password():
     """
@@ -187,8 +183,6 @@ def validate_existing_username_password(username, password):
         if username not in current_usernames:
             print(f'You entered {username}. That username does not exist')
             raise ValueError
-        # bug - had this at the start of the function.
-        # was causing a keyerror 
         username_password_dic = dict(zip(current_usernames, current_passwords))
         users_password = username_password_dic[username]
         if password != users_password:        
@@ -272,7 +266,8 @@ def get_transaction():
                             transaction.append(spend_amount)
                             print(transaction)     
                             print('Adding transaction...')
-                            SHEET.worksheet(username_password[0]).append_row(transaction)
+                            add_transaction(transaction)
+                            # SHEET.worksheet(username_password[0]).append_row(transaction)
                             return False
                             break
 
@@ -322,6 +317,10 @@ def validate_amount(float):
     return True
 
 
+def add_transaction(transaction):
+    SHEET.worksheet(username_password[0]).append_row(transaction)
+
+
 def main():
     """
     The main function that runs the rest of the functions
@@ -336,8 +335,8 @@ def main():
     option = choose_option()
     if option == '1':
         get_transaction()  
-    else:
-        print('Error! Please restart program')
+    elif option == '2':
+        print('TBC')
 
 
 main()
