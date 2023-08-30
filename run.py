@@ -102,7 +102,7 @@ def choose_password():
     """
     Asks the user to choose a password
     """
-    print('\nPlease choose a password\n')
+    print('Please choose a password\n')
     print('Passwords must be at least 6 characters long')
     print('and contain at least one uppercase letter,')
     print('one lowercase letter,')
@@ -111,7 +111,7 @@ def choose_password():
     print('special characters accepted are £, $, %, ^ or &\n')
 
     while True:
-        new_password = input('Enter password here: \n')
+        new_password = input('Enter password here: ')
 
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid')
@@ -342,6 +342,7 @@ def main():
     if new_or_existing_choice == 'N':
         username = choose_username()
         print(Fore.BLUE + f'\nHi {username}!\n')
+        print(Style.RESET_ALL)
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
 
