@@ -2,7 +2,6 @@ import gspread
 from google.oauth2.service_account import Credentials
 import regex
 from datetime import datetime
-# from dateutil.parser import parse
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -27,11 +26,11 @@ def new_or_existing_user():
     """
     Asks the user if they are a new or existing user
     """
-    print('Are you a new or existing user?')
+    print('\nAre you a new or existing user\n?')
     print('N - new user')
     print('E - existing user')
     while True:
-        new_or_existing_choice = input('Enter N or E: \n').upper()
+        new_or_existing_choice = input('Enter N or E: ').upper()
         if validate_new_user_option(new_or_existing_choice):
             break
     return new_or_existing_choice
@@ -56,11 +55,11 @@ def choose_username():
     """
     Asks the user to choose a new username
     """
-    print('\nPlease choose a username')
+    print('\nPlease choose a username\n')
     print('Username should be at least two characters in length')
-    print('Username must only contain letters or numbers')
+    print('Username must only contain letters or numbers\n')
     while True:
-        new_username = input('Enter username: \n')
+        new_username = input('Enter username: ')
         if validate_new_username(new_username):
             print(f'\nThank you. Your username is {new_username}')
             new_user[0] = new_username
@@ -93,13 +92,13 @@ def choose_password():
     """
     Asks the user to choose a password
     """
-    print('\nPlease choose a password')
+    print('\nPlease choose a password\n')
     print('Passwords must be at least 6 characters long')
     print('and contain at least one uppercase letter,')
     print('one lowercase letter,')
     print('one number')
     print('and one special character')
-    print('special characters accepted are £, $, %, ^ or &')
+    print('special characters accepted are £, $, %, ^ or &\n')
 
     while True:
         new_password = input('Enter password here: \n')
@@ -107,7 +106,6 @@ def choose_password():
         if validate_new_password(new_password):
             print('Thank you. That password is valid')
             new_user[1] = new_password
-            print(new_user)
             user_worksheet = SHEET.worksheet('users')
             user_worksheet.append_row(new_user)
             add_new_user_worksheet(new_user[0])
@@ -146,6 +144,10 @@ def validate_new_password(new_password):
 
 
 def add_new_user_worksheet(user):
+    """
+    Adds new worksheet to the expense-tracker Google sheet
+    Calls the worksheet the users username
+    """ 
     SHEET.add_worksheet(user, rows="1", cols="7")
     SHEET.worksheet(user).append_row(['Date', 'Household Bills', 'Transportation', 'Food', 'Savings', 'Personal Spending', 'Other'])
 
@@ -156,7 +158,7 @@ def get_existing_username_password():
     """
     while True:
         username = input('\nPlease enter your username: \n')
-        password = input('Please enter your password: \n')
+        password = input('\nPlease enter your password: \n')
         if validate_existing_username_password(username, password):
             print(f'\nWelcome back {username}!\n')
             break
@@ -196,7 +198,7 @@ def choose_option():
     print('1 - Enter Transaction')
     print('2 - Analyse Spending\n')
     while True:
-        option = input('Please pick an option, either 1 or 2: \n')
+        option = input('Please pick an option, either 1 or 2: ')
         if option_validation(option):
             if option == '1':
                 print('option 1 chosen')
@@ -229,12 +231,18 @@ def option_validation(option):
 
 
 def get_transaction():
+    """
+    Asks the user to enter the transaction date,
+    the transaction category
+    and the transaction amount
+    """
+
     print('\nPlease enter the date of the transaction')
     print('This should be in the format DD/MM/YY')
     while True:
-        transaction_date = input('> \n')
+        transaction_date = input('> ')
         if validate_date(transaction_date):     
-            print('\nPlease enter the transaction category')
+            print('\nPlease enter the transaction category\n')
             print('1 - Household Bills')
             print('2 - Transportation')
             print('3 - Food')
@@ -242,13 +250,13 @@ def get_transaction():
             print('5 - Personal Spending')
             print('6 - Other')
             while True:
-                spend_category = input('Enter a number betweeen 1 and 6: \n')
+                spend_category = input('\nEnter a number betweeen 1 and 6: ')
             
                 if validate_spend_category(spend_category):
                     print('\nPlease enter the amount spent.')
                     print('This should be in the format £xx.xx')
                     while True:
-                        spend_amount = input('£ \n')
+                        spend_amount = input('£ ')
 
                         if validate_amount(spend_amount):
                             print('Adding transaction...')
@@ -257,6 +265,9 @@ def get_transaction():
 
 
 def validate_date(date):
+    """
+    Validates that the date inputted is in the format DD/MM/YY
+    """
     try:
         date_str = datetime.strptime(date, '%d/%m/%y')
         return True
@@ -266,6 +277,9 @@ def validate_date(date):
         return False
 
 def validate_spend_category(number):
+    """
+    Validates that the option chosen is one of the available options
+    """
     avail_options = ['1', '2', '3', '4', '5', '6']
     try:
         if number not in avail_options:
@@ -277,6 +291,9 @@ def validate_spend_category(number):
     return True
 
 def validate_amount(float):
+    """
+    Validates that the amount entered is a float to two decimal places
+    """
     try:
         if len(float.rsplit('.')[-1]) != 2:
             raise ValueError
@@ -288,6 +305,9 @@ def validate_amount(float):
 
 
 def main():
+    """
+    The main function that runs the rest of the functions
+    """
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
         new_username = choose_username()
@@ -295,9 +315,7 @@ def main():
         option = choose_option()
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
-        # password = enter_password()
         option = choose_option()
-        # action = option_action()
     else:
         print('Error! Please restart program')
 
