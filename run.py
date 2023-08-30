@@ -17,6 +17,7 @@ current_usernames = SHEET.worksheet('users').col_values(1)
 current_passwords = SHEET.worksheet('users').col_values(2)
 new_user = ['username', 'password']
 
+
 print(' __     __   __       __   __   ___  __   __   __     __  __')
 print('|__ \/ |__| |__ |\ | |__  |__    |  |__| |__| |   |/ |__ |__|')
 print('|__ /\ |    |__ | \|  __| |__    |  |  \ |  | |__ |\ |__ |  \ ')
@@ -26,9 +27,9 @@ def new_or_existing_user():
     """
     Asks the user if they are a new or existing user
     """
-    print('\nAre you a new or existing user\n?')
+    print('\nAre you a new or existing user?\n')
     print('N - new user')
-    print('E - existing user')
+    print('E - existing user\n')
     while True:
         new_or_existing_choice = input('Enter N or E: ').upper()
         if validate_new_user_option(new_or_existing_choice):
@@ -195,6 +196,7 @@ def choose_option():
     """
     gets the action option the user has chosen to do
     """
+    print('What would you like to do today?\n')
     print('1 - Enter Transaction')
     print('2 - Analyse Spending\n')
     while True:
@@ -238,7 +240,7 @@ def get_transaction():
     """
 
     print('\nPlease enter the date of the transaction')
-    print('This should be in the format DD/MM/YY')
+    print('This should be in the format DD/MM/YYYY')
     while True:
         transaction_date = input('> ')
         if validate_date(transaction_date):     
@@ -266,15 +268,19 @@ def get_transaction():
 
 def validate_date(date):
     """
-    Validates that the date inputted is in the format DD/MM/YY
+    Validates that the date inputted is in the format DD/MM/YYYY
     """
     try:
-        date_str = datetime.strptime(date, '%d/%m/%y')
-        return True
-        print(date)
+        today = datetime.now()
+        date_str = datetime.strptime(date, '%d/%m/%Y')
+        if date_str > today:
+            print('The date cannot be in the future')
+            raise ValueError
     except ValueError:
-        print('Invalid date')
+        print('That is not a valid date. Please enter valid date')
         return False
+    return True
+
 
 def validate_spend_category(number):
     """
@@ -289,6 +295,7 @@ def validate_spend_category(number):
         print('Please enter a number between 1 and 6')
         return False
     return True
+
 
 def validate_amount(float):
     """
@@ -311,7 +318,7 @@ def main():
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
         new_username = choose_username()
-        print(f'\nHi {new_username}! What would you like to do today?\n')
+        print(f'\nHi {new_username}!\n')
         option = choose_option()
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
