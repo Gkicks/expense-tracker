@@ -251,7 +251,7 @@ def get_transaction():
     """
     print('\nPlease enter the date of the transaction')
     print('This should be in the format DD/MM/YYYY')
-    transaction = [] 
+    transaction = []
     while True:
         transaction_date = input('> ')
         if validate_date(transaction_date):
@@ -278,9 +278,7 @@ def get_transaction():
                             add_transaction(transaction)
                             next_choice()
                             break
-                        break
                     break
-                break
             break
 
 
@@ -317,15 +315,20 @@ def validate_spend_category(number):
     return True
 
 
-def validate_amount(float):
+def validate_amount(float_number):
     """
     Validates that the amount entered is a float to two decimal places
     """
     try:
-        if len(float.rsplit('.')[-1]) != 2:
+        if len(float_number.rsplit('.')[-1]) != 2:
+            print(Fore.RED + 'The amount must be a number to 2 decimal places')
+            raise ValueError
+        float_number = float(float_number)
+        if float_number <= 0:
+            print('The amount must be greater than £0')
             raise ValueError
     except ValueError:
-        print(Fore.RED + 'This is not a correct amount')
+        print('This is not a correct amount')
         print('Please try again')
         print(Style.RESET_ALL)
         return False
