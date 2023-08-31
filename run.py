@@ -325,10 +325,9 @@ def validate_amount(float_number):
             raise ValueError
         float_number = float(float_number)
         if float_number <= 0:
-            print('The amount must be greater than £0')
+            print(Fore.RED + 'The amount must be greater than £0')
             raise ValueError
     except ValueError:
-        print('This is not a correct amount')
         print('Please try again')
         print(Style.RESET_ALL)
         return False
