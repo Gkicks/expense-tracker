@@ -20,11 +20,11 @@ username_password = ['username', 'password']
 
 
 print(Fore.BLUE + '                     __     __   __       __   __')
-print(Fore.MAGENTA + '                    |__ \/ |__| |__ |\ | |__  |__')
-print(Fore.RED + '                    |__ /\ |    |__ | \|  __| |__\n')
-print(Fore.BLUE + '                     ___  __   __   __     __  __')
-print(Fore.MAGENTA + '                      |  |__| |__| |   |/ |__ |__|')
-print(Fore.RED + '                      |  |  \ |  | |__ |\ |__ |  \ ')
+print(Fore.MAGENTA + '                    |__ \\/ |__| |__ |\\ | |__  |__')
+print(Fore.RED + '                    |__ /\\ |    |__ | \\|  __| |__\n')
+print(Fore.BLUE + '                    ___  __   __   __     __  __')
+print(Fore.MAGENTA + '                     |  |__| |__| |   |/ |__ |__|')
+print(Fore.RED + '                     |  |  \\ |  | |__ |\\ |__ |  \\ ')
 print(Style.RESET_ALL)
 
 
@@ -85,7 +85,7 @@ def validate_new_username(username):
     """
     try:
         if len(username) < 2:
-            print(Fore.RED + 'Username must contain at least two characters')    
+            print(Fore.RED + 'Username must contain at least two charaters')
             print(Style.RESET_ALL)
             raise ValueError
         if username in current_usernames:
@@ -127,22 +127,22 @@ def validate_new_password(new_password):
     Password must contain one uppercase and one lowercase letter,
     one number and one special character
     """
-    try:    
-        if re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{6,}', new_password):
+    try:
+        if re.fullmatch(r'[A-Za-z0-9!@£$%^&*#$+=]{6,}', new_password):
             return True
         if len(new_password) < 6:
             print(Fore.RED + f'Password entered was {len(new_password)} long')
             print('Password must be at least 6 characters long')
             raise ValueError
-        if not re.search('[A-Z]', new_password): 
+        if not re.search('[A-Z]', new_password):
             print(Fore.RED + 'Password must contain 1 uppercase letter')
             raise ValueError
-        if not re.search('[a-z]', new_password): 
+        if not re.search('[a-z]', new_password):
             print(Fore.RED + 'Password must contain 1 lowercase letter')
             raise ValueError
         if not re.search('[!@£$%^&*#$+=]', new_password):
             print(Fore.RED + 'Password must contain 1 special character')
-        if not re.search('[0-9]', new_password): 
+        if not re.search('[0-9]', new_password):
             print(Fore.RED + 'Your password must include at least 1 number')
             raise ValueError
     except ValueError:
@@ -156,7 +156,7 @@ def add_new_user_worksheet(username):
     """
     Adds new worksheet to the expense-tracker Google sheet
     Calls the worksheet the users username
-    """ 
+    """
     SHEET.add_worksheet(username, rows="1", cols="7")
     SHEET.worksheet(username).append_row(['Date', 'Catergory', 'Amount'])
 
@@ -182,7 +182,7 @@ def validate_existing_username_password(username, password):
     Checks that the username inputted exists.
     Checks the password inputted matches the password stored
     """
-    try: 
+    try:
         if username == 'username':
             print(Fore.RED + 'username is not a valid option')
             raise ValueError
@@ -191,16 +191,16 @@ def validate_existing_username_password(username, password):
             raise ValueError
         username_password_dic = dict(zip(current_usernames, current_passwords))
         users_password = username_password_dic[username]
-        if password != users_password:        
+        if password != users_password:
             print(Fore.RED + 'Your username and password do not match')
             raise ValueError
-    except ValueError: 
+    except ValueError:
         print('Please try again')
         print(Style.RESET_ALL)
         return False
     return True
 
-  
+
 def choose_option():
     """
     gets the action option the user has chosen to do
@@ -213,15 +213,15 @@ def choose_option():
         if option_validation(option):
             if option == '1':
                 print('option 1 chosen')
-                get_transaction() 
+                get_transaction()
             elif option == '2':
                 print('option 2 chosen')
                 # spending = analyse_transaction()
             else:
-                print('Error! Please restart program')        
+                print('Error! Please restart program')
             break
     return option
-    
+
 
 def option_validation(option):
     """
@@ -255,7 +255,7 @@ def get_transaction():
     while True:
         transaction_date = input('> ')
         if validate_date(transaction_date):
-            transaction.append(transaction_date)     
+            transaction.append(transaction_date)
             print('\nPlease enter the transaction category\n')
             print('1 - Household Bills')
             print('2 - Transportation')
@@ -266,7 +266,7 @@ def get_transaction():
             while True:
                 spend_category = input('\nEnter a number betweeen 1 and 6: ')
                 if validate_spend_category(spend_category):
-                    transaction.append(spend_category)     
+                    transaction.append(spend_category)
                     print('\nPlease enter the amount spent.')
                     print('This should be in the format £xx.xx')
                     while True:
@@ -386,7 +386,7 @@ def main():
         print(Style.RESET_ALL)
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
-    choose_option() 
+    choose_option()
 
 
 main()
