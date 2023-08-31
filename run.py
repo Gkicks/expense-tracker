@@ -42,14 +42,14 @@ def new_or_existing_user():
     return new_or_existing_choice
 
 
-def validate_new_user_option(new_or_existing_choice):
+def validate_new_user_option(letter):
     """
     Ensures the user only inputs one of the two options available.
     These are whether they are a new (N) or existing (E) user
     """
     new_existing_options = ['N', 'E']
     try:
-        if new_or_existing_choice not in new_existing_options:
+        if letter not in new_existing_options:
             raise ValueError
     except ValueError:
         print(Fore.RED + 'You did not enter a correct value')
@@ -213,6 +213,7 @@ def choose_option():
         if option_validation(option):
             if option == '1':
                 print('option 1 chosen')
+                get_transaction() 
             elif option == '2':
                 print('option 2 chosen')
                 # spending = analyse_transaction()
@@ -275,6 +276,7 @@ def get_transaction():
                             print(Fore.MAGENTA + '\nAdding transaction...')
                             print(Style.RESET_ALL)
                             add_transaction(transaction)
+                            next_choice()
                             break
                         break
                     break
@@ -341,14 +343,16 @@ def next_choice():
     print(f'Thank you {username_password[0]}')
     print('Would you like to perform another action?\n')
     while True:
-        next_choice_action = input('Please enter Y for yes or N for no: ')
-        if validate_next_choice(next_choice_action.upper()):
+        next_choice_action = input('Please enter Y (yes) or N (no): ').upper()
+        if validate_next_choice(next_choice_action):
             if next_choice_action == 'N':
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
                 print(f'Goodbye {username_password[0]}\n')
                 break
             elif next_choice_action == 'Y':
                 choose_option()
+                break
+
     return next_choice_action
 
 
@@ -380,14 +384,7 @@ def main():
         print(Style.RESET_ALL)
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
-
-    option = choose_option()
-    if option == '1':
-        get_transaction()  
-    elif option == '2':
-        print('TBC')
-    
-    next_choice()
+    choose_option() 
 
 
 main()
