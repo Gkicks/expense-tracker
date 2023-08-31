@@ -170,7 +170,6 @@ def get_existing_username_password():
         password = input('\nPlease enter your password: \n')
         if validate_existing_username_password(username, password):
             username_password[0] = username
-            print(username_password)
             print(Fore.BLUE + f'\nWelcome back {username}!\n')
             print(Style.RESET_ALL)
             break
@@ -206,7 +205,7 @@ def choose_option():
     """
     gets the action option the user has chosen to do
     """
-    print('What would you like to do today?\n')
+    print('What would you like to do?\n')
     print('1 - Enter Transaction')
     print('2 - Analyse Spending\n')
     while True:
@@ -277,6 +276,10 @@ def get_transaction():
                             print(Style.RESET_ALL)
                             add_transaction(transaction)
                             break
+                        break
+                    break
+                break
+            break
 
 
 def validate_date(date):
@@ -331,6 +334,41 @@ def add_transaction(transaction):
     SHEET.worksheet(username_password[0]).append_row(transaction)
 
 
+def next_choice():
+    """
+    Allows the user to choose if they would like to perform another action
+    """
+    print(f'Thank you {username_password[0]}')
+    print('Would you like to perform another action?\n')
+    while True:
+        next_choice_action = input('Please enter Y for yes or N for no: ')
+        if validate_next_choice(next_choice_action.upper()):
+            if next_choice_action == 'N':
+                print(Fore.MAGENTA + '\nThank you for using this tracker')
+                print(f'Goodbye {username_password[0]}\n')
+                break
+            elif next_choice_action == 'Y':
+                choose_option()
+    return next_choice_action
+
+
+def validate_next_choice(letter):
+    """
+    Ensures the user only inputs one of the two options available.
+    These are whether they would like to perform another action (Y) or quit (N)
+    """
+    next_choice_options = ['Y', 'N']
+    try:
+        if letter not in next_choice_options:
+            raise ValueError
+    except ValueError:
+        print(Fore.RED + 'You did not enter a correct value')
+        print('Please enter Y or N')
+        print(Style.RESET_ALL)
+        return False
+    return True
+
+
 def main():
     """
     The main function that runs the rest of the functions
@@ -348,6 +386,8 @@ def main():
         get_transaction()  
     elif option == '2':
         print('TBC')
+    
+    next_choice()
 
 
 main()
