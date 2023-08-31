@@ -64,7 +64,6 @@ def choose_username():
     """
     print('\nPlease choose a username\n')
     print('Username should be at least two characters in length')
-    print('Username must only contain letters or numbers')
     print('Username is case sensitive\n')
     while True:
         username = input('Enter username: ')
@@ -175,7 +174,7 @@ def get_existing_username_password():
             print(Style.RESET_ALL)
             break
 
-    return username, password
+    return
 
 
 def validate_existing_username_password(username, password):
@@ -221,7 +220,7 @@ def choose_option():
             else:
                 print('Error! Please restart program')
             break
-    return option
+    return
 
 
 def option_validation(option):
@@ -241,7 +240,7 @@ def option_validation(option):
             print(Style.RESET_ALL)
             return False
         return True
-    return option
+    return
 
 
 def get_transaction():
@@ -343,7 +342,7 @@ def next_choice():
     """
     Allows the user to choose if they would like to perform another action
     """
-    print(f'Thank you {username_password[0]}')
+    print(f'Thank you {username_password[0]}. Your transaction has been added')
     print('Would you like to perform another action?\n')
     while True:
         next_choice_action = input('Please enter Y (yes) or N (no): ').upper()
@@ -356,7 +355,7 @@ def next_choice():
                 choose_option()
                 break
 
-    return next_choice_action
+    return
 
 
 def validate_next_choice(letter):
@@ -390,4 +389,5 @@ def main():
     choose_option()
 
 
-main()
+if __name__ == "__main__":
+    main()
