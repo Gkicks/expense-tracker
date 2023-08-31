@@ -64,7 +64,8 @@ def choose_username():
     """
     print('\nPlease choose a username\n')
     print('Username should be at least two characters in length')
-    print('Username must only contain letters or numbers\n')
+    print('Username must only contain letters or numbers')
+    print('Username is case sensitive\n')
     while True:
         username = input('Enter username: ')
         if validate_new_username(username):
