@@ -1,8 +1,8 @@
 import gspread
 from google.oauth2.service_account import Credentials
-import regex
+import re
 from datetime import datetime
-from colorama import init, Fore, Back, Style
+from colorama import Fore, Style
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -103,12 +103,9 @@ def choose_password():
     Asks the user to choose a password
     """
     print('Please choose a password\n')
-    print('Passwords must be at least 6 characters long')
-    print('and contain at least one uppercase letter,')
-    print('one lowercase letter,')
-    print('one number')
-    print('and one special character')
-    print('special characters accepted are £, $, %, ^ or &\n')
+    print('Passwords must be at least 6 characters long,')
+    print('contain at least one uppercase letter, one lowercase letter,')
+    print('one number and one special character')
 
     while True:
         new_password = input('Enter password here: ')
@@ -131,20 +128,21 @@ def validate_new_password(new_password):
     one number and one special character
     """
     try:    
+        if re.fullmatch(r'[A-Za-z0-9@#$%^&+=]{6,}', new_password):
+            return True
         if len(new_password) < 6:
-            print(Fore.RED + 'Password must be at least 6 characters long')
+            print(Fore.RED + f'Password entered was {len(new_password)} long')
+            print('Password must be at least 6 characters long')
             raise ValueError
-        if not any(x.isupper() for x in new_password):
+        if not re.search('[A-Z]', new_password): 
             print(Fore.RED + 'Password must contain 1 uppercase letter')
             raise ValueError
-        if not any(x.islower() for x in new_password):
+        if not re.search('[a-z]', new_password): 
             print(Fore.RED + 'Password must contain 1 lowercase letter')
             raise ValueError
-        special_characters = ['£', '$', '%', '^', '&']
-        if not any(x in special_characters for x in new_password):
-            print(Fore.RED + 'Password must contain either £, $, %, ^ or &')
-            raise ValueError
-        if not any(x.isdigit() for x in new_password):
+        if not re.search('[!@£$%^&*#$+=]', new_password):
+            print(Fore.RED + 'Password must contain 1 special character')
+        if not re.search('[0-9]', new_password): 
             print(Fore.RED + 'Your password must include at least 1 number')
             raise ValueError
     except ValueError:
@@ -216,7 +214,6 @@ def choose_option():
         if option_validation(option):
             if option == '1':
                 print('option 1 chosen')
-                # get_transaction()
             elif option == '2':
                 print('option 2 chosen')
                 # spending = analyse_transaction()
@@ -276,9 +273,9 @@ def get_transaction():
                         spend_amount = input('£ ')
                         if validate_amount(spend_amount):
                             transaction.append(spend_amount)
-                            print('Adding transaction...')
+                            print(Fore.MAGENTA + '\nAdding transaction...')
+                            print(Style.RESET_ALL)
                             add_transaction(transaction)
-                            return False
                             break
 
 
@@ -341,7 +338,7 @@ def main():
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
         username = choose_username()
-        print(Fore.BLUE + f'\nHi {username}!\n')
+        print(Fore.BLUE + f'Hi {username}!')
         print(Style.RESET_ALL)
     elif new_or_existing_choice == 'E':
         get_existing_username_password()
