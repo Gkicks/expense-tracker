@@ -19,12 +19,12 @@ current_passwords = SHEET.worksheet('users').col_values(2)
 username_password = ['username', 'password']
 
 
-print(Fore.BLUE + ' __     __   __       __   __')
-print(Fore.MAGENTA + '|__ \/ |__| |__ |\ | |__  |__')
-print(Fore.RED + '|__ /\ |    |__ | \|  __| |__\n')
-print(Fore.BLUE + ' ___  __   __   __     __  __')
-print(Fore.MAGENTA + '  |  |__| |__| |   |/ |__ |__|')
-print(Fore.RED + '  |  |  \ |  | |__ |\ |__ |  \ ')
+print(Fore.BLUE + '                     __     __   __       __   __')
+print(Fore.MAGENTA + '                    |__ \/ |__| |__ |\ | |__  |__')
+print(Fore.RED + '                    |__ /\ |    |__ | \|  __| |__\n')
+print(Fore.BLUE + '                     ___  __   __   __     __  __')
+print(Fore.MAGENTA + '                      |  |__| |__| |   |/ |__ |__|')
+print(Fore.RED + '                      |  |  \ |  | |__ |\ |__ |  \ ')
 print(Style.RESET_ALL)
 
 
