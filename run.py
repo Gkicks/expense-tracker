@@ -11,14 +11,15 @@ SCOPE = [
     "https://www.googleapis.com/auth/drive"
     ]
 
+# global variables
 CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('expense-tracker')
-current_usernames = SHEET.worksheet('users').col_values(1)
-current_passwords = SHEET.worksheet('users').col_values(2)
-username_password = ['username', 'password']
-transaction = []
+CURRENT_USERNAMES = SHEET.worksheet('users').col_values(1)
+CURRENT_PASSWORDS = SHEET.worksheet('users').col_values(2)
+USERNAME_PASSWORD = ['username', 'password']
+TRANSACTION = []
 
 print(Fore.BLUE + '                     __     __   __       __   __')
 print(Fore.MAGENTA + '                    |__ \\/ |__| |__ |\\ | |__  |__')
@@ -71,7 +72,7 @@ def choose_username():
         if validate_new_username(username):
             print(Fore.BLUE + f'\nThank you. Your username is {username}')
             print(Style.RESET_ALL)
-            username_password[0] = username
+            USERNAME_PASSWORD[0] = username
             choose_password()
             break
 
@@ -89,7 +90,7 @@ def validate_new_username(username):
             print(Fore.RED + 'Username must contain at least two charaters')
             print(Style.RESET_ALL)
             raise ValueError
-        if username in current_usernames:
+        if username in CURRENT_USERNAMES:
             print(Fore.RED + 'That username already exists')
             print(Style.RESET_ALL)
             raise ValueError
@@ -114,10 +115,10 @@ def choose_password():
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid')
             print(Style.RESET_ALL)
-            username_password[1] = new_password
+            USERNAME_PASSWORDd[1] = new_password
             user_worksheet = SHEET.worksheet('users')
-            user_worksheet.append_row(username_password)
-            add_new_user_worksheet(username_password[0])
+            user_worksheet.append_row(USERNAME_PASSWORD)
+            add_new_user_worksheet(USERNAME_PASSWORD[0])
             break
 
 
@@ -170,7 +171,7 @@ def get_existing_username():
     while True:
         username = input('\nPlease enter your username: \n')
         if validate_existing_username(username):
-            username_password[0] = username
+            USERNAME_PASSWORD[0] = username
             break
 
     return username
@@ -181,7 +182,7 @@ def validate_existing_username(username):
     Checks that the username inputted exists
     """
     try:
-        if username not in current_usernames:
+        if username not in CURRENT_USERNAMES:
             print(Fore.RED + 'username does not exist')
             raise ValueError
     except ValueError:
@@ -199,7 +200,7 @@ def get_existing_password():
         password = pwinput.pwinput(prompt='\nPlease enter your password: ')
         pw_confirm = pwinput.pwinput(prompt='Please re-enter your password: ')
         if validate_existing_password(password, pw_confirm):
-            print(Fore.BLUE + f'\nWelcome back {username_password[0]}!\n')
+            print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
             break
 
@@ -210,8 +211,8 @@ def validate_existing_password(password, pw_confirm):
     """
     Checks the password inputted matches the password stored
     """
-    username_password_dic = dict(zip(current_usernames, current_passwords))
-    users_password = username_password_dic[username_password[0]]
+    username_password_dic = dict(zip(CURRENT_USERNAMES, CURRENT_PASSWORDS))
+    users_password = username_password_dic[USERNAME_PASSWORD[0]]
     try:
         if password != pw_confirm:
             print('\nThose passwords do not match')
@@ -417,7 +418,7 @@ def next_choice():
     """
     Allows the user to choose if they would like to perform another action
     """
-    print(f'Thank you {username_password[0]}. Your transaction has been added')
+    print(f'Thank you {USERNAME_PASSWORD[0]}. Your transaction has been added')
     print('What would you like to do next?\n')
     print('E - Enter another transaction')
     print('R - Return to the main menu')
@@ -427,7 +428,7 @@ def next_choice():
         if validate_next_choice(next_choice_action):
             if next_choice_action == 'Q':
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
-                print(f'Goodbye {username_password[0]}\n')
+                print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
                 break
             elif next_choice_action == 'R':
                 main_menu()
