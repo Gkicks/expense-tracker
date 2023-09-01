@@ -169,7 +169,6 @@ def get_existing_username():
         username = input('\nPlease enter your username: \n')
         if validate_existing_username(username):
             username_password[0] = username
-            # get_existing_password()
             break
 
     return username
@@ -177,7 +176,7 @@ def get_existing_username():
 
 def validate_existing_username(username):
     """
-    Checks that the username inputted exists.
+    Checks that the username inputted exists
     """
     try:
         if username not in current_usernames:
@@ -195,8 +194,9 @@ def get_existing_password():
     Asks existing users to enter their existing password
     """
     while True:
-        password = input('\nPlease enter your password: \n')
-        if validate_existing_password(password):
+        password = input('\nPlease enter your password: ')
+        password_confirmation = input('Please reenter your password: ')
+        if validate_existing_password(password, password_confirmation):
             print(Fore.BLUE + f'\nWelcome back {username_password[0]}!\n')
             print(Style.RESET_ALL)
             break
@@ -204,13 +204,16 @@ def get_existing_password():
     return
 
 
-def validate_existing_password(password):
+def validate_existing_password(password, password_confirmation):
     """
     Checks the password inputted matches the password stored
     """
     username_password_dic = dict(zip(current_usernames, current_passwords))
     users_password = username_password_dic[username_password[0]]
     try:
+        if password != password_confirmation:
+            print('\nThose passwords do not match')
+            raise ValueError
         if password != users_password:
             print(Fore.RED + 'Your username and password do not match')
             raise ValueError
