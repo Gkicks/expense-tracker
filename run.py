@@ -232,16 +232,21 @@ def main_menu():
     """
     print('\nPlease pick an option:\n')
     print('1 - Enter Transaction')
-    print('2 - Analyse Spending\n')
+    print('2 - Analyse Spending')
+    print('3 - View Transactions')
+    print('4 - Quit\n')
     while True:
         option = input('Please pick an option, either 1 or 2: ')
         if option_validation(option):
             if option == '1':
-                print('option 1 chosen')
                 get_date()
             elif option == '2':
-                print('option 2 chosen')
+                pass
                 # spending = analyse_transaction()
+            elif option == '3':
+                pass
+            elif option == '4':
+                pass
             else:
                 print('Error! Please restart program')
             break
@@ -256,7 +261,7 @@ def option_validation(option):
         print(Fore.RED + '\nYou did not enter a number!\n')
         print(Style.RESET_ALL)
     else:
-        num_options = ['1', '2']
+        num_options = ['1', '2', '3', '4']
         try:
             if option not in num_options:
                 raise ValueError
@@ -390,7 +395,7 @@ def validate_amount(float_number):
     Validates that the amount entered is a float to two decimal places
     """
     try:
-        if len(float_number.rsplit('.')[-1]) != 2:
+        if len(float_number.rsplit('.')) != 2:
             print(Fore.RED + 'The amount must be a number to 2 decimal places')
             raise ValueError
         float_number = float(float_number)
@@ -468,7 +473,7 @@ def main():
     get_spend_category()
     get_description()
     get_amount()
-    
+
 
 if __name__ == "__main__":
     main()
