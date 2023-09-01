@@ -226,11 +226,11 @@ def validate_existing_password(password, pw_confirm):
     return True
 
 
-def choose_option():
+def main_menu():
     """
     gets the action option the user has chosen to do
     """
-    print('\nPlease pick an option?\n')
+    print('\nPlease pick an option:\n')
     print('1 - Enter Transaction')
     print('2 - Analyse Spending\n')
     while True:
@@ -279,13 +279,6 @@ def get_date():
         transaction_date = input('\n> ')
         if validate_date(transaction_date):
             transaction.append(transaction_date)
-            print('\nPlease enter the transaction category\n')
-            print('1 - Household Bills')
-            print('2 - Transportation')
-            print('3 - Food')
-            print('4 - Savings')
-            print('5 - Personal Spending')
-            print('6 - Other')
             get_spend_category()
             break
 
@@ -314,6 +307,13 @@ def get_spend_category():
     Asks user to pick a spend category from given options
     """
     while True:
+        print('\nPlease enter the transaction category\n')
+        print('1 - Household Bills')
+        print('2 - Transportation')
+        print('3 - Food')
+        print('4 - Savings')
+        print('5 - Personal Spending')
+        print('6 - Other')
         spend_category = input('\nEnter a number betweeen 1 and 6: ')
         if validate_spend_category(spend_category):
             transaction.append(spend_category)
@@ -425,7 +425,7 @@ def next_choice():
                 print(f'Goodbye {username_password[0]}\n')
                 break
             elif next_choice_action == 'R':
-                choose_option()
+                main_menu()
                 break
             elif next_choice_action == "E":
                 get_date()
@@ -463,8 +463,12 @@ def main():
     elif new_or_existing_choice == 'E':
         get_existing_username()
         get_existing_password()
-    choose_option()
-
+    main_menu()
+    get_date()
+    get_spend_category()
+    get_description()
+    get_amount()
+    
 
 if __name__ == "__main__":
     main()
