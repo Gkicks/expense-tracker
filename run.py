@@ -3,6 +3,7 @@ from google.oauth2.service_account import Credentials
 import re
 from datetime import datetime
 from colorama import Fore, Style
+import pwinput
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -194,9 +195,9 @@ def get_existing_password():
     Asks existing users to enter their existing password
     """
     while True:
-        password = input('\nPlease enter your password: ')
-        password_confirmation = input('Please reenter your password: ')
-        if validate_existing_password(password, password_confirmation):
+        password = pwinput.pwinput(prompt='\nPlease enter your password: ')
+        pw_confirm = pwinput.pwinput(prompt='Please re-enter your password: ')
+        if validate_existing_password(password, pw_confirm):
             print(Fore.BLUE + f'\nWelcome back {username_password[0]}!\n')
             print(Style.RESET_ALL)
             break
@@ -204,14 +205,14 @@ def get_existing_password():
     return
 
 
-def validate_existing_password(password, password_confirmation):
+def validate_existing_password(password, pw_confirm):
     """
     Checks the password inputted matches the password stored
     """
     username_password_dic = dict(zip(current_usernames, current_passwords))
     users_password = username_password_dic[username_password[0]]
     try:
-        if password != password_confirmation:
+        if password != pw_confirm:
             print('\nThose passwords do not match')
             raise ValueError
         if password != users_password:
