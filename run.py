@@ -280,11 +280,10 @@ def get_date():
     """
     print('\nPlease enter the date of the transaction')
     print('This should be in the format DD/MM/YYYY')
-    transaction = []
     while True:
         transaction_date = input('\n> ')
         if validate_date(transaction_date):
-            transaction.append(transaction_date)
+            TRANSACTION.append(transaction_date)
             get_spend_category()
             break
 
@@ -322,7 +321,7 @@ def get_spend_category():
         print('6 - Other')
         spend_category = input('\nEnter a number betweeen 1 and 6: ')
         if validate_spend_category(spend_category):
-            transaction.append(spend_category)
+            TRANSACTION.append(spend_category)
             get_description()
             break
 
@@ -354,7 +353,7 @@ def get_description():
     while True:
         spend_desc = input('> ')
         if validate_desc(spend_desc):
-            transaction.append(spend_desc)
+            TRANSACTION.append(spend_desc)
             get_amount()
             break
 
@@ -381,10 +380,10 @@ def get_amount():
     while True:
         spend_amount = input('£ ')
         if validate_amount(spend_amount):
-            transaction.append(spend_amount)
+            TRANSACTION.append(spend_amount)
             print(Fore.MAGENTA + '\nAdding transaction...')
             print(Style.RESET_ALL)
-            add_transaction(transaction)
+            # add_transaction(transaction)
             next_choice()
             break
 
@@ -442,8 +441,7 @@ def next_choice():
 
 def validate_next_choice(letter):
     """
-    Ensures the user only inputs one of the two options available.
-    These are whether they would like to perform another action (Y) or quit (N)
+    Ensures the user only inputs one of the three options available.
     """
     next_choice_options = ['E', 'R', 'Q']
     try:
@@ -470,10 +468,7 @@ def main():
         get_existing_username()
         get_existing_password()
     main_menu()
-    get_date()
-    get_spend_category()
-    get_description()
-    get_amount()
+    
 
 
 if __name__ == "__main__":
