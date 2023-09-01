@@ -16,11 +16,16 @@ CREDS = Credentials.from_service_account_file('creds.json')
 SCOPED_CREDS = CREDS.with_scopes(SCOPE)
 GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
 SHEET = GSPREAD_CLIENT.open('expense-tracker')
+# A list of all the existing users usernames
 CURRENT_USERNAMES = SHEET.worksheet('users').col_values(1)
+# A list of all the existing users passwords
 CURRENT_PASSWORDS = SHEET.worksheet('users').col_values(2)
+# A list to put the users username and password in for use in other functions
 USERNAME_PASSWORD = ['username', 'password']
+# A list to hold the transaction details
 TRANSACTION = []
 
+# beginning title - reads EXPENSE TRANCKERS over two lines
 print(Fore.BLUE + '                     __     __   __       __   __')
 print(Fore.MAGENTA + '                    |__ \\/ |__| |__ |\\ | |__  |__')
 print(Fore.RED + '                    |__ /\\ |    |__ | \\|  __| |__\n')
@@ -30,6 +35,7 @@ print(Fore.RED + '                     |  |  \\ |  | |__ |\\ |__ |  \\ ')
 print(Style.RESET_ALL)
 
 
+# functions relating to username and password
 def new_or_existing_user():
     """
     Asks the user if they are a new or existing user
@@ -115,7 +121,7 @@ def choose_password():
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid')
             print(Style.RESET_ALL)
-            USERNAME_PASSWORDd[1] = new_password
+            USERNAME_PASSWORD[1] = new_password
             user_worksheet = SHEET.worksheet('users')
             user_worksheet.append_row(USERNAME_PASSWORD)
             add_new_user_worksheet(USERNAME_PASSWORD[0])
@@ -227,9 +233,15 @@ def validate_existing_password(password, pw_confirm):
     return True
 
 
+# main menu function
 def main_menu():
     """
-    gets the action option the user has chosen to do
+    Main menu of options for the user to choose from
+    1 - will take the user to entering a transaction, starting with the date
+    2 - will give the user the option to analyse their transactions
+    3 - will give the user the option to view their transacitons,
+            from a date range
+    4 - will terminate the programme
     """
     print('\nPlease pick an option:\n')
     print('1 - Enter Transaction')
@@ -237,7 +249,7 @@ def main_menu():
     print('3 - View Transactions')
     print('4 - Quit\n')
     while True:
-        option = input('Please pick an option, either 1 or 2: ')
+        option = input('Please pick an optionbetween 1 and 4: ')
         if option_validation(option):
             if option == '1':
                 get_date()
@@ -274,6 +286,7 @@ def option_validation(option):
     return
 
 
+# Entering transaction functions
 def get_date():
     """
     Asks user to input a date
@@ -383,7 +396,6 @@ def get_amount():
             TRANSACTION.append(spend_amount)
             print(Fore.MAGENTA + '\nAdding transaction...')
             print(Style.RESET_ALL)
-            # add_transaction(transaction)
             next_choice()
             break
 
@@ -393,6 +405,7 @@ def get_amount():
 def validate_amount(float_number):
     """
     Validates that the amount entered is a float to two decimal places
+    and that the amount is greater than 0
     """
     try:
         if len(float_number.rsplit('.')) != 2:
@@ -410,9 +423,13 @@ def validate_amount(float_number):
 
 
 def add_transaction(transaction):
-    SHEET.worksheet(username_password[0]).append_row(transaction)
+    """
+    Adds the transation to the sheet of the current user
+    """
+    SHEET.worksheet(USERNAME_PASSWORD[0]).append_row(transaction)
 
 
+# function is get further choice from user
 def next_choice():
     """
     Allows the user to choose if they would like to perform another action
@@ -455,6 +472,7 @@ def validate_next_choice(letter):
     return True
 
 
+# main function
 def main():
     """
     The main function that runs the rest of the functions
@@ -468,7 +486,6 @@ def main():
         get_existing_username()
         get_existing_password()
     main_menu()
-    
 
 
 if __name__ == "__main__":
