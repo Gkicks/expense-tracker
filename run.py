@@ -205,7 +205,7 @@ def choose_option():
     """
     gets the action option the user has chosen to do
     """
-    print('What would you like to do?\n')
+    print('\nPlease pick an option?\n')
     print('1 - Enter Transaction')
     print('2 - Analyse Spending\n')
     while True:
@@ -253,7 +253,7 @@ def get_transaction():
     print('This should be in the format DD/MM/YYYY')
     transaction = []
     while True:
-        transaction_date = input('> ')
+        transaction_date = input('\n> ')
         if validate_date(transaction_date):
             transaction.append(transaction_date)
             print('\nPlease enter the transaction category\n')
@@ -343,16 +343,22 @@ def next_choice():
     Allows the user to choose if they would like to perform another action
     """
     print(f'Thank you {username_password[0]}. Your transaction has been added')
-    print('Would you like to perform another action?\n')
+    print('What would you like to do next?\n')
+    print('E - Enter another transaction')
+    print('R - Return to the main menu')
+    print('Q - Quit')
     while True:
-        next_choice_action = input('Please enter Y (yes) or N (no): ').upper()
+        next_choice_action = input('\n> ').upper()
         if validate_next_choice(next_choice_action):
-            if next_choice_action == 'N':
+            if next_choice_action == 'Q':
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
                 print(f'Goodbye {username_password[0]}\n')
                 break
-            elif next_choice_action == 'Y':
+            elif next_choice_action == 'R':
                 choose_option()
+                break
+            elif next_choice_action == "E":
+                get_transaction()
                 break
 
     return
@@ -363,13 +369,13 @@ def validate_next_choice(letter):
     Ensures the user only inputs one of the two options available.
     These are whether they would like to perform another action (Y) or quit (N)
     """
-    next_choice_options = ['Y', 'N']
+    next_choice_options = ['E', 'R', 'Q']
     try:
         if letter not in next_choice_options:
             raise ValueError
     except ValueError:
         print(Fore.RED + 'You did not enter a correct value')
-        print('Please enter Y or N')
+        print('Please enter E, R or Q')
         print(Style.RESET_ALL)
         return False
     return True
