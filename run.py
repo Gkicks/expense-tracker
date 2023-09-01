@@ -161,36 +161,56 @@ def add_new_user_worksheet(username):
     SHEET.worksheet(username).append_row(['Date', 'Catergory', 'Amount'])
 
 
-def get_existing_username_password():
+def get_existing_username():
     """
-    Asks existing users to enter their username and password
+    Asks existing users to enter their existing username
     """
     while True:
         username = input('\nPlease enter your username: \n')
-        password = input('\nPlease enter your password: \n')
-        if validate_existing_username_password(username, password):
+        if validate_existing_username(username):
             username_password[0] = username
-            print(Fore.BLUE + f'\nWelcome back {username}!\n')
+            # get_existing_password()
+            break
+
+    return username
+
+
+def validate_existing_username(username):
+    """
+    Checks that the username inputted exists.
+    """
+    try:
+        if username not in current_usernames:
+            print(Fore.RED + 'username does not exist')
+            raise ValueError
+    except ValueError:
+        print('Please try again')
+        print(Style.RESET_ALL)
+        return False
+    return True
+
+
+def get_existing_password():
+    """
+    Asks existing users to enter their existing password
+    """
+    while True:
+        password = input('\nPlease enter your password: \n')
+        if validate_existing_password(password):
+            print(Fore.BLUE + f'\nWelcome back {username_password[0]}!\n')
             print(Style.RESET_ALL)
             break
 
     return
 
 
-def validate_existing_username_password(username, password):
+def validate_existing_password(password):
     """
-    Checks that the username inputted exists.
     Checks the password inputted matches the password stored
     """
+    username_password_dic = dict(zip(current_usernames, current_passwords))
+    users_password = username_password_dic[username_password[0]]
     try:
-        if username == 'username':
-            print(Fore.RED + 'username is not a valid option')
-            raise ValueError
-        if username not in current_usernames:
-            print(Fore.RED + f"You entered {username}. Username doesn't exist")
-            raise ValueError
-        username_password_dic = dict(zip(current_usernames, current_passwords))
-        users_password = username_password_dic[username]
         if password != users_password:
             print(Fore.RED + 'Your username and password do not match')
             raise ValueError
@@ -391,7 +411,8 @@ def main():
         print(Fore.BLUE + f'Hi {username}!')
         print(Style.RESET_ALL)
     elif new_or_existing_choice == 'E':
-        get_existing_username_password()
+        get_existing_username()
+        get_existing_password()
     choose_option()
 
 
