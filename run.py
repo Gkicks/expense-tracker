@@ -159,7 +159,8 @@ def add_new_user_worksheet(username):
     Calls the worksheet the users username
     """
     SHEET.add_worksheet(username, rows="1", cols="7")
-    SHEET.worksheet(username).append_row(['Date', 'Catergory', 'Amount'])
+    headings = ['Date', 'Catergory', 'Description', 'Amount']
+    SHEET.worksheet(username).append_row(headings)
 
 
 def get_existing_username():
@@ -291,16 +292,23 @@ def get_transaction():
                 spend_category = input('\nEnter a number betweeen 1 and 6: ')
                 if validate_spend_category(spend_category):
                     transaction.append(spend_category)
-                    print('\nPlease enter the amount spent.')
-                    print('This should be in the format £xx.xx')
+                    print('\nEnter a description of the spend')
+                    print('For example, "rent" or "lunch"')
                     while True:
-                        spend_amount = input('£ ')
-                        if validate_amount(spend_amount):
-                            transaction.append(spend_amount)
-                            print(Fore.MAGENTA + '\nAdding transaction...')
-                            print(Style.RESET_ALL)
-                            add_transaction(transaction)
-                            next_choice()
+                        spend_desc = input('> ')
+                        if validate_desc(spend_desc):
+                            transaction.append(spend_desc)
+                            print('\nPlease enter the amount spent.')
+                            print('This should be in the format £xx.xx')
+                            while True:
+                                spend_amount = input('£ ')
+                                if validate_amount(spend_amount):
+                                    transaction.append(spend_amount)
+                                    print(Fore.MAGENTA + '\nAdding transaction...')
+                                    print(Style.RESET_ALL)
+                                    add_transaction(transaction)
+                                    next_choice()
+                                    break
                             break
                     break
             break
@@ -353,6 +361,17 @@ def validate_amount(float_number):
             raise ValueError
     except ValueError:
         print('Please try again')
+        print(Style.RESET_ALL)
+        return False
+    return True
+
+
+def validate_desc(spend_desc):
+    try:
+        if spend_desc == "":
+            print(Fore.RED + 'Decription is required')
+            raise ValueError
+    except ValueError:
         print(Style.RESET_ALL)
         return False
     return True
