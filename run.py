@@ -18,7 +18,7 @@ SHEET = GSPREAD_CLIENT.open('expense-tracker')
 current_usernames = SHEET.worksheet('users').col_values(1)
 current_passwords = SHEET.worksheet('users').col_values(2)
 username_password = ['username', 'password']
-
+transaction = []
 
 print(Fore.BLUE + '                     __     __   __       __   __')
 print(Fore.MAGENTA + '                    |__ \\/ |__| |__ |\\ | |__  |__')
@@ -238,7 +238,7 @@ def choose_option():
         if option_validation(option):
             if option == '1':
                 print('option 1 chosen')
-                get_transaction()
+                get_date()
             elif option == '2':
                 print('option 2 chosen')
                 # spending = analyse_transaction()
@@ -268,11 +268,9 @@ def option_validation(option):
     return
 
 
-def get_transaction():
+def get_date():
     """
-    Asks the user to enter the transaction date,
-    the transaction category
-    and the transaction amount
+    Asks user to input a date
     """
     print('\nPlease enter the date of the transaction')
     print('This should be in the format DD/MM/YYYY')
@@ -288,30 +286,10 @@ def get_transaction():
             print('4 - Savings')
             print('5 - Personal Spending')
             print('6 - Other')
-            while True:
-                spend_category = input('\nEnter a number betweeen 1 and 6: ')
-                if validate_spend_category(spend_category):
-                    transaction.append(spend_category)
-                    print('\nEnter a description of the spend')
-                    print('For example, "rent" or "lunch"')
-                    while True:
-                        spend_desc = input('> ')
-                        if validate_desc(spend_desc):
-                            transaction.append(spend_desc)
-                            print('\nPlease enter the amount spent.')
-                            print('This should be in the format £xx.xx')
-                            while True:
-                                spend_amount = input('£ ')
-                                if validate_amount(spend_amount):
-                                    transaction.append(spend_amount)
-                                    print(Fore.MAGENTA + '\nAdding transaction...')
-                                    print(Style.RESET_ALL)
-                                    add_transaction(transaction)
-                                    next_choice()
-                                    break
-                            break
-                    break
+            get_spend_category()
             break
+
+    return
 
 
 def validate_date(date):
@@ -331,6 +309,20 @@ def validate_date(date):
     return True
 
 
+def get_spend_category():
+    """
+    Asks user to pick a spend category from given options
+    """
+    while True:
+        spend_category = input('\nEnter a number betweeen 1 and 6: ')
+        if validate_spend_category(spend_category):
+            transaction.append(spend_category)
+            get_description()
+            break
+
+    return
+
+
 def validate_spend_category(number):
     """
     Validates that the option chosen is one of the available options
@@ -347,6 +339,52 @@ def validate_spend_category(number):
     return True
 
 
+def get_description():
+    """
+    Asks the user to input a description of spend
+    """
+    print('\nEnter a description of the spend')
+    print('For example, "rent" or "lunch"')
+    while True:
+        spend_desc = input('> ')
+        if validate_desc(spend_desc):
+            transaction.append(spend_desc)
+            get_amount()
+            break
+
+    return
+
+
+def validate_desc(spend_desc):
+    try:
+        if spend_desc == "":
+            print(Fore.RED + 'Decription is required')
+            raise ValueError
+    except ValueError:
+        print(Style.RESET_ALL)
+        return False
+    return True
+
+
+def get_amount():
+    """
+    Asks the user to input the spend amount
+    """
+    print('\nPlease enter the amount spent.')
+    print('This should be in the format £xx.xx')
+    while True:
+        spend_amount = input('£ ')
+        if validate_amount(spend_amount):
+            transaction.append(spend_amount)
+            print(Fore.MAGENTA + '\nAdding transaction...')
+            print(Style.RESET_ALL)
+            add_transaction(transaction)
+            next_choice()
+            break
+
+    return
+
+
 def validate_amount(float_number):
     """
     Validates that the amount entered is a float to two decimal places
@@ -361,17 +399,6 @@ def validate_amount(float_number):
             raise ValueError
     except ValueError:
         print('Please try again')
-        print(Style.RESET_ALL)
-        return False
-    return True
-
-
-def validate_desc(spend_desc):
-    try:
-        if spend_desc == "":
-            print(Fore.RED + 'Decription is required')
-            raise ValueError
-    except ValueError:
         print(Style.RESET_ALL)
         return False
     return True
@@ -401,7 +428,7 @@ def next_choice():
                 choose_option()
                 break
             elif next_choice_action == "E":
-                get_transaction()
+                get_date()
                 break
 
     return
