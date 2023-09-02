@@ -47,6 +47,7 @@ def print_slow(str):
     for character in str:
         sys.stdout.write(character)
         sys.stdout.flush()
+        # the length of time between each charater showing
         time.sleep(0.05)
 
     return
@@ -94,6 +95,7 @@ def choose_username():
     print_slow('Username must only be one word\n')
     while True:
         username = input('\nEnter username: ')
+        # converts username to lowercase for storage
         username_lower = username.lower()
         if validate_new_username(username_lower):
             print_slow(Fore.BLUE + f'\nThank you. Your username is {username}')
@@ -121,7 +123,7 @@ def validate_new_username(username):
             print(Fore.RED + 'That username already exists')
             raise ValueError
         if " " in username:
-            print(Fore.RED + 'Username must only be 1 word')
+            print(Fore.RED + 'Username must only be one word')
             raise ValueError
     except ValueError:
         print('Please choose another username')
@@ -152,6 +154,7 @@ def choose_password():
 
     while True:
         new_password = input('Enter password here: ')
+        # encrypts and decodes the password
         enc_pw = encrypt_pw(new_password)
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid\n')
@@ -159,9 +162,13 @@ def choose_password():
             os.system('clear')
             print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
+            # saves password to list so it can be appended
             USERNAME_PASSWORD[1] = enc_pw
+            # gets the worksheet where usernames and passwords stored
             user_worksheet = SHEET.worksheet('users')
+            # appends the username and password to bottom of worksheet
             user_worksheet.append_row(USERNAME_PASSWORD)
+            # adds a new worksheet to record the users transactions
             add_new_user_worksheet(USERNAME_PASSWORD[0])
             break
 
@@ -176,19 +183,19 @@ def validate_new_password(new_password):
     try:
         if len(new_password) < 6:
             print(Fore.RED + f'Password entered was {len(new_password)} long')
-            print('Password must be at least 6 characters long')
+            print('Password must be at least six characters long')
             raise ValueError
         if not re.search('[A-Z]', new_password):
-            print(Fore.RED + 'Password must contain 1 uppercase letter')
+            print(Fore.RED + 'Password must contain one uppercase letter')
             raise ValueError
         if not re.search('[a-z]', new_password):
-            print(Fore.RED + 'Password must contain 1 lowercase letter')
+            print(Fore.RED + 'Password must contain one lowercase letter')
             raise ValueError
         if not re.search('[!"#£$%&\'()*+,-./:;<=>?@[\\]^_`{~}]', new_password):
-            print(Fore.RED + 'Password must contain 1 special character')
+            print(Fore.RED + 'Password must contain one special character')
             raise ValueError
         if not re.search('[0-9]', new_password):
-            print(Fore.RED + 'Your password must include at least 1 number')
+            print(Fore.RED + 'Your password must include at least one number')
             raise ValueError
     except ValueError:
         print('Please try again')
@@ -202,7 +209,7 @@ def add_new_user_worksheet(username):
     Adds new worksheet to the expense-tracker Google sheet
     Calls the worksheet the users username
     """
-    SHEET.add_worksheet(username, rows="1", cols="7")
+    SHEET.add_worksheet(username, rows="1", cols="4")
     headings = ['Date', 'Catergory', 'Description', 'Amount']
     SHEET.worksheet(username).append_row(headings)
 
@@ -213,8 +220,10 @@ def get_existing_username():
     """
     while True:
         username = input('\nPlease enter your username: \n')
+        # converts username to lowercase as how is stored
         username_lower = username.lower()
         if validate_existing_username(username_lower):
+            # changes the list entry to the chosen username
             USERNAME_PASSWORD[0] = username
             break
 
@@ -226,6 +235,8 @@ def validate_existing_username(username):
     Checks that the username inputted exists
     """
     try:
+        # checks the username is in the list generated
+        # from the list of usernames stored
         if username not in CURRENT_USERNAMES:
             print(Fore.RED + 'username does not exist')
             raise ValueError
@@ -241,8 +252,12 @@ def get_existing_password():
     Asks existing users to enter their existing password
     """
     while True:
+        # ask user to enter their password
+        # the password character displayed as * for security
         password = pwinput.pwinput(prompt='\nPlease enter your password: ')
-        pw_confirm = pwinput.pwinput(prompt='Please re-enter your password: ')
+        # ask user to confirm their password
+        # the password character displayed as * for security
+        pw_confirm = pwinput.pwinput(prompt='Please confirm your password: ')
         if validate_existing_password(password, pw_confirm):
             print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
@@ -361,7 +376,9 @@ def validate_date(date):
     Validates that the date inputted is in the format DD/MM/YYYY
     """
     try:
+        # gets today's date
         today = datetime.now()
+        # determines the format the date should be entered in
         date_str = datetime.strptime(date, '%d/%m/%Y')
         if date_str > today:
             print(Fore.RED + 'The date cannot be in the future')
@@ -458,6 +475,7 @@ def get_amount():
             print(Style.RESET_ALL)
             sleep(0.5)
             os.system('clear')
+            add_transaction(TRANSACTION)
             next_choice()
             break
 
