@@ -8,6 +8,7 @@ import os
 import time
 from time import sleep
 import sys
+import bcrypt
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -129,6 +130,16 @@ def validate_new_username(username):
     return True
 
 
+def encrypt_pw(password):
+    """
+    Encrypts and encodes the entered password
+    Returns the password as decoded
+    """
+    hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+    # Returns the password decoded so it can be store in Google Sheets
+    return hashed_pw.decode()
+
+
 def choose_password():
     """
     Asks the user to choose a password
@@ -141,14 +152,16 @@ def choose_password():
 
     while True:
         new_password = input('Enter password here: ')
-
+        enc_pw = encrypt_pw(new_password)
+        print(new_password)
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid\n')
             sleep(1)
             os.system('clear')
-            print_slow(Fore.BLUE + f'Hi {USERNAME_PASSWORD[0]}!')
+            print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
-            USERNAME_PASSWORD[1] = new_password
+            USERNAME_PASSWORD[1] = enc_pw
+            print(USERNAME_PASSWORD)
             user_worksheet = SHEET.worksheet('users')
             user_worksheet.append_row(USERNAME_PASSWORD)
             add_new_user_worksheet(USERNAME_PASSWORD[0])
@@ -244,17 +257,22 @@ def get_existing_password():
 
 def validate_existing_password(password, pw_confirm):
     """
+    Checks the two passwords entered match
     Checks the password inputted matches the password stored
     """
+    # creates a merged dictionary of stored usernames and passwords
     username_password_dic = dict(zip(CURRENT_USERNAMES, CURRENT_PASSWORDS))
     username = USERNAME_PASSWORD[0]
+    # converts username to lowercase as that's how it's stored
     username_lower = username.lower()
+    # gets the password value from the username
     users_password = username_password_dic[username_lower]
     try:
         if password != pw_confirm:
             print('\nThose passwords do not match')
             raise ValueError
-        if password != users_password:
+        # checks the stored password against the entered password
+        if not bcrypt.checkpw(password.encode(), users_password.encode()):
             print(Fore.RED + 'Your username and password do not match')
             raise ValueError
     except ValueError:
@@ -326,7 +344,7 @@ def get_date():
     """
     Asks user to input a date
     """
-    print('Please enter the date of the transaction\n')
+    print('\nPlease enter the date of the transaction\n')
     print_slow('This should be in the format DD/MM/YYYY\n')
     while True:
         transaction_date = input('\n> ')
@@ -429,7 +447,7 @@ def get_amount():
     """
     Asks the user to input the spend amount
     """
-    print('Please enter the amount spent.\n')
+    print('\nPlease enter the amount spent.\n')
     print_slow('This should be a valid amount\n')
     print_slow('For example, £10 or £5.67\n\n')
     while True:
@@ -437,8 +455,8 @@ def get_amount():
         if validate_amount(spend_amount):
             TRANSACTION.append(spend_amount)
             print(Fore.MAGENTA + '\nAdding transaction...\n')
-            print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[0]}.\n') 
-            print_slow('Your transaction has been added\n\n')
+            print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[0]}.\n')
+            print_slow('Your transaction has been added')
             print(Style.RESET_ALL)
             sleep(0.5)
             os.system('clear')
@@ -480,7 +498,7 @@ def next_choice():
     """
     Allows the user to choose if they would like to perform another action
     """
-    print('What would you like to do next?\n')
+    print('\nWhat would you like to do next?\n')
     print('1 - Enter another transaction')
     print('2 - Return to the main menu')
     print('3 - Quit')
@@ -497,7 +515,7 @@ def next_choice():
                 os.system('clear')
                 main_menu()
                 break
-            elif next_choice_action == "3": 
+            elif next_choice_action == "3":
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
                 print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
                 break
