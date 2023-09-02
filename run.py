@@ -5,6 +5,9 @@ from datetime import datetime
 from colorama import Fore, Style
 import pwinput
 import os
+import time
+from time import sleep
+import sys
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -36,6 +39,18 @@ print(Fore.RED + '                     |  |  \\ |  | |__ |\\ |__ |  \\ ')
 print(Style.RESET_ALL)
 
 
+def print_slow(str):
+    """
+    To slow how quickly text shows
+    """
+    for character in str:
+        sys.stdout.write(character)
+        sys.stdout.flush()
+        time.sleep(0.05)
+
+    return
+
+
 # functions relating to username and password
 def new_or_existing_user():
     """
@@ -47,6 +62,7 @@ def new_or_existing_user():
     while True:
         new_or_existing_choice = input('Enter N or E: ').upper()
         if validate_new_user_option(new_or_existing_choice):
+            sleep(0.5)
             os.system('clear')
             break
     return new_or_existing_choice
@@ -73,12 +89,15 @@ def choose_username():
     Asks the user to choose a new username
     """
     print('\nPlease choose a username\n')
-    print('Username should be at least two characters in length\n')
+    print_slow('Username should be at least two characters long\n')
+    print_slow('Username must only be one word\n')
     while True:
-        username = input('Enter username: ')
+        username = input('\nEnter username: ')
         username_lower = username.lower()
         if validate_new_username(username_lower):
-            print(Fore.BLUE + f'\nThank you. Your username is {username}')
+            print_slow(Fore.BLUE + f'\nThank you. Your username is {username}')
+            sleep(1)
+            os.system('clear')
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[0] = username_lower
             choose_password()
@@ -115,15 +134,19 @@ def choose_password():
     Asks the user to choose a password
     """
     print('Please choose a password\n')
-    print('Passwords must be at least 6 characters long,')
-    print('contain at least one uppercase letter, one lowercase letter,')
-    print('one number and one special character')
+    print_slow('Passwords must be at least six characters long,\n')
+    print_slow('contain at least one uppercase letter,\n')
+    print_slow('one lowercase letter,\n')
+    print_slow('one number and one special character\n\n')
 
     while True:
         new_password = input('Enter password here: ')
 
         if validate_new_password(new_password):
-            print(Fore.GREEN + 'Thank you. That password is valid')
+            print(Fore.GREEN + 'Thank you. That password is valid\n')
+            sleep(1)
+            os.system('clear')
+            print_slow(Fore.BLUE + f'Hi {USERNAME_PASSWORD[0]}!')
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[1] = new_password
             user_worksheet = SHEET.worksheet('users')
@@ -150,7 +173,7 @@ def validate_new_password(new_password):
         if not re.search('[a-z]', new_password):
             print(Fore.RED + 'Password must contain 1 lowercase letter')
             raise ValueError
-        if not re.search('[!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~]', new_password):
+        if not re.search('[!"#£$%&\'()*+,-./:;<=>?@[\\]^_`{~}]', new_password):
             print(Fore.RED + 'Password must contain 1 special character')
             raise ValueError
         if not re.search('[0-9]', new_password):
@@ -179,7 +202,8 @@ def get_existing_username():
     """
     while True:
         username = input('\nPlease enter your username: \n')
-        if validate_existing_username(username):
+        username_lower = username.lower()
+        if validate_existing_username(username_lower):
             USERNAME_PASSWORD[0] = username
             break
 
@@ -211,6 +235,8 @@ def get_existing_password():
         if validate_existing_password(password, pw_confirm):
             print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
+            sleep(1)
+            os.system('clear')
             break
 
     return
@@ -221,7 +247,9 @@ def validate_existing_password(password, pw_confirm):
     Checks the password inputted matches the password stored
     """
     username_password_dic = dict(zip(CURRENT_USERNAMES, CURRENT_PASSWORDS))
-    users_password = username_password_dic[USERNAME_PASSWORD[0]]
+    username = USERNAME_PASSWORD[0]
+    username_lower = username.lower()
+    users_password = username_password_dic[username_lower]
     try:
         if password != pw_confirm:
             print('\nThose passwords do not match')
@@ -246,14 +274,16 @@ def main_menu():
             from a date range
     4 - will terminate the programme
     """
-    print('\nPlease pick an option:\n')
+    print('Please pick an option:\n')
     print('1 - Enter Transaction')
     print('2 - Analyse Spending')
     print('3 - View Transactions')
     print('4 - Quit\n')
     while True:
-        option = input('Please pick an optionbetween 1 and 4: ')
+        option = input('Please pick an option between 1 and 4: ')
         if option_validation(option):
+            sleep(0.5)
+            os.system('clear')
             if option == '1':
                 get_date()
             elif option == '2':
@@ -296,11 +326,13 @@ def get_date():
     """
     Asks user to input a date
     """
-    print('\nPlease enter the date of the transaction')
-    print('This should be in the format DD/MM/YYYY')
+    print('Please enter the date of the transaction\n')
+    print_slow('This should be in the format DD/MM/YYYY\n')
     while True:
         transaction_date = input('\n> ')
         if validate_date(transaction_date):
+            sleep(0.5)
+            os.system('clear')
             TRANSACTION.append(transaction_date)
             get_spend_category()
             break
@@ -339,6 +371,8 @@ def get_spend_category():
         print('6 - Other')
         spend_category = input('\nEnter a number betweeen 1 and 6: ')
         if validate_spend_category(spend_category):
+            sleep(0.5)
+            os.system('clear')
             TRANSACTION.append(spend_category)
             get_description()
             break
@@ -366,12 +400,14 @@ def get_description():
     """
     Asks the user to input a description of spend
     """
-    print('\nEnter a description of the spend')
-    print('For example, "rent" or "lunch"')
+    print('\nEnter a description of the spend\n')
+    print_slow('For example, "rent" or "lunch"\n\n')
     while True:
         spend_desc = input('> ')
         if validate_desc(spend_desc):
             TRANSACTION.append(spend_desc)
+            sleep(0.5)
+            os.system('clear')
             get_amount()
             break
 
@@ -393,15 +429,19 @@ def get_amount():
     """
     Asks the user to input the spend amount
     """
-    print('\nPlease enter the amount spent.')
-    print('This should be a valid transaction cost')
-    print('For example, £10 or £5.67')
+    print('Please enter the amount spent.\n')
+    print_slow('This should be a valid amount\n')
+    print_slow('For example, £10 or £5.67\n\n')
     while True:
         spend_amount = input('£ ')
         if validate_amount(spend_amount):
             TRANSACTION.append(spend_amount)
-            print(Fore.MAGENTA + '\nAdding transaction...')
+            print(Fore.MAGENTA + '\nAdding transaction...\n')
+            print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[0]}.\n') 
+            print_slow('Your transaction has been added\n\n')
             print(Style.RESET_ALL)
+            sleep(0.5)
+            os.system('clear')
             next_choice()
             break
 
@@ -410,12 +450,12 @@ def get_amount():
 
 def validate_amount(float_number):
     """
-    Validates that the amount entered is a valid cash amount
+    Validates that the amount entered is a valid amount
     and that the amount is greater than 0
     """
     try:
         if not re.fullmatch(r'^\-?[0-9]+(?:\.[0-9]{2})?$', float_number):
-            print(Fore.RED + 'The amount must be a valid cost amount')
+            print(Fore.RED + 'That is not a valid amount')
             raise ValueError
         float_number = float(float_number)
         if float_number <= 0:
@@ -440,7 +480,6 @@ def next_choice():
     """
     Allows the user to choose if they would like to perform another action
     """
-    print(f'Thank you {USERNAME_PASSWORD[0]}. Your transaction has been added')
     print('What would you like to do next?\n')
     print('1 - Enter another transaction')
     print('2 - Return to the main menu')
@@ -449,9 +488,13 @@ def next_choice():
         next_choice_action = input('\n> ').upper()
         if validate_next_choice(next_choice_action):
             if next_choice_action == '1':
+                sleep(0.5)
+                os.system('clear')
                 get_date()
                 break
             elif next_choice_action == '2':
+                sleep(0.5)
+                os.system('clear')
                 main_menu()
                 break
             elif next_choice_action == "3": 
@@ -484,9 +527,7 @@ def main():
     """
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
-        username = choose_username()
-        print(Fore.BLUE + f'Hi {username}!')
-        print(Style.RESET_ALL)
+        choose_username()
     elif new_or_existing_choice == 'E':
         get_existing_username()
         get_existing_password()
