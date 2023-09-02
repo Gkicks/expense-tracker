@@ -71,10 +71,9 @@ def choose_username():
     Asks the user to choose a new username
     """
     print('\nPlease choose a username\n')
-    print('Username should be at least two characters in length')
-    print('Username is case sensitive\n')
+    print('Username should be at least two characters in length\n')
     while True:
-        username = input('Enter username: ')
+        username = input('Enter username: ').lower()
         if validate_new_username(username):
             print(Fore.BLUE + f'\nThank you. Your username is {username}')
             print(Style.RESET_ALL)
@@ -150,6 +149,7 @@ def validate_new_password(new_password):
             raise ValueError
         if not re.search('[!@£$%^&*#$+=]', new_password):
             print(Fore.RED + 'Password must contain 1 special character')
+            raise ValueError
         if not re.search('[0-9]', new_password):
             print(Fore.RED + 'Your password must include at least 1 number')
             raise ValueError
@@ -412,7 +412,7 @@ def validate_amount(float_number):
     """
     try:
         if not re.fullmatch(r'^\-?[0-9]+(?:\.[0-9]{2})?$', float_number):
-            print(Fore.RED + 'The amount must be a valid cost')
+            print(Fore.RED + 'The amount must be a valid cost amount')
             raise ValueError
         float_number = float(float_number)
         if float_number <= 0:
