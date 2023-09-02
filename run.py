@@ -135,8 +135,6 @@ def validate_new_password(new_password):
     one number and one special character
     """
     try:
-        if re.fullmatch(r'[A-Za-z0-9!@£$%^&*#$+=]{6,}', new_password):
-            return True
         if len(new_password) < 6:
             print(Fore.RED + f'Password entered was {len(new_password)} long')
             print('Password must be at least 6 characters long')
@@ -147,7 +145,7 @@ def validate_new_password(new_password):
         if not re.search('[a-z]', new_password):
             print(Fore.RED + 'Password must contain 1 lowercase letter')
             raise ValueError
-        if not re.search('[!@£$%^&*#$+=]', new_password):
+        if not re.search('[!"#$%&\'()*+,-./:;<=>?@[\\]^_`{|}~]', new_password):
             print(Fore.RED + 'Password must contain 1 special character')
             raise ValueError
         if not re.search('[0-9]', new_password):
