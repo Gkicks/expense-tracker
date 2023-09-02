@@ -259,7 +259,9 @@ def main_menu():
             elif option == '3':
                 pass
             elif option == '4':
-                pass
+                print(Fore.MAGENTA + '\nThank you for using this tracker')
+                print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
+                break
             else:
                 print('Error! Please restart program')
             break
@@ -389,7 +391,8 @@ def get_amount():
     Asks the user to input the spend amount
     """
     print('\nPlease enter the amount spent.')
-    print('This should be in the format £xx.xx')
+    print('This should be a valid transaction cost')
+    print('For example, £10 or £5.67')
     while True:
         spend_amount = input('£ ')
         if validate_amount(spend_amount):
@@ -404,12 +407,12 @@ def get_amount():
 
 def validate_amount(float_number):
     """
-    Validates that the amount entered is a float to two decimal places
+    Validates that the amount entered is a valid cash amount
     and that the amount is greater than 0
     """
     try:
-        if len(float_number.rsplit('.')) != 2:
-            print(Fore.RED + 'The amount must be a number to 2 decimal places')
+        if not re.fullmatch(r'^\-?[0-9]+(?:\.[0-9]{2})?$', float_number):
+            print(Fore.RED + 'The amount must be a valid cost')
             raise ValueError
         float_number = float(float_number)
         if float_number <= 0:
@@ -436,23 +439,22 @@ def next_choice():
     """
     print(f'Thank you {USERNAME_PASSWORD[0]}. Your transaction has been added')
     print('What would you like to do next?\n')
-    print('E - Enter another transaction')
-    print('R - Return to the main menu')
-    print('Q - Quit')
+    print('1 - Enter another transaction')
+    print('2 - Return to the main menu')
+    print('3 - Quit')
     while True:
         next_choice_action = input('\n> ').upper()
         if validate_next_choice(next_choice_action):
-            if next_choice_action == 'Q':
+            if next_choice_action == '1':
+                get_date()
+                break
+            elif next_choice_action == '2':
+                main_menu()
+                break
+            elif next_choice_action == "3": 
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
                 print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
                 break
-            elif next_choice_action == 'R':
-                main_menu()
-                break
-            elif next_choice_action == "E":
-                get_date()
-                break
-
     return
 
 
@@ -460,13 +462,13 @@ def validate_next_choice(letter):
     """
     Ensures the user only inputs one of the three options available.
     """
-    next_choice_options = ['E', 'R', 'Q']
+    next_choice_options = ['1', '2', '3']
     try:
         if letter not in next_choice_options:
             raise ValueError
     except ValueError:
         print(Fore.RED + 'You did not enter a correct value')
-        print('Please enter E, R or Q')
+        print('Please enter a number between 1 and 3')
         print(Style.RESET_ALL)
         return False
     return True
