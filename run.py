@@ -153,7 +153,6 @@ def choose_password():
     while True:
         new_password = input('Enter password here: ')
         enc_pw = encrypt_pw(new_password)
-        print(new_password)
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid\n')
             sleep(1)
@@ -161,7 +160,6 @@ def choose_password():
             print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[1] = enc_pw
-            print(USERNAME_PASSWORD)
             user_worksheet = SHEET.worksheet('users')
             user_worksheet.append_row(USERNAME_PASSWORD)
             add_new_user_worksheet(USERNAME_PASSWORD[0])
