@@ -4,6 +4,7 @@ import re
 from datetime import datetime
 from colorama import Fore, Style
 import pwinput
+import os
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -73,11 +74,12 @@ def choose_username():
     print('\nPlease choose a username\n')
     print('Username should be at least two characters in length\n')
     while True:
-        username = input('Enter username: ').lower()
-        if validate_new_username(username):
+        username = input('Enter username: ')
+        username_lower = username.lower()
+        if validate_new_username(username_lower):
             print(Fore.BLUE + f'\nThank you. Your username is {username}')
             print(Style.RESET_ALL)
-            USERNAME_PASSWORD[0] = username
+            USERNAME_PASSWORD[0] = username_lower
             choose_password()
             break
 
@@ -93,14 +95,16 @@ def validate_new_username(username):
     try:
         if len(username) < 2:
             print(Fore.RED + 'Username must contain at least two charaters')
-            print(Style.RESET_ALL)
             raise ValueError
         if username in CURRENT_USERNAMES:
             print(Fore.RED + 'That username already exists')
-            print(Style.RESET_ALL)
+            raise ValueError
+        if " " in username:
+            print(Fore.RED + 'Username must only be 1 word')
             raise ValueError
     except ValueError:
         print('Please choose another username')
+        print(Style.RESET_ALL)
         return False
     return True
 

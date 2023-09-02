@@ -1,5 +1,4 @@
 cachetools==5.3.1
-colorama==0.4.6
 DateTime==5.2
 google-auth==2.22.0
 google-auth-oauthlib==1.0.0
