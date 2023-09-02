@@ -47,6 +47,7 @@ def new_or_existing_user():
     while True:
         new_or_existing_choice = input('Enter N or E: ').upper()
         if validate_new_user_option(new_or_existing_choice):
+            os.system('clear')
             break
     return new_or_existing_choice
 
