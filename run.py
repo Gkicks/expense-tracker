@@ -53,6 +53,13 @@ def print_slow(str):
     return
 
 
+def sleep_clear_screen():
+    sleep(1)
+    os.system('clear')
+
+    return
+
+
 # functions relating to username and password
 def new_or_existing_user():
     """
@@ -64,9 +71,12 @@ def new_or_existing_user():
     while True:
         new_or_existing_choice = input('Enter N or E: ').upper()
         if validate_new_user_option(new_or_existing_choice):
-            sleep(0.5)
-            os.system('clear')
-            break
+            sleep_clear_screen()
+            if new_or_existing_choice == 'N':
+                choose_username()
+            elif new_or_existing_choice == 'E':
+                get_existing_username()
+        break
     return new_or_existing_choice
 
 
@@ -99,8 +109,7 @@ def choose_username():
         username_lower = username.lower()
         if validate_new_username(username_lower):
             print_slow(Fore.BLUE + f'\nThank you. Your username is {username}')
-            sleep(1)
-            os.system('clear')
+            sleep_clear_screen()
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[0] = username_lower
             choose_password()
@@ -158,8 +167,7 @@ def choose_password():
         enc_pw = encrypt_pw(new_password)
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid\n')
-            sleep(1)
-            os.system('clear')
+            sleep_clear_screen()
             print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
             # saves password to list so it can be appended
@@ -225,6 +233,7 @@ def get_existing_username():
         if validate_existing_username(username_lower):
             # changes the list entry to the chosen username
             USERNAME_PASSWORD[0] = username
+            get_existing_password()
             break
 
     return username
@@ -313,9 +322,8 @@ def main_menu():
     while True:
         option = input('Please pick an option between 1 and 4: ')
         if option_validation(option):
-            sleep(0.5)
-            os.system('clear')
             if option == '1':
+                sleep_clear_screen()
                 get_date()
             elif option == '2':
                 pass
@@ -362,8 +370,7 @@ def get_date():
     while True:
         transaction_date = input('\n> ')
         if validate_date(transaction_date):
-            sleep(0.5)
-            os.system('clear')
+            sleep_clear_screen()
             TRANSACTION.append(transaction_date)
             get_spend_category()
             break
@@ -404,8 +411,7 @@ def get_spend_category():
         print('6 - Other')
         spend_category = input('\nEnter a number betweeen 1 and 6: ')
         if validate_spend_category(spend_category):
-            sleep(0.5)
-            os.system('clear')
+            sleep_clear_screen()
             TRANSACTION.append(spend_category)
             get_description()
             break
@@ -439,8 +445,7 @@ def get_description():
         spend_desc = input('> ')
         if validate_desc(spend_desc):
             TRANSACTION.append(spend_desc)
-            sleep(0.5)
-            os.system('clear')
+            sleep_clear_screen()
             get_amount()
             break
 
@@ -473,8 +478,7 @@ def get_amount():
             print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[0]}.\n')
             print_slow('Your transaction has been added')
             print(Style.RESET_ALL)
-            sleep(0.5)
-            os.system('clear')
+            sleep_clear_screen()
             add_transaction(TRANSACTION)
             next_choice()
             break
@@ -506,7 +510,10 @@ def add_transaction(transaction):
     """
     Adds the transation to the sheet of the current user
     """
-    SHEET.worksheet(USERNAME_PASSWORD[0]).append_row(transaction)
+    # covert username to lowercase as as is stored
+    username_lower = USERNAME_PASSWORD[0].lower()
+    # add transaction to bottom of user's worksheet
+    SHEET.worksheet(username_lower).append_row(transaction)
 
 
 # function is get further choice from user
@@ -522,13 +529,11 @@ def next_choice():
         next_choice_action = input('\n> ').upper()
         if validate_next_choice(next_choice_action):
             if next_choice_action == '1':
-                sleep(0.5)
-                os.system('clear')
+                sleep_clear_screen()
                 get_date()
                 break
             elif next_choice_action == '2':
-                sleep(0.5)
-                os.system('clear')
+                sleep_clear_screen()
                 main_menu()
                 break
             elif next_choice_action == "3":
@@ -554,19 +559,18 @@ def validate_next_choice(letter):
     return True
 
 
+    def show_transactions():
+        
+
+
 # main function
 def main():
     """
-    The main function that runs the rest of the functions
+    The main function that runs the rest of functions
     """
-    new_or_existing_choice = new_or_existing_user()
-    if new_or_existing_choice == 'N':
-        choose_username()
-    elif new_or_existing_choice == 'E':
-        get_existing_username()
-        get_existing_password()
+    new_or_existing_user()
     main_menu()
-
+    show_transactions()
 
 if __name__ == "__main__":
     main()
