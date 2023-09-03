@@ -329,7 +329,8 @@ def main_menu():
                 pass
                 # spending = analyse_transaction()
             elif option == '3':
-                pass
+                sleep_clear_screen()
+                get_date_range()
             elif option == '4':
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
                 print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
@@ -559,9 +560,46 @@ def validate_next_choice(letter):
     return True
 
 
-    def show_transactions():
-        
+def get_date_range():
+    """
+    Asks user to input a date range
+    """
+    date_range = []
+    print('\nPlease enter the start date\n')
+    print_slow('This should be in the format DD/MM/YYYY\n')
+    # date_format = '%d/%m/%Y'
+    while True:
+        start_date = input('\n> ')
+        if validate_date(start_date):
+            start_date = date_to_int(start_date)
+            date_range.append(start_date)
+            print('\nPlease enter the end date\n')
+            print_slow('This should be in the format DD/MM/YYYY\n')
+            while True:
+                end_date = input('\n> ')
+                if validate_date(end_date):
+                    end_date = date_to_int(end_date)
+                    date_range.append(end_date)
+                    show_transactions(start_date, end_date)
+                break
+        print(date_range)
+        break
 
+    return date_range
+
+
+def date_to_int(date):
+    date_split = date.split('/')
+    day = int(date_split[0])
+    month = int(date_split[1])
+    year = int(date_split[2])
+    date_int = (day * 1000000) + (month * 10000) + year
+
+    return date_int
+
+
+def show_transactions(date1, date2):
+    pass
 
 # main function
 def main():
@@ -570,7 +608,10 @@ def main():
     """
     new_or_existing_user()
     main_menu()
-    show_transactions()
+    # show_transactions()
 
 if __name__ == "__main__":
-    main()
+    pass
+    # main()
+
+get_date_range()
