@@ -563,8 +563,9 @@ def validate_next_choice(letter):
 def get_date_range():
     """
     Asks user to input a date range
+    Validates the individual dates
+    Pulls function to validate date range
     """
-    date_range = []
     print('\nPlease enter the start and end dates')
     print('of the transactions you want to view\n')
     print_slow('These should be in the format DD/MM/YYYY\n')
@@ -572,32 +573,34 @@ def get_date_range():
     while True:
         start_date = input('Start Date: ')
         if validate_date(start_date):
-            print(start_date)
             while True:
                 end_date = input('\nEnd Date: ')
-                if validate_date(start_date):    
-                    print(end_date)
-                    while True:
-                        if validate_date_range(start_date, end_date):
-                            date_range.append(start_date)
-                            date_range.append(end_date)
-                            print(date_range)
-                            # show_transactions(start_date, end_date)
-                            break
+                if validate_date(end_date):
+                    append_dates_to_list(start_date, end_date)                    
                     break
             break
 
-    return date_range
+    return
 
 
 def validate_date_range(date1, date2):
+    """
+    Converts both dates to strings
+    calculates the number of day between the dates
+    Checks the start date is before of equal to the end date
+    Checks the dates are 90 or less days apart
+    """
+    # converts dates to strings
     date_str_1 = datetime.strptime(date1, '%d/%m/%Y')
     date_str_2 = datetime.strptime(date2, '%d/%m/%Y')
+    # calculates the difference between the two dates, in days
     difference = abs((date_str_1 - date_str_2).days)
     try:
+        # Checks the start date is not after the end date
         if date_str_2 < date_str_1:
             print(Fore.RED + 'End date cannot be before the start date')
             raise ValueError
+        # Checks the dates are not more than 90 days apart
         if difference > 90:
             print(Fore.RED + '\nDates cannot be more than 90 days apart')
             raise ValueError
@@ -608,28 +611,18 @@ def validate_date_range(date1, date2):
     return True
 
 
-# def split_date(date):
-#     date_split = date.split('/')
-#     print(date_split)
-#     date_concat = date_split[0] + date_split[1] + date_split[2]
-#     print(date_concat)
-#     date_int = int(date_concat)
-#     # day = int(date_split[0])
-#     # month = int(date_split[1])
-#     # year = int(date_split[2])
-
-#     return date_int
-
-
-# split_date('01/09/2023')
-
-# def date_to_int(date):
-#     if validate_date(date):
-        
-#         date_int = (day * 1000000) + (month * 10000) + year
-
-#     return date_int
-
+def append_dates_to_list(date1, date2):
+    # empty list for start and end dates to be appended to
+    date_range = []
+    while True:
+        if validate_date_range(date1, date2):
+            # appends dates to date_range list
+            date_range.append(date1)
+            date_range.append(date2)
+            print(date_range)
+            break
+    return date_range
+                    
 
 def show_transactions(date1, date2):
     pass
