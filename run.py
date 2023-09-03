@@ -1,7 +1,7 @@
 import gspread
 from google.oauth2.service_account import Credentials
 import re
-from datetime import datetime
+from datetime import datetime, timedelta
 from colorama import Fore, Style
 import pwinput
 import os
@@ -565,41 +565,75 @@ def get_date_range():
     Asks user to input a date range
     """
     date_range = []
-    print('\nPlease enter the start date\n')
-    print_slow('This should be in the format DD/MM/YYYY\n')
-    # date_format = '%d/%m/%Y'
+    print('\nPlease enter the start and end dates')
+    print('of the transactions you want to view\n')
+    print_slow('These should be in the format DD/MM/YYYY\n')
+    print_slow('Dates should be no more than 90 days apart\n\n')
     while True:
-        start_date = input('\n> ')
+        start_date = input('Start Date: ')
         if validate_date(start_date):
-            start_date = date_to_int(start_date)
-            date_range.append(start_date)
-            print('\nPlease enter the end date\n')
-            print_slow('This should be in the format DD/MM/YYYY\n')
+            print(start_date)
             while True:
-                end_date = input('\n> ')
-                if validate_date(end_date):
-                    end_date = date_to_int(end_date)
-                    date_range.append(end_date)
-                    show_transactions(start_date, end_date)
-                break
-        print(date_range)
-        break
+                end_date = input('\nEnd Date: ')
+                if validate_date(start_date):    
+                    print(end_date)
+                    while True:
+                        if validate_date_range(start_date, end_date):
+                            date_range.append(start_date)
+                            date_range.append(end_date)
+                            print(date_range)
+                            # show_transactions(start_date, end_date)
+                            break
+                    break
+            break
 
     return date_range
 
 
-def date_to_int(date):
-    date_split = date.split('/')
-    day = int(date_split[0])
-    month = int(date_split[1])
-    year = int(date_split[2])
-    date_int = (day * 1000000) + (month * 10000) + year
+def validate_date_range(date1, date2):
+    date_str_1 = datetime.strptime(date1, '%d/%m/%Y')
+    date_str_2 = datetime.strptime(date2, '%d/%m/%Y')
+    difference = abs((date_str_1 - date_str_2).days)
+    try:
+        if date_str_2 < date_str_1:
+            print(Fore.RED + 'End date cannot be before the start date')
+            raise ValueError
+        if difference > 90:
+            print(Fore.RED + '\nDates cannot be more than 90 days apart')
+            raise ValueError
+    except ValueError:
+        print('Please enter new dates')
+        print(Style.RESET_ALL)
+        return False
+    return True
 
-    return date_int
+
+# def split_date(date):
+#     date_split = date.split('/')
+#     print(date_split)
+#     date_concat = date_split[0] + date_split[1] + date_split[2]
+#     print(date_concat)
+#     date_int = int(date_concat)
+#     # day = int(date_split[0])
+#     # month = int(date_split[1])
+#     # year = int(date_split[2])
+
+#     return date_int
+
+
+# split_date('01/09/2023')
+
+# def date_to_int(date):
+#     if validate_date(date):
+        
+#         date_int = (day * 1000000) + (month * 10000) + year
+
+#     return date_int
 
 
 def show_transactions(date1, date2):
     pass
+
 
 # main function
 def main():
@@ -609,6 +643,7 @@ def main():
     new_or_existing_user()
     main_menu()
     # show_transactions()
+
 
 if __name__ == "__main__":
     pass
