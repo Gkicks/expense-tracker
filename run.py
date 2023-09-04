@@ -384,17 +384,30 @@ def get_date():
 def validate_date(date):
     """
     Validates that the date inputted is in the format DD/MM/YYYY
+    Checks the date added is not in the future
     """
     try:
         # gets today's date
         today = datetime.now()
         # determines the format the date should be entered in
         date_str = datetime.strptime(date, '%d/%m/%Y')
+        # splits the date at the / character
+        date_split = date.split('/')
+        day = date_split[0]
+        month = date_split[1]
+        year = date_split[2]
+        # checks if the number of characters in day and month is two
+        # checks the year has four characters
+        if len(day) != 2 or len(month) != 2 or len(year) ! = 4:
+            print(Fore.RED + '\nThat date is not in the correct format')
+            print('Please enter the date in the format DD/MM/YYYY')
+            raise ValueError
         if date_str > today:
             print(Fore.RED + 'The date cannot be in the future')
+            print('Please enter a valid date')
             raise ValueError
     except ValueError:
-        print(Fore.RED + 'That is not a valid date. Please enter valid date')
+        print(Fore.RED + '> ')
         print(Style.RESET_ALL)
         return False
     return True
@@ -415,18 +428,18 @@ def get_spend_category():
         spend_category = input('\nEnter a number betweeen 1 and 6: ')
         if validate_spend_category(spend_category):
             sleep_clear_screen()
-            if spend_category == '1'
+            if spend_category == '1':
                 TRANSACTION.append('Household Bills')
-            elif spend_category == '2'
+            elif spend_category == '2':
                 TRANSACTION.append('Transportation')
-            elif spend_category == '3'
+            elif spend_category == '3':
                 TRANSACTION.append('Food')
-            elif spend_category == '4'
+            elif spend_category == '4':
                 TRANSACTION.append('Savings')    
-            elif spend_category == '5'
+            elif spend_category == '5':
                 TRANSACTION.append('Personal Spending')
-            elif spend_category == '6'
-                TRANSACTION.append('Other)
+            elif spend_category == '6':
+                TRANSACTION.append('Other')
             get_description()
             break
 
@@ -543,6 +556,7 @@ def next_choice():
         next_choice_action = input('\n> ').upper()
         if validate_next_choice(next_choice_action):
             if next_choice_action == '1':
+                TRANSACTION.clear()
                 sleep_clear_screen()
                 get_date()
                 break
@@ -632,33 +646,32 @@ def append_dates_to_list(date1, date2):
             # appends dates to date_range list
             date_range.append(date1)
             date_range.append(date2)
-            print(date_range)
             show_transactions(date1, date2)
             break
     return date_range
                     
 
 def show_transactions(date1, date2):
-    # username_lower = USERNAME_PASSWORD[0].lower()
+    username_lower = USERNAME_PASSWORD[0].lower()
     # gets the users worksheet
-    # ws = SHEET.worksheet(username_lower)
-    ws = SHEET.worksheet('gail')
+    ws = SHEET.worksheet(username_lower)
     # put the worksheet into a pandas dataframe
     df = pd.DataFrame(ws.get_all_records())
+    print(df)
     # converts date string to date so can be sorted
-    df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+    # df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
     # sorts the dataframe by dates ascending  
-    df.sort_values(by='Date', ascending=True, inplace=True)
+    # df.sort_values(by='Date', ascending=True, inplace=True)
     # converts dates from string to date
-    start_date = datetime.strptime(date1, '%d/%m/%Y')
-    end_date = datetime.strptime(date2, '%d/%m/%Y')
+    # start_date = datetime.strptime(date1, '%d/%m/%Y')
+    # end_date = datetime.strptime(date2, '%d/%m/%Y')
     # filters rows between the start and end date
-    filtered_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
-    # prints filtered_dates
-    print(filtered_dates.to_string(index=False))
+    # filter_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
+    # prints filter_dates
+    # print(filter_dates.to_string(index=False))
 
 
-show_transactions('01/09/2023', '03/09/2023')
+# show_transactions('01/09/2023', '03/09/2023')
 
 
 # main function
@@ -673,4 +686,4 @@ def main():
 
 if __name__ == "__main__":
     pass
-    # main()
+    main()
