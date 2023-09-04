@@ -9,6 +9,7 @@ import time
 from time import sleep
 import sys
 import bcrypt
+import pandas as pd
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -177,7 +178,8 @@ def choose_password():
             # appends the username and password to bottom of worksheet
             user_worksheet.append_row(USERNAME_PASSWORD)
             # adds a new worksheet to record the users transactions
-            add_new_user_worksheet(USERNAME_PASSWORD[0])
+            username_lower = USERNAME_PASSWORD[0].lower()
+            add_new_user_worksheet(username_lower)
             break
 
 
@@ -218,7 +220,7 @@ def add_new_user_worksheet(username):
     Calls the worksheet the users username
     """
     SHEET.add_worksheet(username, rows="1", cols="4")
-    headings = ['Date', 'Catergory', 'Description', 'Amount']
+    headings = ['Date', 'Category', 'Description', 'Amount']
     SHEET.worksheet(username).append_row(headings)
 
 
@@ -413,7 +415,18 @@ def get_spend_category():
         spend_category = input('\nEnter a number betweeen 1 and 6: ')
         if validate_spend_category(spend_category):
             sleep_clear_screen()
-            TRANSACTION.append(spend_category)
+            if spend_category == '1'
+                TRANSACTION.append('Household Bills')
+            elif spend_category == '2'
+                TRANSACTION.append('Transportation')
+            elif spend_category == '3'
+                TRANSACTION.append('Food')
+            elif spend_category == '4'
+                TRANSACTION.append('Savings')    
+            elif spend_category == '5'
+                TRANSACTION.append('Personal Spending')
+            elif spend_category == '6'
+                TRANSACTION.append('Other)
             get_description()
             break
 
@@ -620,12 +633,32 @@ def append_dates_to_list(date1, date2):
             date_range.append(date1)
             date_range.append(date2)
             print(date_range)
+            show_transactions(date1, date2)
             break
     return date_range
                     
 
 def show_transactions(date1, date2):
-    pass
+    # username_lower = USERNAME_PASSWORD[0].lower()
+    # gets the users worksheet
+    # ws = SHEET.worksheet(username_lower)
+    ws = SHEET.worksheet('gail')
+    # put the worksheet into a pandas dataframe
+    df = pd.DataFrame(ws.get_all_records())
+    # converts date string to date so can be sorted
+    df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+    # sorts the dataframe by dates ascending  
+    df.sort_values(by='Date', ascending=True, inplace=True)
+    # converts dates from string to date
+    start_date = datetime.strptime(date1, '%d/%m/%Y')
+    end_date = datetime.strptime(date2, '%d/%m/%Y')
+    # filters rows between the start and end date
+    filtered_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
+    # prints filtered_dates
+    print(filtered_dates.to_string(index=False))
+
+
+show_transactions('01/09/2023', '03/09/2023')
 
 
 # main function
@@ -641,5 +674,3 @@ def main():
 if __name__ == "__main__":
     pass
     # main()
-
-get_date_range()
