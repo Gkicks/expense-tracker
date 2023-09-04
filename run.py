@@ -10,6 +10,7 @@ from time import sleep
 import sys
 import bcrypt
 import pandas as pd
+from transaction import Transaction
 
 SCOPE = [
     "https://www.googleapis.com/auth/spreadsheets",
@@ -76,11 +77,7 @@ def new_or_existing_user():
         new_or_existing_choice = input('Enter N or E: ').upper()
         if validate_new_user_option(new_or_existing_choice):
             sleep_clear_screen()
-            if new_or_existing_choice == 'N':
-                choose_username()
-            elif new_or_existing_choice == 'E':
-                get_existing_username()
-        break
+            break
     return new_or_existing_choice
 
 
@@ -116,7 +113,6 @@ def choose_username():
             sleep_clear_screen()
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[0] = username_lower
-            choose_password()
             break
 
     return username
@@ -158,6 +154,7 @@ def encrypt_pw(password):
 def choose_password():
     """
     Asks the user to choose a password
+    Adds a new worksheet to Google Sheets, named the user's username
     """
     print('Please choose a password\n')
     print_slow('Passwords must be at least six characters long,\n')
@@ -238,7 +235,6 @@ def get_existing_username():
         if validate_existing_username(username_lower):
             # changes the list entry to the chosen username
             USERNAME_PASSWORD[0] = username
-            get_existing_password()
             break
 
     return username
@@ -378,10 +374,10 @@ def get_date():
         if validate_date(transaction_date):
             sleep_clear_screen()
             TRANSACTION.append(transaction_date)
-            get_spend_category()
+            # new_date = Transaction(date=transaction_date)
+            # get_spend_category()
             break
-
-    return
+    return transaction_date
 
 
 def validate_date(date):
@@ -438,21 +434,22 @@ def get_spend_category():
         if validate_spend_category(spend_category):
             sleep_clear_screen()
             if spend_category == '1':
-                TRANSACTION.append('Household Bills')
+                spend_cat_name = 'Household Bills'
             elif spend_category == '2':
-                TRANSACTION.append('Transportation')
+                spend_cat_name = 'Transportation'
             elif spend_category == '3':
-                TRANSACTION.append('Food')
+                spend_cat_name = 'Food'
             elif spend_category == '4':
-                TRANSACTION.append('Savings')
+                spend_cat_name = 'Savings'
             elif spend_category == '5':
-                TRANSACTION.append('Personal Spending')
+                spend_cat_name = 'Personal Spending'
             elif spend_category == '6':
-                TRANSACTION.append('Other')
-            get_description()
+                spend_cat_name = 'Other'
+            TRANSACTION.append(spend_cat_name)
+            # get_description()
             break
 
-    return
+    return spend_cat_name
 
 
 def validate_spend_category(number):
@@ -482,10 +479,10 @@ def get_description():
         if validate_desc(spend_desc):
             TRANSACTION.append(spend_desc)
             sleep_clear_screen()
-            get_amount()
+            # get_amount()
             break
 
-    return
+    return spend_desc
 
 
 def validate_desc(spend_desc):
@@ -515,11 +512,11 @@ def get_amount():
             print_slow('Your transaction has been added')
             print(Style.RESET_ALL)
             sleep_clear_screen()
-            add_transaction(TRANSACTION)
-            next_choice()
+            # add_transaction(TRANSACTION)
+            # next_choice()
             break
 
-    return
+    return spend_amount
 
 
 def validate_amount(float_number):
@@ -540,6 +537,22 @@ def validate_amount(float_number):
         print(Style.RESET_ALL)
         return False
     return True
+
+
+def get_transaction():
+    date = get_date()
+    category = get_spend_category()
+    desc = get_description()
+    amount = get_amount()
+
+    new_transaction = Transaction(date=date, category=category,
+                                  description=desc, amount=amount)
+    return new_transaction
+
+
+first_transaction = get_transaction()
+print(first_transaction)
+print(type(first_transaction))
 
 
 def add_transaction(transaction):
@@ -659,7 +672,7 @@ def append_dates_to_list(date1, date2):
             show_transactions(date1, date2)
             break
     return date_range
-                    
+
 
 def show_transactions(date1, date2):
     """
@@ -694,7 +707,14 @@ def main():
     """
     The main function that runs the rest of functions
     """
-    new_or_existing_user()
+    new_or_existing_choice = new_or_existing_user()
+    if new_or_existing_choice == 'N':
+        choose_username()
+        choose_password()
+    elif new_or_existing_choice == 'E':
+        get_existing_username()
+        get_existing_password()
+
     option = main_menu()
     if option == '1':
         pass
@@ -707,8 +727,11 @@ def main():
         # show_transactions()
 
 
+# true if the program is run as a file
 if __name__ == "__main__":
     pass
     # main()
 
-analyse_transactions()
+# transaction()
+
+# analyse_transactions()
