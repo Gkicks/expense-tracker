@@ -10,6 +10,7 @@ from time import sleep
 import sys
 import bcrypt
 import pandas as pd
+import numpy as np
 from transaction import Transaction
 
 SCOPE = [
@@ -28,7 +29,7 @@ CURRENT_USERNAMES = SHEET.worksheet('users').col_values(1)
 # A list of all the existing users passwords
 CURRENT_PASSWORDS = SHEET.worksheet('users').col_values(2)
 # A list to put the users username and password in for use in other functions
-USERNAME_PASSWORD = ['username', 'password']
+USERNAME_PASSWORD = ['gail', 'password']
 
 # beginning title - reads EXPENSE TRANCKERS over two lines
 print(Fore.BLUE + '                     __     __   __       __   __')
@@ -338,8 +339,11 @@ def main_menu():
                 sleep_clear_screen(1)
                 get_transaction()
             elif option == '2':
-                pass
-                # spending = analyse_transaction()
+                sleep_clear_screen(1)
+                date_range = get_date_range()
+                start_date = date_range[0]
+                end_date = date_range[1]
+                analyse_spending(start_date, end_date)
             elif option == '3':
                 sleep_clear_screen(1)
                 date_range = get_date_range()
@@ -601,13 +605,13 @@ def next_choice():
     return
 
 
-def validate_next_choice(letter):
+def validate_next_choice(num):
     """
     Ensures the user only inputs one of the three options available.
     """
     next_choice_options = ['1', '2', '3']
     try:
-        if letter not in next_choice_options:
+        if num not in next_choice_options:
             raise ValueError
     except ValueError:
         print(Fore.RED + 'You did not enter a correct value')
@@ -671,17 +675,23 @@ def validate_date_range(date1, date2):
     return True
 
 
+def get_pds_df():
+    username_lower = USERNAME_PASSWORD[0].lower()
+    # gets the users worksheet
+    ws = SHEET.worksheet(username_lower)
+    # put the worksheet into a pandas dataframe
+    df = pd.DataFrame(ws.get_all_records())
+
+    return df
+
+
 def show_transactions(date1, date2):
     """
     Puts the users Google worksheet into a pandas dataframe.
     Sorts this by date ascending
     filters the lines between the two dates chosen
     """
-    username_lower = USERNAME_PASSWORD[0].lower()
-    # gets the users worksheet
-    ws = SHEET.worksheet(username_lower)
-    # put the worksheet into a pandas dataframe
-    df = pd.DataFrame(ws.get_all_records())
+    df = get_pds_df()
     # converts date string to date so can be sorted
     df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
     # sorts the dataframe by dates ascending
@@ -704,8 +714,46 @@ def show_transactions(date1, date2):
     return
 
 
-# def analyse_transactions():
-    
+def analyse_spending(date1, date2):
+    df = get_pds_df()
+    df['Amount'] = pd.to_numeric(df['Amount'])
+    df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
+    df.sort_values(by='Date', ascending=True, inplace=True)
+    start_date = datetime.strptime(date1, '%d/%m/%Y')
+    end_date = datetime.strptime(date2, '%d/%m/%Y')
+    filter_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
+    while True:
+        print('Would you like to see the sum or average of your spending?\n')
+        print('1 - Sum')
+        print('2 - Average')
+        validate_analyse_choice = input('> ')
+        if validate_choice(validate_analyse_choice):
+            if validate_analyse_choice == '1':
+                pivot = pd.pivot_table(data=filter_dates, index=['Category'],
+                                       values=['Amount'], aggfunc=np.sum)
+                print(pivot)
+                break
+            else:
+                pivot = pd.pivot_table(data=filter_dates, index=['Category'],
+                                       values=['Amount'], aggfunc=np.mean)
+                pivot_round = pivot.round(2)
+                print(pivot_round)
+                break
+    next_choice()
+
+
+def validate_choice(num):
+    choices = ['1', '2']
+    try:
+        if num not in choices:
+            raise ValueError
+    except ValueError:
+        print(Fore.RED + '\nNot a valid option')
+        print(Style.RESET_ALL)
+        return False
+
+    return True
+
 
 # main function
 def main():
@@ -721,7 +769,7 @@ def main():
         get_existing_password()
     main_menu()
 
-    
+
 # true if the program is run as a file
 if __name__ == "__main__":
     pass
