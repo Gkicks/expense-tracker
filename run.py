@@ -42,10 +42,11 @@ print(Style.RESET_ALL)
 
 def print_slow(str):
     """
-    To slow how quickly text shows
+    To slow how quickly text is printed to the screen
     """
     for character in str:
         sys.stdout.write(character)
+        # to prevent the characters spacing out
         sys.stdout.flush()
         # the length of time between each charater showing
         time.sleep(0.05)
@@ -53,11 +54,13 @@ def print_slow(str):
     return
 
 
-def sleep_clear_screen():
+def sleep_clear_screen(num):
     """
-    clears the user's display screen after a seconds delay
+    clears the user's display screen after a second's delay
     """
-    sleep(1)
+    # length of pause, before screen clearing, in seconds
+    sleep(num)
+    # clears the screen
     os.system('clear')
 
     return
@@ -74,9 +77,9 @@ def new_or_existing_user():
     while True:
         new_or_existing_choice = input('Enter N or E: ').upper()
         if validate_new_user_option(new_or_existing_choice):
-            sleep_clear_screen()
+            sleep_clear_screen(1)
             break
-    
+
     return new_or_existing_choice
 
 
@@ -93,7 +96,7 @@ def validate_new_user_option(letter):
         print(Fore.RED + 'You did not enter a correct value')
         print(Style.RESET_ALL)
         return False
-    
+
     return True
 
 
@@ -110,7 +113,7 @@ def choose_username():
         username_lower = username.lower()
         if validate_new_username(username_lower):
             print_slow(Fore.BLUE + f'\nThank you. Your username is {username}')
-            sleep_clear_screen()
+            sleep_clear_screen(1)
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[0] = username_lower
             break
@@ -123,6 +126,7 @@ def validate_new_username(username):
     Validates the users chosen username.
     Checks username is at least two characters long
     Checks username isn't already in use
+    Checks there are no spaces in the username
     """
     try:
         if len(username) < 2:
@@ -138,7 +142,7 @@ def validate_new_username(username):
         print('Please choose another username')
         print(Style.RESET_ALL)
         return False
-    
+
     return True
 
 
@@ -148,7 +152,7 @@ def encrypt_pw(password):
     Returns the password as decoded
     """
     hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
-    
+
     # Returns the password decoded so it can be store in Google Sheets
     return hashed_pw.decode()
 
@@ -170,7 +174,7 @@ def choose_password():
         enc_pw = encrypt_pw(new_password)
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid\n')
-            sleep_clear_screen()
+            sleep_clear_screen(1)
             print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
             # saves password to list so it can be appended
@@ -252,8 +256,7 @@ def validate_existing_username(username):
     Checks that the username inputted exists
     """
     try:
-        # checks the username is in the list generated
-        # from the list of usernames stored
+        # checks the username is in the list of stored usernames
         if username not in CURRENT_USERNAMES:
             print(Fore.RED + 'username does not exist')
             raise ValueError
@@ -279,8 +282,7 @@ def get_existing_password():
         if validate_existing_password(password, pw_confirm):
             print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[0]}!\n')
             print(Style.RESET_ALL)
-            sleep(1)
-            os.system('clear')
+            sleep_clear_screen(1)
             break
 
     return
@@ -333,19 +335,21 @@ def main_menu():
         option = input('Please pick an option between 1 and 4: ')
         if option_validation(option):
             if option == '1':
-                sleep_clear_screen()
+                sleep_clear_screen(1)
+                get_transaction()
             elif option == '2':
                 pass
                 # spending = analyse_transaction()
             elif option == '3':
-                sleep_clear_screen()
-                get_date_range()
-            elif option == '4':
+                sleep_clear_screen(1)
+                date_range = get_date_range()
+                start_date = date_range[0]
+                end_date = date_range[1]
+                show_transactions(start_date, end_date)
+            else:
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
                 print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
                 break
-            else:
-                print('Error! Please restart program')
             break
     return option
 
@@ -380,7 +384,7 @@ def get_date():
     while True:
         transaction_date = input('\n> ')
         if validate_date(transaction_date):
-            sleep_clear_screen()
+            sleep_clear_screen(1)
             break
 
     return transaction_date
@@ -439,7 +443,7 @@ def get_spend_category():
         print('6 - Other')
         spend_category = input('\nEnter a number betweeen 1 and 6: ')
         if validate_spend_category(spend_category):
-            sleep_clear_screen()
+            sleep_clear_screen(1)
             if spend_category == '1':
                 spend_cat_name = 'Household Bills'
             elif spend_category == '2':
@@ -483,7 +487,7 @@ def get_description():
     while True:
         spend_desc = input('> ')
         if validate_desc(spend_desc):
-            sleep_clear_screen()
+            sleep_clear_screen(1)
             break
 
     return spend_desc
@@ -515,7 +519,7 @@ def get_amount():
             print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[0]}.\n')
             print_slow('Your transaction has been added')
             print(Style.RESET_ALL)
-            sleep_clear_screen()
+            sleep_clear_screen(1)
             break
 
     return spend_amount
@@ -583,11 +587,11 @@ def next_choice():
         next_choice_action = input('\n> ').upper()
         if validate_next_choice(next_choice_action):
             if next_choice_action == '1':
-                sleep_clear_screen()
+                sleep_clear_screen(1)
                 get_transaction()
                 break
             elif next_choice_action == '2':
-                sleep_clear_screen()
+                sleep_clear_screen(1)
                 main_menu()
                 break
             elif next_choice_action == "3":
@@ -610,7 +614,7 @@ def validate_next_choice(letter):
         print('Please enter a number between 1 and 3')
         print(Style.RESET_ALL)
         return False
-    
+
     return True
 
 
@@ -630,12 +634,12 @@ def get_date_range():
             while True:
                 end_date = input('\nEnd Date: ')
                 if validate_date(end_date):
-                    append_dates_to_list(start_date, end_date)
-                    sleep_clear_screen()
+                    # append_dates_to_list(start_date, end_date)
+                    sleep_clear_screen(1)
                     break
             break
 
-    return
+    return start_date, end_date
 
 
 def validate_date_range(date1, date2):
@@ -663,22 +667,8 @@ def validate_date_range(date1, date2):
         print('Please enter new dates')
         print(Style.RESET_ALL)
         return False
-    
+
     return True
-
-
-def append_dates_to_list(date1, date2):
-    # empty list for start and end dates to be appended to
-    date_range = []
-    while True:
-        if validate_date_range(date1, date2):
-            # appends dates to date_range list
-            date_range.append(date1)
-            date_range.append(date2)
-            show_transactions(date1, date2)
-            break
-    
-    return date_range
 
 
 def show_transactions(date1, date2):
@@ -701,15 +691,21 @@ def show_transactions(date1, date2):
     end_date = datetime.strptime(date2, '%d/%m/%Y')
     # filters rows between the start and end date
     filter_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
-    # prints filter_dates
-    print(filter_dates.to_string(index=False))
+    # checks if there is data to display    
+    if filter_dates.empty:
+        print(Fore.RED + 'There is no data to show')
+        print(Style.RESET_ALL)
+    else:
+        # prints filter_dates
+        print(Fore.YELLOW + filter_dates.to_string(index=False))
+        print(Style.RESET_ALL)
+    next_choice()
 
     return
 
 
-def analyse_transactions():
-    get_date_range()
-
+# def analyse_transactions():
+    
 
 # main function
 def main():
@@ -723,18 +719,9 @@ def main():
     elif new_or_existing_choice == 'E':
         get_existing_username()
         get_existing_password()
+    main_menu()
 
-    option = main_menu()
-    if option == '1':
-        get_transaction()
-    elif option == '2':
-        pass
-        # analyse_transactions()
-    elif option == '3':
-        pass
-        # show_transactions()
-
-
+    
 # true if the program is run as a file
 if __name__ == "__main__":
     pass
