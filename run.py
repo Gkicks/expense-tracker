@@ -76,6 +76,7 @@ def new_or_existing_user():
         if validate_new_user_option(new_or_existing_choice):
             sleep_clear_screen()
             break
+    
     return new_or_existing_choice
 
 
@@ -92,6 +93,7 @@ def validate_new_user_option(letter):
         print(Fore.RED + 'You did not enter a correct value')
         print(Style.RESET_ALL)
         return False
+    
     return True
 
 
@@ -136,6 +138,7 @@ def validate_new_username(username):
         print('Please choose another username')
         print(Style.RESET_ALL)
         return False
+    
     return True
 
 
@@ -145,6 +148,7 @@ def encrypt_pw(password):
     Returns the password as decoded
     """
     hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
+    
     # Returns the password decoded so it can be store in Google Sheets
     return hashed_pw.decode()
 
@@ -180,8 +184,10 @@ def choose_password():
             add_new_user_worksheet(username_lower)
             break
 
+    return new_password
 
-def validate_new_password(new_password):
+
+def validate_new_password(password):
     """
     Validates the chosen password.
     Password must be at least six characters long.
@@ -189,26 +195,27 @@ def validate_new_password(new_password):
     one number and one special character
     """
     try:
-        if len(new_password) < 6:
-            print(Fore.RED + f'Password entered was {len(new_password)} long')
+        if len(password) < 6:
+            print(Fore.RED + f'Password entered was {len(password)} long')
             print('Password must be at least six characters long')
             raise ValueError
-        if not re.search('[A-Z]', new_password):
+        if not re.search('[A-Z]', password):
             print(Fore.RED + 'Password must contain one uppercase letter')
             raise ValueError
-        if not re.search('[a-z]', new_password):
+        if not re.search('[a-z]', password):
             print(Fore.RED + 'Password must contain one lowercase letter')
             raise ValueError
-        if not re.search('[!"#£$%&\'()*+,-./:;<=>?@[\\]^_`{~}]', new_password):
+        if not re.search('[!"#£$%&\'()*+,-./:;<=>?@[\\]^_`{~}]', password):
             print(Fore.RED + 'Password must contain one special character')
             raise ValueError
-        if not re.search('[0-9]', new_password):
+        if not re.search('[0-9]', password):
             print(Fore.RED + 'Your password must include at least one number')
             raise ValueError
     except ValueError:
         print('Please try again')
         print(Style.RESET_ALL)
         return False
+
     return True
 
 
@@ -220,6 +227,8 @@ def add_new_user_worksheet(username):
     SHEET.add_worksheet(username, rows="1", cols="4")
     headings = ['Date', 'Category', 'Description', 'Amount']
     SHEET.worksheet(username).append_row(headings)
+
+    return
 
 
 def get_existing_username():
@@ -252,6 +261,7 @@ def validate_existing_username(username):
         print('Please try again')
         print(Style.RESET_ALL)
         return False
+
     return True
 
 
@@ -300,6 +310,7 @@ def validate_existing_password(password, pw_confirm):
         print('Please try again')
         print(Style.RESET_ALL)
         return False
+
     return True
 
 
@@ -323,7 +334,6 @@ def main_menu():
         if option_validation(option):
             if option == '1':
                 sleep_clear_screen()
-                # get_date()
             elif option == '2':
                 pass
                 # spending = analyse_transaction()
@@ -371,10 +381,8 @@ def get_date():
         transaction_date = input('\n> ')
         if validate_date(transaction_date):
             sleep_clear_screen()
-            TRANSACTION.append(transaction_date)
-            # new_date = Transaction(date=transaction_date)
-            # get_spend_category()
             break
+
     return transaction_date
 
 
@@ -413,6 +421,7 @@ def validate_date(date):
         print(Fore.RED + 'Please enter a valid date')
         print(Style.RESET_ALL)
         return False
+
     return True
 
 
@@ -443,8 +452,6 @@ def get_spend_category():
                 spend_cat_name = 'Personal Spending'
             elif spend_category == '6':
                 spend_cat_name = 'Other'
-            TRANSACTION.append(spend_cat_name)
-            # get_description()
             break
 
     return spend_cat_name
@@ -463,6 +470,7 @@ def validate_spend_category(number):
         print(Fore.RED + 'Please enter a number between 1 and 6')
         print(Style.RESET_ALL)
         return False
+
     return True
 
 
@@ -475,9 +483,7 @@ def get_description():
     while True:
         spend_desc = input('> ')
         if validate_desc(spend_desc):
-            TRANSACTION.append(spend_desc)
             sleep_clear_screen()
-            # get_amount()
             break
 
     return spend_desc
@@ -491,6 +497,7 @@ def validate_desc(spend_desc):
     except ValueError:
         print(Style.RESET_ALL)
         return False
+
     return True
 
 
@@ -504,30 +511,27 @@ def get_amount():
     while True:
         spend_amount = input('£ ')
         if validate_amount(spend_amount):
-            TRANSACTION.append(spend_amount)
             print(Fore.MAGENTA + '\nAdding transaction...\n')
             print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[0]}.\n')
             print_slow('Your transaction has been added')
             print(Style.RESET_ALL)
             sleep_clear_screen()
-            # add_transaction(TRANSACTION)
-            # next_choice()
             break
 
     return spend_amount
 
 
-def validate_amount(float_number):
+def validate_amount(number):
     """
     Validates that the amount entered is a valid amount
     and that the amount is greater than 0
     """
     try:
-        if not re.fullmatch(r'^\-?[0-9]+(?:\.[0-9]{2})?$', float_number):
+        if not re.fullmatch(r'^\-?[0-9]+(?:\.[0-9]{2})?$', number):
             print(Fore.RED + 'That is not a valid amount')
             raise ValueError
-        float_number = float(float_number)
-        if float_number <= 0:
+        number = float(number)
+        if number <= 0:
             print(Fore.RED + 'The amount must be greater than £0')
             raise ValueError
     except ValueError:
@@ -548,6 +552,9 @@ def get_transaction():
                                      description=desc, amount=amount)
     # convert the class to a list
     new_transaction = list(vars(new_transaction_cl).values())
+    add_transaction(new_transaction)
+    next_choice()
+
     return new_transaction
 
 
@@ -559,6 +566,8 @@ def add_transaction(transaction):
     username_lower = USERNAME_PASSWORD[0].lower()
     # add transaction to bottom of user's worksheet
     SHEET.worksheet(username_lower).append_row(transaction)
+
+    return
 
 
 # function is get further choice from user
@@ -574,9 +583,8 @@ def next_choice():
         next_choice_action = input('\n> ').upper()
         if validate_next_choice(next_choice_action):
             if next_choice_action == '1':
-                TRANSACTION.clear()
                 sleep_clear_screen()
-                get_date()
+                get_transaction()
                 break
             elif next_choice_action == '2':
                 sleep_clear_screen()
@@ -602,6 +610,7 @@ def validate_next_choice(letter):
         print('Please enter a number between 1 and 3')
         print(Style.RESET_ALL)
         return False
+    
     return True
 
 
@@ -654,6 +663,7 @@ def validate_date_range(date1, date2):
         print('Please enter new dates')
         print(Style.RESET_ALL)
         return False
+    
     return True
 
 
@@ -667,6 +677,7 @@ def append_dates_to_list(date1, date2):
             date_range.append(date2)
             show_transactions(date1, date2)
             break
+    
     return date_range
 
 
@@ -693,6 +704,8 @@ def show_transactions(date1, date2):
     # prints filter_dates
     print(filter_dates.to_string(index=False))
 
+    return
+
 
 def analyse_transactions():
     get_date_range()
@@ -713,8 +726,7 @@ def main():
 
     option = main_menu()
     if option == '1':
-        new_transaction = get_transaction()
-        add_transaction(new_transaction)
+        get_transaction()
     elif option == '2':
         pass
         # analyse_transactions()
@@ -727,7 +739,3 @@ def main():
 if __name__ == "__main__":
     pass
     main()
-
-# transaction()
-
-# analyse_transactions()
