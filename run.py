@@ -29,8 +29,6 @@ CURRENT_USERNAMES = SHEET.worksheet('users').col_values(1)
 CURRENT_PASSWORDS = SHEET.worksheet('users').col_values(2)
 # A list to put the users username and password in for use in other functions
 USERNAME_PASSWORD = ['username', 'password']
-# A list to hold the transaction details
-TRANSACTION = []
 
 # beginning title - reads EXPENSE TRANCKERS over two lines
 print(Fore.BLUE + '                     __     __   __       __   __')
@@ -325,7 +323,7 @@ def main_menu():
         if option_validation(option):
             if option == '1':
                 sleep_clear_screen()
-                get_date()
+                # get_date()
             elif option == '2':
                 pass
                 # spending = analyse_transaction()
@@ -540,19 +538,17 @@ def validate_amount(float_number):
 
 
 def get_transaction():
+    # functions to get the class values
     date = get_date()
     category = get_spend_category()
     desc = get_description()
     amount = get_amount()
-
-    new_transaction = Transaction(date=date, category=category,
-                                  description=desc, amount=amount)
+    # returned data as a class
+    new_transaction_cl = Transaction(date=date, category=category,
+                                     description=desc, amount=amount)
+    # convert the class to a list
+    new_transaction = list(vars(new_transaction_cl).values())
     return new_transaction
-
-
-first_transaction = get_transaction()
-print(first_transaction)
-print(type(first_transaction))
 
 
 def add_transaction(transaction):
@@ -717,8 +713,8 @@ def main():
 
     option = main_menu()
     if option == '1':
-        pass
-        # get_transaction()
+        new_transaction = get_transaction()
+        add_transaction(new_transaction)
     elif option == '2':
         pass
         # analyse_transactions()
@@ -730,7 +726,7 @@ def main():
 # true if the program is run as a file
 if __name__ == "__main__":
     pass
-    # main()
+    main()
 
 # transaction()
 
