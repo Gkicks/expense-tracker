@@ -29,9 +29,10 @@ CURRENT_USERNAMES = SHEET.worksheet('users').col_values(1)
 # A list of all the existing users passwords
 CURRENT_PASSWORDS = SHEET.worksheet('users').col_values(2)
 # A list to put the users username and password in for use in other functions
-USERNAME_PASSWORD = ['gail', 'password']
+CURRENT_NAMES = SHEET.worksheet('users').col_values(3)
+USERNAME_PASSWORD = ['username', 'password', 'name']
 
-# beginning title - reads EXPENSE TRANCKERS over two lines
+# beginning title - reads EXPENSE TRACKERS over two lines
 print(Fore.BLUE + '                     __     __   __       __   __')
 print(Fore.MAGENTA + '                    |__ \\/ |__| |__ |\\ | |__  |__')
 print(Fore.RED + '                    |__ /\\ |    |__ | \\|  __| |__\n')
@@ -95,6 +96,35 @@ def validate_new_user_option(letter):
             raise ValueError
     except ValueError:
         print(Fore.RED + 'You did not enter a correct value')
+        print(Style.RESET_ALL)
+        return False
+
+    return True
+
+
+def get_new_users_name():
+    print('Please enter your name')
+    print_slow('\nName can only contain letters\n')
+    print_slow('and cannot contain any blank spaces\n')
+    while True:
+        name = input('\n> ')
+        if validate_name(name):
+            USERNAME_PASSWORD[2] = name
+            break
+
+    return
+
+
+def validate_name(name):
+    try:
+        if " " in name:
+            print(Fore.RED + '\nName cannot contain blank spaces')
+            raise ValueError
+        if name.isalpha() is False:
+            print(Fore.RED + '\nName can only contain letters')
+            raise ValueError
+    except ValueError:
+        print('Please enter a valid name')
         print(Style.RESET_ALL)
         return False
 
@@ -176,7 +206,7 @@ def choose_password():
         if validate_new_password(new_password):
             print(Fore.GREEN + 'Thank you. That password is valid\n')
             sleep_clear_screen(1)
-            print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[0]}!\n')
+            print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[2]}!\n')
             print(Style.RESET_ALL)
             # saves password to list so it can be appended
             USERNAME_PASSWORD[1] = enc_pw
@@ -281,7 +311,7 @@ def get_existing_password():
         # the password character displayed as * for security
         pw_confirm = pwinput.pwinput(prompt='Please confirm your password: ')
         if validate_existing_password(password, pw_confirm):
-            print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[0]}!\n')
+            print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[2]}!\n')
             print(Style.RESET_ALL)
             sleep_clear_screen(1)
             break
@@ -315,6 +345,16 @@ def validate_existing_password(password, pw_confirm):
         return False
 
     return True
+
+
+def get_existing_name():
+    username_password_dic = dict(zip(CURRENT_USERNAMES, CURRENT_NAMES))
+    username = USERNAME_PASSWORD[0]
+    username_lower = username.lower()
+    users_name = username_password_dic[username_lower]
+    USERNAME_PASSWORD[2] = users_name
+
+    return
 
 
 # main menu function
@@ -352,7 +392,7 @@ def main_menu():
                 show_transactions(start_date, end_date)
             else:
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
-                print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
+                print(f'Goodbye {USERNAME_PASSWORD[2]}\n')
                 break
             break
     return option
@@ -520,7 +560,7 @@ def get_amount():
         spend_amount = input('£ ')
         if validate_amount(spend_amount):
             print(Fore.MAGENTA + '\nAdding transaction...\n')
-            print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[0]}.\n')
+            print_slow(Fore.BLUE + f'Thank you {USERNAME_PASSWORD[2]}.\n')
             print_slow('Your transaction has been added')
             print(Style.RESET_ALL)
             sleep_clear_screen(1)
@@ -600,7 +640,7 @@ def next_choice():
                 break
             elif next_choice_action == "3":
                 print(Fore.MAGENTA + '\nThank you for using this tracker')
-                print(f'Goodbye {USERNAME_PASSWORD[0]}\n')
+                print(f'Goodbye {USERNAME_PASSWORD[2]}\n')
                 break
     return
 
@@ -774,11 +814,15 @@ def main():
     """
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
+        print(Fore.BLUE + '\nWelcome to the expense tracker!\n')
+        print(Style.RESET_ALL)
+        get_new_users_name()
         choose_username()
         choose_password()
     elif new_or_existing_choice == 'E':
         get_existing_username()
         get_existing_password()
+        get_existing_name()
     main_menu()
 
 
