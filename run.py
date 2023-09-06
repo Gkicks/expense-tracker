@@ -266,6 +266,16 @@ def add_new_user_worksheet(username):
     return
 
 
+def get_existing_name():
+    username_password_dic = dict(zip(CURRENT_USERNAMES, CURRENT_NAMES))
+    username = USERNAME_PASSWORD[0]
+    username_lower = username.lower()
+    users_name = username_password_dic[username_lower]
+    USERNAME_PASSWORD[2] = users_name
+
+    return
+
+
 def get_existing_username():
     """
     Asks existing users to enter their existing username
@@ -345,16 +355,6 @@ def validate_existing_password(password, pw_confirm):
         return False
 
     return True
-
-
-def get_existing_name():
-    username_password_dic = dict(zip(CURRENT_USERNAMES, CURRENT_NAMES))
-    username = USERNAME_PASSWORD[0]
-    username_lower = username.lower()
-    users_name = username_password_dic[username_lower]
-    USERNAME_PASSWORD[2] = users_name
-
-    return
 
 
 # main menu function
@@ -770,23 +770,26 @@ def analyse_spending(date1, date2):
         print(Style.RESET_ALL)
         next_choice()
     else:
-        print('Would you like to see the sum or average of your spending?')
+        print('Would you like to see the sum or average of your spending?\n')
         print('1 - Sum')
         print('2 - Average')
     while True:
-        validate_analyse_choice = input('> ')
+        validate_analyse_choice = input('\n> ')
         if validate_choice(validate_analyse_choice):
             if validate_analyse_choice == '1':
                 pivot = pd.pivot_table(data=filter_dates, index=['Category'],
                                        values=['Amount'], aggfunc=np.sum)
+                sleep_clear_screen(1)
                 print('These are the sums of your transactions between:')
                 print(f'{date1} and {date2}\n')
-                print(pivot)
+                pivot = pivot.rename(columns=lambda x: x.strip())
+                print(pivot.to_string())
                 break
             else:
                 pivot = pd.pivot_table(data=filter_dates, index=['Category'],
                                        values=['Amount'], aggfunc=np.mean)
                 pivot_round = pivot.round(2)
+                sleep_clear_screen(1)
                 print('These are the averages of your transactions between:')
                 print(f'{date1} and {date2}\n')
                 print(pivot_round)
@@ -821,8 +824,8 @@ def main():
         choose_password()
     elif new_or_existing_choice == 'E':
         get_existing_username()
-        get_existing_password()
         get_existing_name()
+        get_existing_password()
     main_menu()
 
 
