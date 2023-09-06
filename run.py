@@ -103,6 +103,9 @@ def validate_new_user_option(letter):
 
 
 def get_new_users_name():
+    """
+    Gets the name for a new user
+    """
     print('Please enter your name')
     print_slow('\nName can only contain letters\n')
     print_slow('and cannot contain any blank spaces\n')
@@ -116,6 +119,9 @@ def get_new_users_name():
 
 
 def validate_name(name):
+    """
+    Validates the inputted name
+    """
     try:
         if " " in name:
             print(Fore.RED + '\nName cannot contain blank spaces')
@@ -198,7 +204,6 @@ def choose_password():
     print_slow('contain at least one uppercase letter,\n')
     print_slow('one lowercase letter,\n')
     print_slow('one number and one special character\n\n')
-
     while True:
         new_password = input('Enter password here: ')
         # encrypts and decodes the password
@@ -267,9 +272,15 @@ def add_new_user_worksheet(username):
 
 
 def get_existing_name():
+    """
+    gets the name of an existing user from Google Sheets
+    """
+    # creates a dictionary with username as key and name as value
     username_password_dic = dict(zip(CURRENT_USERNAMES, CURRENT_NAMES))
     username = USERNAME_PASSWORD[0]
+    # converts username to lowercase as how is stored
     username_lower = username.lower()
+    # finds the value of the user's name from the username key
     users_name = username_password_dic[username_lower]
     USERNAME_PASSWORD[2] = users_name
 
@@ -527,7 +538,8 @@ def get_description():
     Asks the user to input a description of spend
     """
     print('\nEnter a description of the spend\n')
-    print_slow('For example, "rent" or "lunch"\n\n')
+    print_slow('For example, "rent" or "lunch"\n')
+    print_slow('The entry must only contain letters\n\n')
     while True:
         spend_desc = input('> ')
         if validate_desc(spend_desc):
@@ -538,10 +550,16 @@ def get_description():
 
 
 def validate_desc(spend_desc):
+    """
+    Checks that the user has inputted a description
+    Checks the input is a word
+    """
     try:
         if spend_desc == "":
             print(Fore.RED + 'Decription is required')
             raise ValueError
+        if spend_desc.isalpha() is False:
+            print(Fore.RED + 'The description must only contain letters')
     except ValueError:
         print(Style.RESET_ALL)
         return False
@@ -590,6 +608,11 @@ def validate_amount(number):
 
 
 def get_transaction():
+    """
+    gets the components of the transaction
+    returns this data as a class
+    converts the class to a list
+    """
     # functions to get the class values
     date = get_date()
     category = get_spend_category()
@@ -718,6 +741,9 @@ def validate_date_range(date1, date2):
 
 
 def get_pds_df():
+    """
+    creates a pandas dataframe from the user's Google worksheet
+    """
     username_lower = USERNAME_PASSWORD[0].lower()
     # gets the users worksheet
     ws = SHEET.worksheet(username_lower)
@@ -732,6 +758,7 @@ def show_transactions(date1, date2):
     Puts the users Google worksheet into a pandas dataframe.
     Sorts this by date ascending
     filters the lines between the two dates chosen
+    Checks the filtered dataframe contains data
     """
     df = get_pds_df()
     # converts date string to date so can be sorted
@@ -758,6 +785,13 @@ def show_transactions(date1, date2):
 
 
 def analyse_spending(date1, date2):
+    """
+    Gets the pandas dataframe
+    Filters the dataframe by the dates chosen by the user
+    Checks the filtered dataframe contains data
+    Asks the user if they would like to see the sum or mean of spends
+    Returns a pivot table
+    """
     df = get_pds_df()
     df['Amount'] = pd.to_numeric(df['Amount'])
     df['Date'] = pd.to_datetime(df['Date'], format='%d/%m/%Y')
@@ -782,12 +816,11 @@ def analyse_spending(date1, date2):
                 sleep_clear_screen(1)
                 print('These are the sums of your transactions between:')
                 print(f'{date1} and {date2}\n')
-                pivot = pivot.rename(columns=lambda x: x.strip())
-                print(pivot.to_string())
+                print(pivot())
                 break
             else:
                 pivot = pd.pivot_table(data=filter_dates, index=['Category'],
-                                       values=['Amount'], aggfunc=np.mean)
+                                       values=['Amount'])
                 pivot_round = pivot.round(2)
                 sleep_clear_screen(1)
                 print('These are the averages of your transactions between:')
@@ -798,6 +831,9 @@ def analyse_spending(date1, date2):
 
 
 def validate_choice(num):
+    """
+    Validates the choice of two options chosen is '1' or '2'
+    """
     choices = ['1', '2']
     try:
         if num not in choices:
@@ -828,6 +864,7 @@ def main():
         get_existing_password()
     main_menu()
 
+return
 
 # true if the program is run as a file
 if __name__ == "__main__":
