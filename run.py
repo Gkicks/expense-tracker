@@ -638,10 +638,12 @@ def get_date_range():
             while True:
                 end_date = input('\nEnd Date: ')
                 if validate_date(end_date):
-                    # append_dates_to_list(start_date, end_date)
-                    sleep_clear_screen(1)
-                    break
-            break
+                    while True:
+                        if validate_date_range(start_date, end_date):
+                            sleep_clear_screen(1)
+                        break
+                break
+        break
 
     return start_date, end_date
 
@@ -701,12 +703,13 @@ def show_transactions(date1, date2):
     end_date = datetime.strptime(date2, '%d/%m/%Y')
     # filters rows between the start and end date
     filter_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
-    # checks if there is data to display    
+    # checks if there is data to display
     if filter_dates.empty:
         print(Fore.RED + 'There is no data to show')
         print(Style.RESET_ALL)
     else:
         # prints filter_dates
+        print('These are your transactions between {date1} and {date2}\n')
         print(Fore.YELLOW + filter_dates.to_string(index=False))
         print(Style.RESET_ALL)
     next_choice()
@@ -722,21 +725,30 @@ def analyse_spending(date1, date2):
     start_date = datetime.strptime(date1, '%d/%m/%Y')
     end_date = datetime.strptime(date2, '%d/%m/%Y')
     filter_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
-    while True:
-        print('Would you like to see the sum or average of your spending?\n')
+    if filter_dates.empty:
+        print(Fore.RED + '\nThere is no data to show')
+        print(Style.RESET_ALL)
+        next_choice()
+    else:
+        print('Would you like to see the sum or average of your spending?')
         print('1 - Sum')
         print('2 - Average')
+    while True:
         validate_analyse_choice = input('> ')
         if validate_choice(validate_analyse_choice):
             if validate_analyse_choice == '1':
                 pivot = pd.pivot_table(data=filter_dates, index=['Category'],
                                        values=['Amount'], aggfunc=np.sum)
+                print('These are the sums of your transactions between:')
+                print(f'{date1} and {date2}\n')
                 print(pivot)
                 break
             else:
                 pivot = pd.pivot_table(data=filter_dates, index=['Category'],
                                        values=['Amount'], aggfunc=np.mean)
                 pivot_round = pivot.round(2)
+                print('These are the averages of your transactions between:')
+                print(f'{date1} and {date2}\n')
                 print(pivot_round)
                 break
     next_choice()
