@@ -864,9 +864,9 @@ def main():
         get_existing_password()
     main_menu()
 
-return
+    return
+
 
 # true if the program is run as a file
 if __name__ == "__main__":
-    pass
     main()
