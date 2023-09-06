@@ -354,7 +354,7 @@ def validate_existing_password(password, pw_confirm):
     users_password = username_password_dic[username_lower]
     try:
         if password != pw_confirm:
-            print('\nThose passwords do not match')
+            print(Fore.RED + '\nPasswords do not match')
             raise ValueError
         # checks the stored password against the entered password
         if not bcrypt.checkpw(password.encode(), users_password.encode()):
@@ -558,7 +558,7 @@ def validate_desc(spend_desc):
         if spend_desc == "":
             print(Fore.RED + 'Decription is required')
             raise ValueError
-        if spend_desc.isalpha() is False:
+        if re.match(r"[\w\s]+$", spend_desc) is False:
             print(Fore.RED + 'The description must only contain letters')
     except ValueError:
         print(Style.RESET_ALL)
