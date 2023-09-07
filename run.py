@@ -32,7 +32,7 @@ CURRENT_PASSWORDS = SHEET.worksheet('users').col_values(2)
 CURRENT_NAMES = SHEET.worksheet('users').col_values(3)
 USERNAME_PASSWORD = ['username', 'password', 'name']
 
-# beginning title - reads EXPENSE TRACKERS over two lines
+# beginning logo - reads EXPENSE TRACKERS over two lines
 print(Fore.BLUE + '                     __     __   __       __   __')
 print(Fore.MAGENTA + '                    |__ \\/ |__| |__ |\\ | |__  |__')
 print(Fore.RED + '                    |__ /\\ |    |__ | \\|  __| |__\n')
@@ -113,6 +113,7 @@ def get_new_users_name():
         name = input('\n> ')
         if validate_name(name):
             USERNAME_PASSWORD[2] = name
+            sleep_clear_screen(1)
             break
 
     return
@@ -142,8 +143,9 @@ def choose_username():
     Asks the user to choose a new username
     """
     print('\nPlease choose a username\n')
-    print_slow('Username should be at least two characters long\n')
+    print_slow('Username should be at least three characters long\n')
     print_slow('Username must only be one word\n')
+    print_slow('Username is not case sensitive')
     while True:
         username = input('\nEnter username: ')
         # converts username to lowercase for storage
@@ -166,8 +168,8 @@ def validate_new_username(username):
     Checks there are no spaces in the username
     """
     try:
-        if len(username) < 2:
-            print(Fore.RED + 'Username must contain at least two charaters')
+        if len(username) < 3:
+            print(Fore.RED + 'Username must contain at least three charaters')
             raise ValueError
         if username in CURRENT_USERNAMES:
             print(Fore.RED + 'That username already exists')
@@ -209,7 +211,7 @@ def choose_password():
         # encrypts and decodes the password
         enc_pw = encrypt_pw(new_password)
         if validate_new_password(new_password):
-            print(Fore.GREEN + 'Thank you. That password is valid\n')
+            print(Fore.GREEN + '\nThank you. That password is valid\n')
             sleep_clear_screen(1)
             print_slow(Fore.BLUE + f'\nHi {USERNAME_PASSWORD[2]}!\n')
             print(Style.RESET_ALL)
@@ -236,7 +238,8 @@ def validate_new_password(password):
     """
     try:
         if len(password) < 6:
-            print(Fore.RED + f'Password entered was {len(password)} long')
+            print(Fore.RED + f'Password entered was {len(password)} \
+                               characters long')
             print('Password must be at least six characters long')
             raise ValueError
         if not re.search('[A-Z]', password):
@@ -310,7 +313,7 @@ def validate_existing_username(username):
     try:
         # checks the username is in the list of stored usernames
         if username not in CURRENT_USERNAMES:
-            print(Fore.RED + 'username does not exist')
+            print(Fore.RED + '\nusername does not exist')
             raise ValueError
     except ValueError:
         print('Please try again')
@@ -332,9 +335,9 @@ def get_existing_password():
         # the password character displayed as * for security
         pw_confirm = pwinput.pwinput(prompt='Please confirm your password: ')
         if validate_existing_password(password, pw_confirm):
+            sleep_clear_screen(1)
             print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[2]}!\n')
             print(Style.RESET_ALL)
-            sleep_clear_screen(1)
             break
 
     return
@@ -358,7 +361,7 @@ def validate_existing_password(password, pw_confirm):
             raise ValueError
         # checks the stored password against the entered password
         if not bcrypt.checkpw(password.encode(), users_password.encode()):
-            print(Fore.RED + 'Your username and password do not match')
+            print(Fore.RED + '\nYour username and password do not match')
             raise ValueError
     except ValueError:
         print('Please try again')
@@ -560,6 +563,7 @@ def validate_desc(spend_desc):
             raise ValueError
         if re.match(r"[\w\s]+$", spend_desc) is False:
             print(Fore.RED + 'The description must only contain letters')
+            raise ValueError
     except ValueError:
         print(Style.RESET_ALL)
         return False
@@ -704,9 +708,9 @@ def get_date_range():
                     while True:
                         if validate_date_range(start_date, end_date):
                             sleep_clear_screen(1)
-                        break
-                break
-        break
+                            break
+                    break
+            break
 
     return start_date, end_date
 
@@ -776,7 +780,7 @@ def show_transactions(date1, date2):
         print(Style.RESET_ALL)
     else:
         # prints filter_dates
-        print('These are your transactions between {date1} and {date2}\n')
+        print(f'These are your transactions between {date1} and {date2}\n')
         print(Fore.YELLOW + filter_dates.to_string(index=False))
         print(Style.RESET_ALL)
     next_choice()
