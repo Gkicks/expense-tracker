@@ -562,7 +562,7 @@ def validate_desc(spend_desc):
         if spend_desc == "":
             print(Fore.RED + 'Decription is required')
             raise ValueError
-        if re.match(r"[\s\w]+$", spend_desc) is False:
+        if not re.match("^[a-z A-Z]*$", spend_desc):
             print(Fore.RED + 'The description must only contain letters')
             raise ValueError
     except ValueError:
