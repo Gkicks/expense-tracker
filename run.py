@@ -145,14 +145,14 @@ def choose_username():
     print('\nPlease choose a username\n')
     print_slow('Username should be at least three characters long\n')
     print_slow('Username must only be one word\n')
-    print_slow('Username is not case sensitive')
+    print_slow('Username is not case sensitive\n')
     while True:
         username = input('\nEnter username: ')
         # converts username to lowercase for storage
         username_lower = username.lower()
         if validate_new_username(username_lower):
-            print_slow(Fore.BLUE + f'\nThank you. Your username is {username}')
             sleep_clear_screen(1)
+            print_slow(Fore.BLUE + f'\nThank you. Your username is {username}')
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[0] = username_lower
             break
@@ -238,8 +238,8 @@ def validate_new_password(password):
     """
     try:
         if len(password) < 6:
-            print(Fore.RED + f'Password entered was {len(password)} \
-                               characters long')
+            print(Fore.RED)
+            print(f'Password entered was {len(password)} characters long')
             print('Password must be at least six characters long')
             raise ValueError
         if not re.search('[A-Z]', password):
@@ -409,6 +409,7 @@ def main_menu():
                 print(f'Goodbye {USERNAME_PASSWORD[2]}\n')
                 break
             break
+
     return option
 
 
@@ -428,8 +429,8 @@ def option_validation(option):
             print(Fore.RED + 'Not a valid number. Please try again.\n')
             print(Style.RESET_ALL)
             return False
-        return True
-    return
+
+    return True
 
 
 # Entering transaction functions
@@ -561,7 +562,7 @@ def validate_desc(spend_desc):
         if spend_desc == "":
             print(Fore.RED + 'Decription is required')
             raise ValueError
-        if re.match(r"[\w\s]+$", spend_desc) is False:
+        if re.match(r"[\s\w]+$", spend_desc) is False:
             print(Fore.RED + 'The description must only contain letters')
             raise ValueError
     except ValueError:
@@ -700,15 +701,28 @@ def get_date_range():
     print_slow('These should be in the format DD/MM/YYYY\n')
     print_slow('Dates should be no more than 90 days apart\n\n')
     while True:
+        start_end = get_start_and_end_date()
+        start_date = start_end[0]
+        end_date = start_end[1]
+        if validate_date_range(start_date, end_date):
+            sleep_clear_screen(1)
+            break
+
+    return start_date, end_date
+
+
+def get_start_and_end_date():
+    """
+    Gets the start date and validates this
+    Then gets and validates the end date
+    Returns the start and end dates
+    """
+    while True:
         start_date = input('Start Date: ')
         if validate_date(start_date):
             while True:
                 end_date = input('\nEnd Date: ')
                 if validate_date(end_date):
-                    while True:
-                        if validate_date_range(start_date, end_date):
-                            sleep_clear_screen(1)
-                            break
                     break
             break
 
@@ -722,7 +736,7 @@ def validate_date_range(date1, date2):
     Checks the start date is before of equal to the end date
     Checks the dates are 90 or less days apart
     """
-    # converts dates to strings
+    # converts date string to object
     date_str_1 = datetime.strptime(date1, '%d/%m/%Y')
     date_str_2 = datetime.strptime(date2, '%d/%m/%Y')
     # calculates the difference between the two dates, in days
@@ -808,7 +822,7 @@ def analyse_spending(date1, date2):
         print(Style.RESET_ALL)
         next_choice()
     else:
-        print('Would you like to see the sum or average of your spending?\n')
+        print('\nWould you like to see the sum or average of your spending?\n')
         print('1 - Sum')
         print('2 - Average')
     while True:
@@ -820,7 +834,9 @@ def analyse_spending(date1, date2):
                 sleep_clear_screen(1)
                 print('These are the sums of your transactions between:')
                 print(f'{date1} and {date2}\n')
-                print(pivot())
+                print(Fore.YELLOW)
+                print(pivot)
+                print(Style.RESET_ALL)
                 break
             else:
                 pivot = pd.pivot_table(data=filter_dates, index=['Category'],
@@ -829,7 +845,9 @@ def analyse_spending(date1, date2):
                 sleep_clear_screen(1)
                 print('These are the averages of your transactions between:')
                 print(f'{date1} and {date2}\n')
+                print(Fore.YELLOW)
                 print(pivot_round)
+                print(Style.RESET_ALL)
                 break
     next_choice()
 
