@@ -1,32 +1,59 @@
-![CI logo](https://codeinstitute.s3.amazonaws.com/fullstack/ci_logo_small.png)
+# Expense Tracker
 
-Welcome,
+The expense tracker is a useful tool for the user to track, view and analyse their spending.
 
-This is the Code Institute student template for deploying your third portfolio project, the Python command-line project. The last update to this file was: **March 14, 2023**
+![landing-page](assets/images/landing-page.png)
 
-## Reminders
+# Contents
 
-- Your code must be placed in the `run.py` file
-- Your dependencies must be placed in the `requirements.txt` file
-- Do not edit any of the other files or your code may not deploy properly
+- [Expense Tracker](#expense-tracker)
+- [Contents](#contents)
+- [User Experience (UX)](#user-experience-ux)
+  - [Initial Discussion](#initial-discussion)
+    - [Key Information for the Site](#key-information-for-the-site)
+  - [User Stories](#user-stories)
+    - [Client Goals](#client-goals)
+    - [Visitor Goals](#visitor-goals)
+- [Design](#design)
+  - [Colour Scheme](#colour-scheme)
+  - [Flowchart](#flowchart)
+- [Features](#features)
+  - [Existing Features](#existing-features)
+    - [Landing Page](#landing-page)
+    - [New User](#new-user)
+    - [Existing User](#existing-user)
+    - [Main Menu](#main-menu)
+    - [Enter Transaction](#enter-transaction)
+    - [Next Choice](#next-choice)
+    - [Analyse Spending](#analyse-transaction)
+    - [View Transactions](#view-transactions)
+  - [Future Implementations](#future-implementations)
+- [Technologies Used](#technologies-used)
+  - [Languages Used](#languages-used)
+  - [Frameworks, libraries and programs used](#frameworks-libraries-and-programs-used)
+- [Deployment](#deployment)
+- [Testing](#testing)
+  - [PEP8 Vlaidator](#pep8-validator)
+  - [Testing User Stories](#testing-user-stories)
+    - [Client Goals](#client-goals-1)
+    - [Visitor Goals](#visitor-goals-1)
+  - [Full Testing](#full-testing)
+    - [Landing Page](#landing-page-2)
+    - [New User](#new-user-2)
+    - [Existing User](#existing-user-2)
+    - [Main Menu](#main-menu-2)
+    - [Enter Transaction](#enter-transaction-2)
+    - [Next Choice](#next-choice-2)
+    - [Analyse Spending](#analyse-transaction-2)
+    - [View Transactions](#view-transactions-2)
+  - [Bugs](#bugs)
+    - [Resolved Bugs](#resolved-bugs)
+    - [Unresolved Bugs](#unresolved-bugs)
+- [Credits](#credits)
+  - [Code Used](#code-used)
+  - [Content](#content)
+  - [Media](#media)
+  - [Other](#other)
+  - [Acknowledgements](#acknowledgements)
 
-## Creating the Heroku app
-
-When you create the app, you will need to add two buildpacks from the _Settings_ tab. The ordering is as follows:
-
-1. `heroku/python`
-2. `heroku/nodejs`
-
-You must then create a _Config Var_ called `PORT`. Set this to `8000`
-
-If you have credentials, such as in the Love Sandwiches project, you must create another _Config Var_ called `CREDS` and paste the JSON into the value field.
-
-Connect your GitHub repository and deploy as normal.
-
-## Constraints
-
-The deployment terminal is set to 80 columns by 24 rows. That means that each line of text needs to be 80 characters or less otherwise it will be wrapped onto a second line.
-
----
-
-Happy coding!
+[Back to top](#expense-tracker)
