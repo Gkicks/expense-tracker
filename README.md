@@ -325,6 +325,27 @@ The Python libraries used are:
 
 [Back to top](#expense-tracker)
 
+# Deployment and Local Development
+
+## Deployment
+
+This site is deployed using Heroku and following these steps:
+
+1. Create a [Heroku](https://id.heroku.com/login) account or, if you already have one, sign in
+2. Click the 'new' button and select 'create new app'
+3. Enter a unique name for your app and choose the region you are in
+4. Click 'create app'
+5. Click 'settings' and scroll down to 'Config Vars'. Click 'reveal Config Vars'
+6. In the box with the text 'KEY' type PORT and 8000 in the box with the text 'VALUE'
+7. Scroll to the next section, buildpacks and click 'add buildpack'. Add Python and NodeJS, in that order. Click 'Add Buildpack'
+8. Scroll back to the top of the page and click 'Deploy'
+9. Scroll to the Deployment method and choose Github
+10. In the next section, Connect to Github, type in your repository name. If you press the search button it'll bring up all your repositories. Connect to the correct repository
+11. Scroll down to the two sections for deployment (automatic deploys or manual deploys). The automatic deplays will update each time the 'git push' command is entered. For the maunal deploy, this will deploy the branch specified, in it's current state, when the 'Deploy Branch' button is clicked 
+
+[Back to top](#expense-tracker)
+
+
 
 
 
