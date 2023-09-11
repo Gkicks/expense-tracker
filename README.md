@@ -63,7 +63,7 @@ The expense tracker is a useful tool for the user to track, view and analyse the
 ## Initial Discussion
 
 The expense tracker is a tool for the user to keep track of their spending. 
-The application is designed to be simple and intuitive, allowing the user to add transactions, analyse their spending and view their transactions
+The program is designed to be simple and intuitive, allowing the user to add transactions, analyse their spending and view their transactions
 
 ### Key Information for the Site
 
@@ -78,8 +78,8 @@ The application is designed to be simple and intuitive, allowing the user to add
 
 ### Client Goals
 
-- A simple application that users will want to use
-- An application that meets the user’s needs
+- A simple program that users will want to use
+- An program that meets the user’s needs
 - The user to feel their security is taken seriously
 
 ### Visitor Goals
@@ -87,7 +87,7 @@ The application is designed to be simple and intuitive, allowing the user to add
 #### New User Goals
 
 - To be able to set up a new account
-- To understand how to use the application
+- To understand how to use the program
 - To be able to choose their own username
 
 #### Existing User Goals
@@ -105,7 +105,7 @@ The application is designed to be simple and intuitive, allowing the user to add
 
 ## Colour Scheme
 
-I used the colorama library to style the font by colour. I chose to only change the font colour as I believe this makes the application look cleaner and more professional.
+I used the colorama library to style the font by colour. I chose to only change the font colour as I believe this makes the program look cleaner and more professional.
 I chose the following colours for different commands:
     
 - Red: to display error messages
@@ -147,7 +147,7 @@ I chose the following colours for different commands:
 ### The Landing Page
 
 - The landing page is the page the user lands on when the program is first run
-- There is a logo that explains, to the user, what the programme does
+- There is a logo that explains, to the user, what the program does
 - The user must input either N or E to choose if they are a new or existing user
 - The user is able to input N or E in either upper or lowercase format
 - If any other entry is made, the user will see an error message displayed and be asked to enter the information again:
@@ -164,8 +164,8 @@ I chose the following colours for different commands:
 
 - When a valid name is entered the screen will clear and the user will be asked to add a username and advised of the format.
 - I made the decision to not make the username case sensitive as Google Sheets will only allow uniquely named worksheets to be created and this doesn’t take into account the case for the letter. If the username was case sensitive there is the risk two users will choose the same username with different cases, i.e. Bob and bob and the second user would not be able to have a worksheet created
-- he validation checks that the username is more than three characters long and is only one word and whether the username already exists
-- I considered having an upper limit for length of the username =but, upon research, decided against this as it can limit the user's choice
+- The validation checks that the username is more than three characters long and is only one word and whether the username already exists
+- I considered having an upper limit for length of the username but, upon research, decided against this as it can limit the user's choice
 
 ![choose-username-gif](assets/gifs/choose-username.gif)
 
@@ -213,7 +213,7 @@ I chose the following colours for different commands:
 - The date must:
     - Be in the format DD/MM/YYYY
     - Not be in the future
-    - Is a valid date
+    - Be a valid date
 
 ![enter-date-gif](assets/gifs/enter-date.gif)
 
@@ -291,6 +291,39 @@ I chose the following colours for different commands:
 - The ability for the user to delete transactions
 - For the user to be able to confirm the transaction before it’s posted
 - Allowing the user to enter a name that has characters used in different languages
+
+[Back to top](#expense-tracker)
+
+# Technologies Used
+
+## Languages Used
+
+This program was written using Python.
+
+## Frameworks, libraries and programs used
+
+- Codeanywhere – To write the code
+- Github - To save and store files
+- Heroku - To deploy and run the live project
+- Mimo - to produce the flowcharts
+- PEP8 - to validate the Python code, improving the readability and consistency
+
+The Python libraries used are:
+
+- gspread - an API for Google Sheets
+- google.oauth2.service_account - allows the program to access data held in Google Sheets
+- regex - checks for patterns in a string 
+- datetime - allows dates and times to be manipulated
+- colorama - to display the text in different colours
+- pwinput - to display the inputed passwords as asterisks
+- os - to clear the page on the live program
+- time - used to stipulate time between letters showing and to use the sleep function to delay the page clearing 
+- sys - used in the function to slowly print text to the screen
+- bcrypt - to store the password, in Google Sheets, encrypted
+- pandas - to produce the dataframes 
+- numpy - used to produce the pivot table displaying the sum of values
+
+[Back to top](#expense-tracker)
 
 
 
