@@ -57,3 +57,46 @@ The expense tracker is a useful tool for the user to track, view and analyse the
   - [Acknowledgements](#acknowledgements)
 
 [Back to top](#expense-tracker)
+
+# User Experience (UX)
+
+## Initial Discussion
+
+The expense tracker is a tool for the user to keep track of their spending. 
+The application is designed to be simple and intuitive, allowing the user to add transactions, analyse their spending and view their transactions
+
+### Key Information for the Site
+
+- New user to set up a new account
+- Exisiting user to access their account
+- Functions to;
+    - Add transactions
+    - Analyse spending
+    - View transactions
+
+## User Stories
+
+### Client Goals
+
+- A simple application that users will want to use
+- An application that meets the user’s needs
+- The user to feel their security is taken seriously
+
+### Visitor Goals
+
+#### New User Goals
+
+- To be able to set up a new account
+- To understand how to use the application
+- To be able to choose their own username
+
+#### Existing User Goals
+
+- For personal data to be stored securely
+- To access an exisiting account
+- To be able to add transactions, by category and with a description
+- To be able to view the sum and mean values of their transactions, by category, for a selected date range
+- An option to view their transactions for a selected date range
+- A pleasant user experience
+
+[Back to top](#expense-tracker)
