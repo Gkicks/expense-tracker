@@ -13,7 +13,8 @@ The expense tracker is a useful tool for the user to track, view and analyse the
     - [Key Information for the Site](#key-information-for-the-site)
   - [User Stories](#user-stories)
     - [Client Goals](#client-goals)
-    - [Visitor Goals](#visitor-goals)
+    - [First Time Visitor Goals](#first-time-visitor-goals)
+    - [Returning Visitor Goals](#returning-visitor-goals)
 - [Design](#design)
   - [Colour Scheme](#colour-scheme)
   - [Flowcharts](#flowcharts)
@@ -35,8 +36,9 @@ The expense tracker is a useful tool for the user to track, view and analyse the
 - [Testing](#testing)
   - [PEP8 Vlaidator](#pep8-validator)
   - [Testing User Stories](#testing-user-stories)
-    - [Client Goals](#client-goals-1)
-    - [Visitor Goals](#visitor-goals-1)
+    - [Client Goals](#client-goals-2)
+    - [First Time Visitor Goals](#first-time-visitor-goals-2)
+    - [Returning Visitor Goals](#returning-visitor-goals-2)
   - [Full Testing](#full-testing)
     - [Landing Page](#landing-page-2)
     - [New User](#new-user-2)
@@ -84,13 +86,13 @@ The program is designed to be simple and intuitive, allowing the user to add tra
 
 ### Visitor Goals
 
-#### New User Goals
+#### First Time Visitor Goals
 
 - To be able to set up a new account
 - To understand how to use the program
 - To be able to choose their own username
 
-#### Existing User Goals
+#### Returning Visitor Goals
 
 - For personal data to be stored securely
 - To access an exisiting account
@@ -305,6 +307,7 @@ This program was written using Python.
 - Codeanywhere – To write the code
 - Github - To save and store files
 - Heroku - To deploy and run the live project
+- Markdown Table Maker - to produce the tables used, in this README, from an Excel format
 - Mimo - to produce the flowcharts
 - PEP8 - to validate the Python code, improving the readability and consistency
 
@@ -345,13 +348,95 @@ This site is deployed using Heroku and following these steps:
 
 [Back to top](#expense-tracker)
 
+# Testing
+
+## PEP8 Validiator
+
+I ran my code throught the [Code Institute Python Linter](https://pep8ci.herokuapp.com/). This showed no errors:
+
+![pep8 valdator](assets/images/pep8.png)
+
+## Manual Testing
+
+### Testing User Stories
+
+### Client Goals
+
+**Goal**|**How is this Achieved?**
+:-----:|:-----:
+A simple program that users will want to use|The program is intuitive and guides the user through each step of using it. It is a simple program and the colours used, for the fonts, provide interest to the user
+An program that meets the user’s needs|The program allows the user to input transactions, to be able to analyse their spending and to view their transactions
+The user to feel their security is taken seriously|When an existing user enters their password the text is shown as asterisks so it is hidden from anyone that could be watching. The passwords are stored, in Google Sheets, as encrypted to prevent hacking. The error message, for the username and password not matching, doesn't say whether it's the username or password that has been entered wrong. This is another level of security to stop another user working out these details from which is wrong
+
+### First Time Visitor Goals
+
+**Goal**|**How is this Achieved?**
+:-----:|:-----:
+To be able to set up a new account|The user selects N or n, from the page at the beginning of the programe, and then follows the steps to create their account
+To understand how to use the program|The program guides the user, though every step of the way, and is simple and intuative to use
+To be able to choose their own username|The user is able to choose their own username as long as it's not already in use by another user
+
+### Returning Visitor Goals
+
+**Goal**|**How is this Achieved?**
+:-----:|:-----:
+For personal data to be stored securely|Bcrypt has been used so that users passwords are encrypted before they're stored in Google Sheets
+To access an exisiting account|The first menu asks the user if they are a new or existing user. The user enters E or e to access an existing account
+To be able to add transactions, by category and with a description|These are all asked for when the user choses to add a tranasaction
+To be able to view the sum and mean values of their transactions, by category, for a selected date range|The user is able to do both these things by selecting option 2 from the main menu
+An option to view their transactions for a selected date range|The user is able to view their transactions from a selected 90 day period
+A pleasant user experience|This is a simple and visually plesant program to use
+
+## Full Testing
+
+### Landing Page
+
+**Entry**|**Expected Outcome**|**As Expected?**
+:-----:|:-----:|:-----:
+Enter N|Ask user to choose a username|Yes
+Enter E|Ask user to enter their username|Yes
+Enter n|Ask user to enter their username|Yes
+Enter e|Ask user to enter their username|Yes
+Any other letter|Tells the user they didn't enter a correct value and asks them to choose N or E|Yes
+Any other number|Tells the user they didn't enter a correct value and asks them to choose N or E|Yes
+Any special character|Tells the user they didn't enter a correct value and asks them to choose N or E|Yes
+
+### New User
+
+**Entry**|**Expected Outcome**|**As Expected?**
+:-----:|:-----:|:-----:
+Choose Name| | 
+Any string containing only letters|Takes the user to a new page to choose a username|Yes
+A blank space|Tells the user the name can only contain letters and asks them to try again|Yes
+A string containing numbers|Tells the user the name can only contain letters and asks them to try again|Yes
+A string containing special characters|Tells the user the name can only contain letters and asks them to try again|Yes
+A string with a space|Tells the user the name cannot contain balnk spaces and to try again|Yes
+Choose Username| | 
+Enter username >= 3 characters and not currently used|Ask user to choose a password|Yes
+Enter username >= 3 characters and currently used|Tells the user that username already exists and to choose another option|Yes
+Enter username < 3 characters|Tells the user the username must contain at least three characters and to choose another option|Yes
+Choose Password| | 
+Enter P4ssword!5|Tells user the password is valid and asks the user what they would like to do, adds the new username and password to the Google sheets worksheet named 'users'|Yes
+Enter pass|Tells the user the user the password was 4 characters long and that it must be at least six characters long|Yes
+Enter P4SSWORD!5|Tells the user the username must contain at least one lowercase letter and to try again|Yes
+Enter p4ssword!5|Tells the user the username must contain at least one uppercase letter and to try again|Yes
+Enter Password!s|Tells the user the username must contain at least one number and to try again|Yes
+Enter P4ssword5|Tells the user the username must contain at least one special character and to try again|Yes
+
+### Existing USer
 
 
+### Main Menu
 
 
+### Enter Transaction
 
 
+### Next Choice
 
 
- 
+### Analyse Spending
+
+
+### View Transactions
 
