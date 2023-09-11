@@ -139,3 +139,165 @@ I chose the following colours for different commands:
 ### Python Validation
 
 ![user-experience-flowchart](assets/images/validation-flowchart.png)
+
+# Features
+
+## Existing Features
+
+### The Landing Page
+
+- The landing page is the page the user lands on when the program is first run
+- There is a logo that explains, to the user, what the programme does
+- The user must input either N or E to choose if they are a new or existing user
+- The user is able to input N or E in either upper or lowercase format
+- If any other entry is made, the user will see an error message displayed and be asked to enter the information again:
+
+![new-or-existing-gif](assets/gifs/new-or-existing.gif)
+
+### New User
+
+- If N or n is selected the page will clear and the user will see a welcome message. 
+- They are asked to enter their name and the format this should be in is shown. The name can be the same as an existing user as this has no impact on the program.
+- The user will see an error message if they input a name that is anything but letters or contains blanks spaces
+
+![choose-name-gif](assets/gifs/choose-name.gif)
+
+- When a valid name is entered the screen will clear and the user will be asked to add a username and advised of the format.
+- I made the decision to not make the username case sensitive as Google Sheets will only allow uniquely named worksheets to be created and this doesn’t take into account the case for the letter. If the username was case sensitive there is the risk two users will choose the same username with different cases, i.e. Bob and bob and the second user would not be able to have a worksheet created
+- he validation checks that the username is more than three characters long and is only one word and whether the username already exists
+- I considered having an upper limit for length of the username =but, upon research, decided against this as it can limit the user's choice
+
+![choose-username-gif](assets/gifs/choose-username.gif)
+
+- When the user has chosen a valid username, the screen will clear, they are thanked and told their username and they will be asked to choose a password
+- The validation checks the password:
+    - Is six or more characters in length
+    - Contains at least one upper and lower case letter
+    - Contains at least one number
+    - Contains at least one special character
+- This password will be visible when typed. I chose to keep this as visible, rather than the letters be replaced with another character, so the user was able to see the password they had typed
+- When the user chooses a valid password they will be shown a message to tell them that password is valid
+
+![choose-password-gif](assets/gifs/choose-password.gif)
+
+- The screen clears and the user sees a ‘Hi {name} message and will see the [main menu](#main-menu)
+
+### Existing User
+
+- The user will be asked to enter their username. If they enter a username that does not exist they will see an error message
+
+![existing-username-gif](assets/gifs/existing-username.gif)
+
+- If they enter a username that exists they will be asked to enter their password
+- The password will be displayed as asterisks to improve security
+- The user will then be asked to confirm their password
+- If the passwords do not match, or the password doesn’t match the stored username, the user will see an error message
+- When the username and passwords are inputted correctly, the screen will clear and the user will get a welcome back message. This will be the name they inputted when they ran the program as a new user and the user will see the [main menu](#main-menu)
+
+![existing-password-gif](assets/gifs/existing-password.gif)
+
+### Main Menu
+
+- The main menu gives the user four options;
+    - Enter transaction
+    - Analyse spending
+    - View Transactions
+    - Quit
+- The user must pick a number, between 1 and 4, to choose an option
+
+![main-menu-gif](assets/gifs/main-menu.gif)
+
+### Enter Transaction
+
+- Firstly the user will be asked to enter the date of the transaction
+- The date must:
+    - Be in the format DD/MM/YYYY
+    - Not be in the future
+    - Is a valid date
+
+![enter-date-gif](assets/gifs/enter-date.gif)
+
+- The screen will then clear and ask the user to enter a transaction category, from the following options;
+    - 1 - Household Bills
+    - 2 – Transportation
+    - 3 – Food
+    - 4 – Savings
+    - 5 – Personal Spending
+    - 6 – Other
+- These categories were chosen as the main categories cover the main area that the majority of people spend in and the other section covers anything that doesn’t fit into these categories
+- The option is validated to check the input is a number between 1 and 6
+
+![choose-transaction-category-gif](assets/gifs/choose-transaction-category.gif)
+
+- When a valid option is chosen, the screen will clear and the user is asked to enter a description of the spend. This can only contain letters
+- I considered putting a validation on the length of characters but, decided against this, as some users may not want to write a description 
+
+![enter-description-gif](assets/gifs/enter-description.gif)
+
+- When a valid description is entered, the screen will clear, and the user will be asked to enter the spend amount 
+- This is validated to check an amount that is either an integer, or to two decimal places is entered and that the amount is greater than zero
+- The user will get a message to say their transaction is being added and then a thank you message, using their name, to say that the transaction has been added
+- I considered putting a delay, between the adding transaction and the thank you message. I decided against this as, with this type of program, I believe speed would be more important to the user, especially if they are adding multiple transactions
+
+![enter-amounts-gif](assets/gifs/enter-amounts.gif)
+
+- The users transaction will be appended, as a row, to the bottom of their named Google worksheet, the screen will clear and then user will be asked for their [next choice](#next-choice)
+
+![appended-transaction-image](assets/images/appended-transaction.png)
+
+### Next Choice
+
+- The user is asked what they would like to do next from the following options;
+    - 1 – Enter another transaction
+    - 2 – Return to the main menu
+    - 3 – Quit
+- If the user selects 1 the screen will clear and they will be taken to the [enter date](#enter-date) part of the getting transaction function
+- If the user selects 2 they will be taken back to the [main menu](#main-menu)
+- If the user selects 3 they will receive a thank you and goodbye message
+
+![next-choice-gif](assets/gifs/next-choice.gif)
+
+### Analyse Spending
+
+- If the user selects 2 from the [main menu](#main-menu) the screen will clear and they will be asked to enter a start date and end date. Each of these dates is validated the same way as the date for entering a [transaction](#enter-transaction)
+- The date range will be validated to ensure that the end date is within 90 days of the start date and that the end date isn’t before the start date
+
+![enter-date-range-gif](assets/gifs/enter-date-range.gif)
+
+- If the dates entered are valid, the screen will clear and the user will be asked if they would like to see the sum or mean of their spending 
+- The option is validated to make sure the user only inputs 1 or 2
+- The dates the user has chosen will be displayed and the pivot table will be displayed for whichever of the options they have chosen 
+- The user will be asked what they would like to do [next](#next-choice)
+
+![analyse-spending-gif](assets/gifs/analyse-spending.gif)
+
+### View Transactions
+
+- Option 3 from the [main menu](#main-menu) is the option for the user to view their transactions
+- They will asked to choose a date range in the same way as they would for [analyse spending](#analyse-spending-gif)
+- A pivot table of their spending will be displayed
+
+![view-transactions-image](assets/images/view-transactions.png)
+
+- The user will be asked what they would like to do [next](#next-choice)
+
+## Future Implementations
+
+- An option to create a budget and tell the user how much budget they have remaining
+- Allow the user to display transactions by spend category
+- Suggest a username, that is not already in use, to the user
+- If the user selects they are an existing user, and their username is not found, give an option to select new user
+- Add a forgotten password function – possibly with password hints
+- The ability for the user to delete transactions
+- For the user to be able to confirm the transaction before it’s posted
+- Allowing the user to enter a name that has characters used in different languages
+
+
+
+
+
+
+
+
+ 
+
