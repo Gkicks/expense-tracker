@@ -16,7 +16,7 @@ The expense tracker is a useful tool for the user to track, view and analyse the
     - [Visitor Goals](#visitor-goals)
 - [Design](#design)
   - [Colour Scheme](#colour-scheme)
-  - [Flowchart](#flowchart)
+  - [Flowcharts](#flowcharts)
 - [Features](#features)
   - [Existing Features](#existing-features)
     - [Landing Page](#landing-page)
@@ -100,3 +100,42 @@ The application is designed to be simple and intuitive, allowing the user to add
 - A pleasant user experience
 
 [Back to top](#expense-tracker)
+
+# Design
+
+## Colour Scheme
+
+I used the colorama library to style the font by colour. I chose to only change the font colour as I believe this makes the application look cleaner and more professional.
+I chose the following colours for different commands:
+    
+- Red: to display error messages
+
+![red-message](assets/images/red-message.png)
+
+- Blue: welcoming messages for the user
+
+![blue-message](assets/images/blue-message.png)
+
+- Green: for valid inputs
+
+![green-message](assets/images/green-message.png)
+
+- Yellow: to display pandas dataframes
+
+![yellow-message](assets/images/yellow-message.png)
+
+- Magenta: to display the message when the transaction is being added and the user selects to quit 
+
+![magenta-message](assets/images/magenta-message.png)
+
+## Flowcharts
+
+- The flowcharts were created using Miro
+
+### User Experience
+
+![user-experience-flowchart](assets/images/user-experience-flowchart.png)
+
+### Python Validation
+
+![user-experience-flowchart](assets/images/validation-flowchart.png)
