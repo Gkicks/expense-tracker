@@ -59,7 +59,7 @@ To access an exisiting account|The first menu asks the user if they are a new or
 To be able to add transactions, by category and with a description|These are all asked for when the user choses to add a tranasaction
 To be able to view the sum and mean values of their transactions, by category, for a selected date range|The user is able to do both these things by selecting option 2 from the main menu
 An option to view their transactions for a selected date range|The user is able to view their transactions from a selected 90 day period
-A pleasant user experience|This is a simple and visually plesant program to use
+A pleasant user experience|This is a simple and visually pleasant program to use
 
 [Back to top](#testing)
 
@@ -101,7 +101,7 @@ Username < 3 characters|Tells the user the username must contain at least three 
 
 **Test**|**Expected Outcome**|**Test Keyed**|**As Expected?**|**Pass?**
 :-----:|:-----:|:-----:|:-----:|:-----:
-A string with at least 1 uppercase letter, 1 lowercase leter, 1 number and 1 special character|Tells user the password is valid and asks the user what they would like to do, adds the new username and password to the Google sheets worksheet named 'users'|P4ssword!5|Yes|Yes
+A string with at least 1 uppercase letter, 1 lowercase letter, 1 number and 1 special character|Tells user the password is valid and asks the user what they would like to do, adds the new username and password to the Google sheets worksheet named 'users'|P4ssword!5|Yes|Yes
 A string less than 6 characters long|Tells the user the user the password was 4 characters long and that it must be at least six characters long|Pass|Yes|Yes
 A string with no lowercase letters|Tells the user the username must contain at least one lowercase letter and to try again|P4SSWORD!5|Yes|Yes
 A string with no uppercase letters|Tells the user the username must contain at least one uppercase letter and to try again|p4ssword!5|Yes|Yes
@@ -165,8 +165,8 @@ Choose option 4|Screen to clear. User asked to enter a desription of the spend|4
 Choose option 5|Screen to clear. User asked to enter a desription of the spend|5|Yes|Yes
 Choose option 6|Screen to clear. User asked to enter a desription of the spend|6|Yes|Yes
 A blank space|Error message - Incorrect option chosen. Please enter a number between 1 and 6|" "|Yes|Yes
-A number not between 1 and 4|Error message - Incorrect option chosen. Please enter a number between 1 and 6|5|Yes|Yes
-A negative number between -1 and -4|Error message - Incorrect option chosen. Please enter a number between 1 and 6|-2|Yes|Yes
+A number not between 1 and 6|Error message - Incorrect option chosen. Please enter a number between 1 and 6|8|Yes|Yes
+A negative number between -1 and -6|Error message - Incorrect option chosen. Please enter a number between 1 and 6|-2|Yes|Yes
 A letter|Error message - Incorrect option chosen. Please enter a number between 1 and 6|z|Yes|Yes
 A special character|Error message - Incorrect option chosen. Please enter a number between 1 and 6|$|Yes|Yes
 
@@ -203,8 +203,8 @@ Choose option 1|Screen to clear. User asked to enter the date of the transaction
 Choose option 2|Screen to clear. User to be shown the main menu|2|Yes|Yes
 Choose option 3|Message - Thank you for using this tracker. Goodbye {name}|3|Yes|Yes
 A blank space|Error message - You did not enter a correct value. Please enter a number between 1 and 3|" "|Yes|Yes
-A number not between 1 and 4|Error message - You did not enter a correct value. Please enter a number between 1 and 3|5|Yes|Yes
-A negative number between -1 and -4|Error message - You did not enter a correct value. Please enter a number between 1 and 3|-2|Yes|Yes
+A number not between 1 and 3|Error message - You did not enter a correct value. Please enter a number between 1 and 3|5|Yes|Yes
+A negative number between -1 and -3|Error message - You did not enter a correct value. Please enter a number between 1 and 3|-2|Yes|Yes
 A letter|Error message - You did not enter a correct value. Please enter a number between 1 and 3|z|Yes|Yes
 A special character|Error message - You did not enter a correct value. Please enter a number between 1 and 3|$|Yes|Yes
 
@@ -262,6 +262,8 @@ For anyone wishing to test this program, as an existing user, I have left some d
 
 Percy's username is percypig and his password is Passw0rd!
 
+[Back to top](#testing)
+
 ## Bugs
 
 ### Resolved Bugs
@@ -288,7 +290,7 @@ When a blank input was given in the main menu option, the error message was appe
 
 ### Unresolved Bugs
 
-- When the pivot table is returned, from the analyse spending function, the headers on the tables displayed aren't inline (the amount header shows slightly higher). A future implementation could be to improve the visual showing of the pivot table
+- When the pivot table is returned, from the analyse spending function, the headers on the tables displayed aren't inline (the amount header shows slightly higher). A future implementation could be to improve the visual apperance of the pivot table
 
 ![image of pivot table headers](assets/images/pivot-headers.png)
 
