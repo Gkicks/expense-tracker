@@ -166,6 +166,14 @@ I chose the following colours for different commands:
 ![choose-password-gif](assets/gifs/choose-password.gif)
 
 - The screen clears and the user sees a ‘Hi {name} message and will see the [main menu](#main-menu)
+- The user's username, password and name are appended to the 'user's' worksheet in Google Sheets. The password is encrypted, before being appended, to prevent a hacking security breech
+
+![Image of new user's account details](assets/images/new-users-details.png)
+
+- The user will have a new worksheet produced, named the same as the chosen username, which has the headers matching the information that will be got from the user inputting a transaction
+
+![Image of new user's worksheet](assets/images/new-users-worksheet.png)
+![Image of new user's worksheet headers](assets/images/new-users-headers.png)
 
 ### Existing User
 
@@ -341,7 +349,7 @@ This site is deployed using Heroku and following these steps:
 
 # Testing
 
-Please refer to the testing information in the seperate [TESTING.md](/testing.md)  file
+Please refer to the testing information in the seperate [TESTING.md](/TESTING.md) file
 
 # Credits
 
