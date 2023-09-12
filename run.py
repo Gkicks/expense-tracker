@@ -108,7 +108,7 @@ def get_new_users_name():
     """
     print('Please enter your name')
     print_slow('\nName can only contain letters\n')
-    print_slow('and cannot contain any blank spaces\n')
+    print_slow('Name cannot contain any blank spaces\n')
     while True:
         name = input('\n> ')
         if validate_name(name):
@@ -252,7 +252,7 @@ def validate_new_password(password):
             print(Fore.RED + 'Password must contain one special character')
             raise ValueError
         if not re.search('[0-9]', password):
-            print(Fore.RED + 'Your password must include at least one number')
+            print(Fore.RED + 'Password must include at least one number')
             raise ValueError
     except ValueError:
         print('Please try again')
@@ -313,7 +313,7 @@ def validate_existing_username(username):
     try:
         # checks the username is in the list of stored usernames
         if username not in CURRENT_USERNAMES:
-            print(Fore.RED + '\nusername does not exist')
+            print(Fore.RED + '\nUsername does not exist')
             raise ValueError
     except ValueError:
         print('Please try again')
@@ -417,18 +417,18 @@ def option_validation(option):
     """
     Validates the option input
     """
-    if option == "":
-        print(Fore.RED + '\nYou did not enter a number!\n')
+    num_options = ['1', '2', '3', '4']
+    try:
+        if option == "":
+            print(Fore.RED + '\nYou did not enter a number!')
+            raise ValueError
+        if option not in num_options:
+            print(Fore.RED + "\nThat isn't a valid option")
+            raise ValueError
+    except ValueError:
+        print(Fore.RED + 'Please try again.\n')
         print(Style.RESET_ALL)
-    else:
-        num_options = ['1', '2', '3', '4']
-        try:
-            if option not in num_options:
-                raise ValueError
-        except ValueError:
-            print(Fore.RED + 'Not a valid number. Please try again.\n')
-            print(Style.RESET_ALL)
-            return False
+        return False
 
     return True
 
