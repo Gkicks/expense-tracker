@@ -1,29 +1,33 @@
+# Testing
+
+## Contents
+
 - [Testing](#testing)
-  - [PEP8 Vlaidator](#pep8-validator)
+  - [PEP8 Validator](#pep8-validator)
   - [Testing User Stories](#testing-user-stories)
     - [Client Goals](#client-goals)
     - [First Time Visitor Goals](#first-time-visitor-goals)
     - [Returning Visitor Goals](#returning-visitor-goals)
   - [Full Testing](#full-testing)
     - [Landing Page](#landing-page)
-    - [New User](#new-user-2)
+    - [New User](#new-user)
     - [Existing User](#existing-user)
-    - [Main Menu](#main-menu-2)
+    - [Main Menu](#main-menu)
     - [Enter Transaction](#enter-transaction)
     - [Next Choice](#next-choice)
-    - [Analyse Spending](#analyse-transaction)
+    - [Analyse Spending](#analyse-spending)
     - [View Transactions](#view-transactions)
   - [Bugs](#bugs)
     - [Resolved Bugs](#resolved-bugs)
     - [Unresolved Bugs](#unresolved-bugs)
 
-# Testing
-
-## PEP8 Validiator
+## PEP8 Validator
 
 I ran my code throught the [Code Institute Python Linter](https://pep8ci.herokuapp.com/). This showed no errors:
 
 ![pep8 valdator](assets/images/pep8.png)
+
+[Back to top](#testing)
 
 ## Manual Testing
 
@@ -55,6 +59,8 @@ To be able to add transactions, by category and with a description|These are all
 To be able to view the sum and mean values of their transactions, by category, for a selected date range|The user is able to do both these things by selecting option 2 from the main menu
 An option to view their transactions for a selected date range|The user is able to view their transactions from a selected 90 day period
 A pleasant user experience|This is a simple and visually plesant program to use
+
+[Back to top](#testing)
 
 ## Full Testing
 
@@ -245,6 +251,8 @@ Enter any other characters|Error message - Date is not in the correct format. Th
 A start and end date that are more than 90 days apart|Error message - Dates cannot be more than 90 days apart. Please enter new dates|01/01/2023 and 01/09/2023|Yes|Yes
 An end date that is before the start date|Error message - End date cannot be before the start date. Please enter new dates|01/09/2023 and 31/08/2023|Yes|Yes
 
+[Back to top](#testing)
+
 ## Bugs
 
 ### Resolved Bugs
@@ -276,3 +284,5 @@ When a blank input was given in the main menu option, the error message was appe
 ![image of pivot table headers](assets/images/pivot-headers.png)
 
 - The user can still type whilst the command messages are printing which causes an error message in the next input. This would be another consideration for a future implementation
+
+[Back to top](#testing)
