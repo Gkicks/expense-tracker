@@ -17,6 +17,7 @@
     - [Next Choice](#next-choice)
     - [Analyse Spending](#analyse-spending)
     - [View Transactions](#view-transactions)
+  - [Future Testing](#future-testing)
   - [Bugs](#bugs)
     - [Resolved Bugs](#resolved-bugs)
     - [Unresolved Bugs](#unresolved-bugs)
@@ -252,6 +253,14 @@ A start and end date that are more than 90 days apart|Error message - Dates cann
 An end date that is before the start date|Error message - End date cannot be before the start date. Please enter new dates|01/09/2023 and 31/08/2023|Yes|Yes
 
 [Back to top](#testing)
+
+## Future Testing
+
+For anyone wishing to test this program, as an existing user, I have left some data saved in Google Sheets
+
+![Image of Percy Pig's Spending](assets/images/percy-spending.png)
+
+Percy's username is percypig and his password is Passw0rd!
 
 ## Bugs
 
