@@ -25,9 +25,10 @@ The expense tracker is a useful tool for the user to track, view and analyse the
     - [Existing User](#existing-user)
     - [Main Menu](#main-menu)
     - [Enter Transaction](#enter-transaction)
-    - [Next Choice](#next-choice)
     - [Analyse Spending](#analyse-spending)
     - [View Transactions](#view-transactions)
+    - [Next Choice](#next-choice)
+    - [Quit](#quit)
   - [Future Implementations](#future-implementations)
 - [Technologies Used](#technologies-used)
   - [Languages Used](#languages-used)
@@ -166,7 +167,7 @@ I chose the following colours for different commands:
 ![choose-password-gif](assets/gifs/choose-password.gif)
 
 - The screen clears and the user sees a ‘Hi {name} message and will see the [main menu](#main-menu)
-- The user's username, password and name are appended to the 'user's' worksheet in Google Sheets. The password is encrypted, before being appended, to prevent a hacking security breech
+- The user's username, password and name are appended to the 'user's' worksheet in Google Sheets. The password is encrypted, before being appended, to prevent a hacking security breach
 
 ![Image of new user's account details](assets/images/new-users-details.png)
 
@@ -242,18 +243,6 @@ I chose the following colours for different commands:
 
 ![appended-transaction-image](assets/images/appended-transaction.png)
 
-### Next Choice
-
-- The user is asked what they would like to do next from the following options;
-    - 1 – Enter another transaction
-    - 2 – Return to the main menu
-    - 3 – Quit
-- If the user selects 1 the screen will clear and they will be taken to the [enter date](#enter-date) part of the getting transaction function
-- If the user selects 2 they will be taken back to the [main menu](#main-menu)
-- If the user selects 3 they will receive a thank you and goodbye message
-
-![next-choice-gif](assets/gifs/next-choice.gif)
-
 ### Analyse Spending
 
 - If the user selects 2 from the [main menu](#main-menu) the screen will clear and they will be asked to enter a start date and end date. Each of these dates is validated the same way as the date for entering a [transaction](#enter-transaction)
@@ -278,18 +267,36 @@ I chose the following colours for different commands:
 
 - The user will be asked what they would like to do [next](#next-choice)
 
+### Next Choice
+
+- The user is asked what they would like to do next from the following options;
+    - 1 – Enter another transaction
+    - 2 – Return to the main menu
+    - 3 – Quit
+- If the user selects 1 the screen will clear and they will be taken to the [enter date](#enter-date) part of the getting transaction function
+- If the user selects 2 they will be taken back to the [main menu](#main-menu)
+- If the user selects 3 they will receive a thank you and goodbye message
+
+![next-choice-gif](assets/gifs/next-choice.gif)
+
+### Quit
+
+- If the user chooses to quit the program a message will be shown, thanking them for using the tracker and saying goodbye {name}
+
+ADD IMAGE HERE!!
+
 ## Future Implementations
 
-- An option to create a budget and tell the user how much budget they have remaining
-- Allow the user to display transactions by spend category
 - Suggest a username, that is not already in use, to the user
 - If the user selects they are an existing user, and their username is not found, give an option to select new user
+- Allowing the user to enter a name that has characters used in different languages
 - Add a forgotten password function – possibly with password hints
+- An option to create a budget and tell the user how much budget they have remaining
+- For the user to be able to confirm the transaction before it’s posted
+- For the user to be able to select a wider date range for analysing spending
+- Allow the user to display transactions by spend category
 - The ability for the user to delete transactions
 - The ability for the user to record any refunds
-- For the user to be able to confirm the transaction before it’s posted
-- For the user to select a wider date date for analysing transactions
-- Allowing the user to enter a name that has characters used in different languages
 - Displays of the panda dataframes to be made more visually pleasing
 - Bug to be fixed where the user is still able to type while the commands are printing 
 
@@ -327,9 +334,7 @@ The Python libraries used are:
 
 [Back to top](#expense-tracker)
 
-# Deployment and Local Development
-
-## Deployment
+# Deployment
 
 This site is deployed using Heroku and following these steps:
 
