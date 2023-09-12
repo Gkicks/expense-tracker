@@ -453,6 +453,7 @@ def validate_date(date):
     """
     Validates that the date inputted is in the format DD/MM/YYYY
     Checks the date added is not in the future
+    Checks the date isn't before 01/01/2000
     """
     try:
         if len(date) != 10:
@@ -474,7 +475,7 @@ def validate_date(date):
         # checks if the number of characters in day and month is two
         # checks the year has four characters
         if len(day) != 2 or len(month) != 2 or len(year) != 4:
-            print(Fore.RED + '\ndate is not in the correct format')
+            print(Fore.RED + '\nDate is not in the correct format')
             print('The date should be in the format DD/MM/YYYY')
             raise ValueError
         if int(year) < 2000:
@@ -529,7 +530,7 @@ def validate_spend_category(number):
         if number not in avail_options:
             raise ValueError
     except ValueError:
-        print(Fore.RED + 'incorrect option chosen')
+        print(Fore.RED + 'Incorrect option chosen')
         print(Fore.RED + 'Please enter a number between 1 and 6')
         print(Style.RESET_ALL)
         return False
@@ -566,6 +567,7 @@ def validate_desc(spend_desc):
             print(Fore.RED + 'The description must only contain letters')
             raise ValueError
     except ValueError:
+        print(Fore.RED + 'Please try again')
         print(Style.RESET_ALL)
         return False
 
@@ -748,7 +750,7 @@ def validate_date_range(date1, date2):
             raise ValueError
         # Checks the dates are not more than 90 days apart
         if difference > 90:
-            print(Fore.RED + '\nDates cannot be more than 90 days apart')
+            print(Fore.RED + 'Dates cannot be more than 90 days apart')
             raise ValueError
     except ValueError:
         print('Please enter new dates')
@@ -862,6 +864,7 @@ def validate_choice(num):
             raise ValueError
     except ValueError:
         print(Fore.RED + '\nNot a valid option')
+        print('\nPlease enter either 1 or 2')
         print(Style.RESET_ALL)
         return False
 
