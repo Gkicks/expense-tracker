@@ -8,7 +8,7 @@ The expense tracker is a useful tool for the user to track, view and analyse the
 
 - [Expense Tracker](#expense-tracker)
 - [Contents](#contents)
-- [User Experience (UX)](#user-experience-ux)
+- [User Experience (UX)](#user-experience-(ux))
   - [Initial Discussion](#initial-discussion)
     - [Key Information for the Site](#key-information-for-the-site)
   - [User Stories](#user-stories)
@@ -26,7 +26,7 @@ The expense tracker is a useful tool for the user to track, view and analyse the
     - [Main Menu](#main-menu)
     - [Enter Transaction](#enter-transaction)
     - [Next Choice](#next-choice)
-    - [Analyse Spending](#analyse-transaction)
+    - [Analyse Spending](#analyse-spending)
     - [View Transactions](#view-transactions)
   - [Future Implementations](#future-implementations)
 - [Technologies Used](#technologies-used)
@@ -34,23 +34,6 @@ The expense tracker is a useful tool for the user to track, view and analyse the
   - [Frameworks, libraries and programs used](#frameworks-libraries-and-programs-used)
 - [Deployment](#deployment)
 - [Testing](#testing)
-  - [PEP8 Vlaidator](#pep8-validator)
-  - [Testing User Stories](#testing-user-stories)
-    - [Client Goals](#client-goals-2)
-    - [First Time Visitor Goals](#first-time-visitor-goals-2)
-    - [Returning Visitor Goals](#returning-visitor-goals-2)
-  - [Full Testing](#full-testing)
-    - [Landing Page](#landing-page-2)
-    - [New User](#new-user-2)
-    - [Existing User](#existing-user-2)
-    - [Main Menu](#main-menu-2)
-    - [Enter Transaction](#enter-transaction-2)
-    - [Next Choice](#next-choice-2)
-    - [Analyse Spending](#analyse-transaction-2)
-    - [View Transactions](#view-transactions-2)
-  - [Bugs](#bugs)
-    - [Resolved Bugs](#resolved-bugs)
-    - [Unresolved Bugs](#unresolved-bugs)
 - [Credits](#credits)
   - [Code Used](#code-used)
   - [Content](#content)
@@ -146,7 +129,7 @@ I chose the following colours for different commands:
 
 ## Existing Features
 
-### The Landing Page
+### Landing Page
 
 - The landing page is the page the user lands on when the program is first run
 - There is a logo that explains, to the user, what the program does
@@ -215,7 +198,10 @@ I chose the following colours for different commands:
 - The date must:
     - Be in the format DD/MM/YYYY
     - Not be in the future
+    - Not be before 01/01/2000
+        - This date was chosen after a encountered a bug for any dates entered prior to 21/09/1677. I wasnted to have a cutoff point and the turn of the century seemed a neat place to have this.
     - Be a valid date
+- I chose not to put in a print statement to tell the user that the date can't be in the future or before 01/01/2000. I thought it was very unlikely a user would use the program to enter these dates and, including this information, would make the screen looked cluttered. If a user enters a date outside these parameters they will get this information through an error message.
 
 ![enter-date-gif](assets/gifs/enter-date.gif)
 
@@ -228,6 +214,7 @@ I chose the following colours for different commands:
     - 6 – Other
 - These categories were chosen as the main categories cover the main area that the majority of people spend in and the other section covers anything that doesn’t fit into these categories
 - The option is validated to check the input is a number between 1 and 6
+- If an incorrect option is inputted I decided the user should see the whole menu again. This is as there are several options and, if the screen moves past the initial menu being displayed, the user may not remember what the options are.
 
 ![choose-transaction-category-gif](assets/gifs/choose-transaction-category.gif)
 
@@ -291,8 +278,12 @@ I chose the following colours for different commands:
 - If the user selects they are an existing user, and their username is not found, give an option to select new user
 - Add a forgotten password function – possibly with password hints
 - The ability for the user to delete transactions
+- The ability for the user to record any refunds
 - For the user to be able to confirm the transaction before it’s posted
+- For the user to select a wider date date for analysing transactions
 - Allowing the user to enter a name that has characters used in different languages
+- Displays of the panda dataframes to be made more visually pleasing
+- Bug to be fixed where the user is still able to type while the commands are printing 
 
 [Back to top](#expense-tracker)
 
@@ -302,7 +293,7 @@ I chose the following colours for different commands:
 
 This program was written using Python.
 
-## Frameworks, libraries and programs used
+## Frameworks, Libraries and Programs Used
 
 - Codeanywhere – To write the code
 - Github - To save and store files
@@ -318,7 +309,7 @@ The Python libraries used are:
 - regex - checks for patterns in a string 
 - datetime - allows dates and times to be manipulated
 - colorama - to display the text in different colours
-- pwinput - to display the inputed passwords as asterisks
+- pwinput - to display the inputted passwords as asterisks
 - os - to clear the page on the live program
 - time - used to stipulate time between letters showing and to use the sleep function to delay the page clearing 
 - sys - used in the function to slowly print text to the screen
@@ -350,93 +341,56 @@ This site is deployed using Heroku and following these steps:
 
 # Testing
 
-## PEP8 Validiator
+Please refer to the testing information in the seperate [TESTING.md file](testing.md)
 
-I ran my code throught the [Code Institute Python Linter](https://pep8ci.herokuapp.com/). This showed no errors:
+# Credits
 
-![pep8 valdator](assets/images/pep8.png)
+## Code Used
 
-## Manual Testing
+On line 603 the regex expression I have used, ^\-?[0-9]+(?:\.[0-9]{2})?$, was taken from the website:
 
-### Testing User Stories
+https://stackoverflow.com/questions/51401672/regex-for-validate-number-to-2-decimal-places
 
-### Client Goals
+## Content
 
-**Goal**|**How is this Achieved?**
-:-----:|:-----:
-A simple program that users will want to use|The program is intuitive and guides the user through each step of using it. It is a simple program and the colours used, for the fonts, provide interest to the user
-An program that meets the user’s needs|The program allows the user to input transactions, to be able to analyse their spending and to view their transactions
-The user to feel their security is taken seriously|When an existing user enters their password the text is shown as asterisks so it is hidden from anyone that could be watching. The passwords are stored, in Google Sheets, as encrypted to prevent hacking. The error message, for the username and password not matching, doesn't say whether it's the username or password that has been entered wrong. This is another level of security to stop another user working out these details from which is wrong
+All content was written by Gail Kicks
 
-### First Time Visitor Goals
+## Media
 
-**Goal**|**How is this Achieved?**
-:-----:|:-----:
-To be able to set up a new account|The user selects N or n, from the page at the beginning of the programe, and then follows the steps to create their account
-To understand how to use the program|The program guides the user, though every step of the way, and is simple and intuative to use
-To be able to choose their own username|The user is able to choose their own username as long as it's not already in use by another user
+There was no media used in this program
 
-### Returning Visitor Goals
+## Other
 
-**Goal**|**How is this Achieved?**
-:-----:|:-----:
-For personal data to be stored securely|Bcrypt has been used so that users passwords are encrypted before they're stored in Google Sheets
-To access an exisiting account|The first menu asks the user if they are a new or existing user. The user enters E or e to access an existing account
-To be able to add transactions, by category and with a description|These are all asked for when the user choses to add a tranasaction
-To be able to view the sum and mean values of their transactions, by category, for a selected date range|The user is able to do both these things by selecting option 2 from the main menu
-An option to view their transactions for a selected date range|The user is able to view their transactions from a selected 90 day period
-A pleasant user experience|This is a simple and visually plesant program to use
+I used the following resources to expand my knowledge of Python:
 
-## Full Testing
+- geeksforgeeks.org
+- stackoverflow.com
+- discuss.codecademy.com
+- discuss.python.org
+- note.nkmk.me
+- docs.python.org
+- youtube.com
+- docs.gspread.org
+- www3.ntu.edu.sg
+- programiz.com
+- w3resource.com
+- owasp.org
+- github.com
+- bobbyhadz.com
+- regexr.com
+- pypi.org
+- realpython.com
+- cheatsheetseries.owasp.org
+- zetcode.com
+- scaler.com
+- tutorjoes.in
+- tutorialspoint.com
+- superuser.com
+- sparkbyexamples.com
+- saturncloud.io
 
-### Landing Page
+## Acknowledgements
 
-**Entry**|**Expected Outcome**|**As Expected?**
-:-----:|:-----:|:-----:
-Enter N|Ask user to choose a username|Yes
-Enter E|Ask user to enter their username|Yes
-Enter n|Ask user to enter their username|Yes
-Enter e|Ask user to enter their username|Yes
-Any other letter|Tells the user they didn't enter a correct value and asks them to choose N or E|Yes
-Any other number|Tells the user they didn't enter a correct value and asks them to choose N or E|Yes
-Any special character|Tells the user they didn't enter a correct value and asks them to choose N or E|Yes
-
-### New User
-
-**Entry**|**Expected Outcome**|**As Expected?**
-:-----:|:-----:|:-----:
-Choose Name| | 
-Any string containing only letters|Takes the user to a new page to choose a username|Yes
-A blank space|Tells the user the name can only contain letters and asks them to try again|Yes
-A string containing numbers|Tells the user the name can only contain letters and asks them to try again|Yes
-A string containing special characters|Tells the user the name can only contain letters and asks them to try again|Yes
-A string with a space|Tells the user the name cannot contain balnk spaces and to try again|Yes
-Choose Username| | 
-Enter username >= 3 characters and not currently used|Ask user to choose a password|Yes
-Enter username >= 3 characters and currently used|Tells the user that username already exists and to choose another option|Yes
-Enter username < 3 characters|Tells the user the username must contain at least three characters and to choose another option|Yes
-Choose Password| | 
-Enter P4ssword!5|Tells user the password is valid and asks the user what they would like to do, adds the new username and password to the Google sheets worksheet named 'users'|Yes
-Enter pass|Tells the user the user the password was 4 characters long and that it must be at least six characters long|Yes
-Enter P4SSWORD!5|Tells the user the username must contain at least one lowercase letter and to try again|Yes
-Enter p4ssword!5|Tells the user the username must contain at least one uppercase letter and to try again|Yes
-Enter Password!s|Tells the user the username must contain at least one number and to try again|Yes
-Enter P4ssword5|Tells the user the username must contain at least one special character and to try again|Yes
-
-### Existing USer
-
-
-### Main Menu
-
-
-### Enter Transaction
-
-
-### Next Choice
-
-
-### Analyse Spending
-
-
-### View Transactions
-
+- My mentor, Graeme Taylor, for his advice and guidance
+- The Code Institute Slack community
+- Kera Cudmore for her fantastic README presentation and documentation
