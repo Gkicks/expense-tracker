@@ -341,7 +341,7 @@ This site is deployed using Heroku and following these steps:
 
 # Testing
 
-Please refer to the testing information in the seperate [TESTING.md] file(/testing.md)
+Please refer to the testing information in the seperate [TESTING.md](/testing.md)  file
 
 # Credits
 
