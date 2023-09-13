@@ -125,10 +125,10 @@ def validate_name(name):
     """
     try:
         if " " in name:
-            print(Fore.RED + '\nName cannot contain blank spaces')
+            print(Fore.RED + 'Name cannot contain blank spaces')
             raise ValueError
         if name.isalpha() is False:
-            print(Fore.RED + '\nName can only contain letters')
+            print(Fore.RED + 'Name can only contain letters')
             raise ValueError
     except ValueError:
         print('Please enter a valid name')
@@ -152,7 +152,7 @@ def choose_username():
         username_lower = username.lower()
         if validate_new_username(username_lower):
             sleep_clear_screen(1)
-            print_slow(Fore.BLUE + f'\nThank you. Your username is {username}')
+            print_slow(Fore.BLUE + f'\nThank you. Your username is {username}\n')
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[0] = username_lower
             break
@@ -192,7 +192,7 @@ def encrypt_pw(password):
     """
     hashed_pw = bcrypt.hashpw(password.encode(), bcrypt.gensalt())
 
-    # Returns the password decoded so it can be store in Google Sheets
+    # returns the password decoded so it can be store in Google Sheets
     return hashed_pw.decode()
 
 
@@ -433,7 +433,7 @@ def option_validation(option):
     return True
 
 
-# Entering transaction functions
+# entering transaction functions
 def get_date():
     """
     Asks user to input a date
@@ -744,11 +744,11 @@ def validate_date_range(date1, date2):
     # calculates the difference between the two dates, in days
     difference = abs((date_str_1 - date_str_2).days)
     try:
-        # Checks the start date is not after the end date
+        # checks the start date is not after the end date
         if date_str_2 < date_str_1:
             print(Fore.RED + 'End date cannot be before the start date')
             raise ValueError
-        # Checks the dates are not more than 90 days apart
+        # checks the dates are not more than 90 days apart
         if difference > 90:
             print(Fore.RED + 'Dates cannot be more than 90 days apart')
             raise ValueError
@@ -878,7 +878,7 @@ def main():
     """
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
-        print(Fore.BLUE + '\nWelcome to the expense tracker!\n')
+        print(Fore.BLUE + '\nWelcome to the expense tracker\')
         print(Style.RESET_ALL)
         get_new_users_name()
         choose_username()
