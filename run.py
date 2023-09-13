@@ -201,7 +201,7 @@ def choose_password():
     Asks the user to choose a password
     Adds a new worksheet to Google Sheets, named the user's username
     """
-    print('Please choose a password\n')
+    print('\nPlease choose a password\n')
     print_slow('Passwords must be at least six characters long,\n')
     print_slow('contain at least one uppercase letter,\n')
     print_slow('one lowercase letter,\n')
@@ -381,7 +381,7 @@ def main_menu():
             from a date range
     4 - will terminate the programme
     """
-    print('Please pick an option:\n')
+    print('\nPlease pick an option:\n')
     print('1 - Enter Transaction')
     print('2 - Analyse Spending')
     print('3 - View Transactions')
@@ -457,7 +457,7 @@ def validate_date(date):
     """
     try:
         if len(date) != 10:
-            print(Fore.RED + '\ndate is not in the correct format')
+            print(Fore.RED + 'Date is not in the correct format')
             print('The date should be in the format DD/MM/YYYY')
             raise ValueError
         # gets today's date
@@ -475,7 +475,7 @@ def validate_date(date):
         # checks if the number of characters in day and month is two
         # checks the year has four characters
         if len(day) != 2 or len(month) != 2 or len(year) != 4:
-            print(Fore.RED + '\nDate is not in the correct format')
+            print(Fore.RED + 'Date is not in the correct format')
             print('The date should be in the format DD/MM/YYYY')
             raise ValueError
         if int(year) < 2000:
@@ -792,7 +792,7 @@ def show_transactions(date1, date2):
     filter_dates = df[(df['Date'] >= start_date) & (df['Date'] <= end_date)]
     # checks if there is data to display
     if filter_dates.empty:
-        print(Fore.RED + 'There is no data to show')
+        print(Fore.RED + '\nThere is no data to show')
         print(Style.RESET_ALL)
     else:
         # prints filter_dates
@@ -863,8 +863,8 @@ def validate_choice(num):
         if num not in choices:
             raise ValueError
     except ValueError:
-        print(Fore.RED + '\nNot a valid option')
-        print('\nPlease enter either 1 or 2')
+        print(Fore.RED + 'Not a valid option')
+        print('Please enter either 1 or 2\n')
         print(Style.RESET_ALL)
         return False
 
