@@ -152,7 +152,8 @@ def choose_username():
         username_lower = username.lower()
         if validate_new_username(username_lower):
             sleep_clear_screen(1)
-            print_slow(Fore.BLUE + f'\nThank you. Your username is {username}\n')
+            print(Fore.BLUE)
+            print_slow(f'\nThank you. Your username is {username}\n')
             print(Style.RESET_ALL)
             USERNAME_PASSWORD[0] = username_lower
             break
@@ -878,7 +879,7 @@ def main():
     """
     new_or_existing_choice = new_or_existing_user()
     if new_or_existing_choice == 'N':
-        print(Fore.BLUE + '\nWelcome to the expense tracker\')
+        print(Fore.BLUE + '\nWelcome to the expense tracker')
         print(Style.RESET_ALL)
         get_new_users_name()
         choose_username()
