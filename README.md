@@ -4,6 +4,8 @@ The expense tracker is a useful tool for the user to track, view and analyse the
 
 ![landing-page](assets/images/landing-page.png)
 
+Visit the deployed site here: [Expense Tracker](https://expense-template-21cf1bd3f380.herokuapp.com/)
+
 # Contents
 
 - [Expense Tracker](#expense-tracker)
