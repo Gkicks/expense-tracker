@@ -96,7 +96,7 @@ Any special character|Tells the user they didn't enter the correct value and ask
 
 **Test**|**Expected Outcome**|**Test Keyed**|**As Expected?**|**Pass?**
 :-----:|:-----:|:-----:|:-----:|:-----:
-Any string containing only letters|Takes the user to a new page to choose a username|Pauly|Yes|Yes
+Any string containing only letters|Takes the user to a new page to choose a username|Paul|Yes|Yes
 A blank space|Tells the user the name can only contain letters and asks them to try again|" "|Yes|Yes
 A string containing numbers|Tells the user the name can only contain letters and asks them to try again|pauly123|Yes|Yes
 A string containing special characters|Tells the user the name can only contain letters and asks them to try again|pauly!|Yes|Yes
@@ -127,7 +127,7 @@ A string with no special characters|Tells the user the username must contain at 
 
 **Test**|**Expected Outcome**|**Test Keyed**|**As Expected?**|**Pass?**
 :-----:|:-----:|:-----:|:-----:|:-----:
-A username that exists|Asks user to enter their password|gail|Yes|Yes
+A username that exists|Asks user to enter their password|harryhedgehog|Yes|Yes
 A username that doesn't currently exist|Error message - Username does not exist. Please try again|ellie|Yes|Yes
 
 #### Enter Password
