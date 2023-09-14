@@ -8,6 +8,7 @@
     - [Client Goals](#client-goals)
     - [First Time Visitor Goals](#first-time-visitor-goals)
     - [Returning Visitor Goals](#returning-visitor-goals)
+  - [Manual Testing](#manual-testing)
   - [Full Testing](#full-testing)
     - [Landing Page](#landing-page)
     - [New User](#new-user)
@@ -60,6 +61,18 @@ To be able to add transactions, by category and with a description|These are all
 To be able to view the sum and mean values of their transactions, by category, for a selected date range|The user is able to do both these things by selecting option 2 from the main menu
 An option to view their transactions for a selected date range|The user is able to view their transactions from a selected 90 day period
 A pleasant user experience|This is a simple and visually pleasant program to use
+
+[Back to top](#testing)
+
+## Maunal Testing
+
+I testing the program in:
+
+- Google Chrome
+- Microsoft Edge
+- Firefox
+
+There were no concerns in any of these browsers
 
 [Back to top](#testing)
 
