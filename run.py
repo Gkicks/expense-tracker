@@ -612,6 +612,7 @@ def validate_amount(number):
         print('Please try again')
         print(Style.RESET_ALL)
         return False
+
     return True
 
 
@@ -853,6 +854,8 @@ def analyse_spending(date1, date2):
                 print(Style.RESET_ALL)
                 break
     next_choice()
+
+    return
 
 
 def validate_choice(num):
