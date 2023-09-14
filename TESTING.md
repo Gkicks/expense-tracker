@@ -96,17 +96,17 @@ Any special character|Tells the user they didn't enter the correct value and ask
 
 **Test**|**Expected Outcome**|**Test Keyed**|**As Expected?**|**Pass?**
 :-----:|:-----:|:-----:|:-----:|:-----:
-Any string containing only letters|Takes the user to a new page to choose a username|Percy|Yes|Yes
+Any string containing only letters|Takes the user to a new page to choose a username|Pauly|Yes|Yes
 A blank space|Tells the user the name can only contain letters and asks them to try again|" "|Yes|Yes
-A string containing numbers|Tells the user the name can only contain letters and asks them to try again|percy123|Yes|Yes
-A string containing special characters|Tells the user the name can only contain letters and asks them to try again|percy!|Yes|Yes
-A string with a space|Tells the user the name cannot contain balnk spaces and to try again|percy pig|Yes|Yes
+A string containing numbers|Tells the user the name can only contain letters and asks them to try again|pauly123|Yes|Yes
+A string containing special characters|Tells the user the name can only contain letters and asks them to try again|pauly!|Yes|Yes
+A string with a space|Tells the user the name cannot contain balnk spaces and to try again|pauly porcupine|Yes|Yes
 
 #### Choose Username
 
 **Test**|**Expected Outcome**|**Test Keyed**|**As Expected?**|**Pass?**
 :-----:|:-----:|:-----:|:-----:|:-----:
-Username >= 3 characters and not currently used|Ask user to choose a password|percy123|Yes|Yes
+Username >= 3 characters and not currently used|Ask user to choose a password|pauly123|Yes|Yes
 Username >= 3 characters and currently used|Tells the user that username already exists and to choose another option|gail|Yes|Yes
 Username < 3 characters|Tells the user the username must contain at least three characters and to choose another option|pe|Yes|Yes
 
@@ -271,9 +271,9 @@ An end date that is before the start date|Error message - End date cannot be bef
 
 For anyone wishing to test this program, as an existing user, I have left some data saved in Google Sheets
 
-![Image of Percy Pig's Spending](assets/images/percy-spending.png)
+![Image of Paul Porcupine's Spending](assets/images/pauly-spending.png)
 
-Percy's username is percypig and his password is Passw0rd!
+Paul's username is paulyporcupine and his password is Passw0rd!
 
 [Back to top](#testing)
 
