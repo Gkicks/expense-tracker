@@ -283,7 +283,7 @@ I chose the following colours for different commands:
 
 - If the user chooses to quit the program a message will be shown, thanking them for using the tracker and saying goodbye {name}
 
-ADD IMAGE HERE!!
+![quit message image](assets/images/quit.png)
 
 ## Future Implementations
 
@@ -360,7 +360,7 @@ Please refer to the testing information in the seperate [TESTING.md](/TESTING.md
 
 ## Code Used
 
-On line 603 the regex expression I have used, ^\-?[0-9]+(?:\.[0-9]{2})?$, was taken from the website:
+On line 604 the regex expression I have used, ^\-?[0-9]+(?:\.[0-9]{2})?$, was taken from the website:
 
 https://stackoverflow.com/questions/51401672/regex-for-validate-number-to-2-decimal-places
 

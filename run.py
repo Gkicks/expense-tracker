@@ -337,7 +337,7 @@ def get_existing_password():
         pw_confirm = pwinput.pwinput(prompt='Please confirm your password: ')
         if validate_existing_password(password, pw_confirm):
             sleep_clear_screen(1)
-            print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[2]}!\n')
+            print(Fore.BLUE + f'\nWelcome back {USERNAME_PASSWORD[2]}!')
             print(Style.RESET_ALL)
             break
 
