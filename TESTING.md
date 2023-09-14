@@ -287,6 +287,7 @@ Out of bounds nanosecond timestamp error due to a date entered before 21/09/1677
 The user entering more than one word in the transaction description was generating an error|Changed the validation, from checking isalpha() to using a regex pattern that looks for only words and spaces
 When validating a date range the error statement was in an infinite loop. This is because there was a nested while loop where the start\_date and end\_date were being validated, in their own loops and the validate date range was the final nested loop. The get\_date\_range loop was going back to the validate date\_range each time there was a valueerror and this was causing an infinite loop|I separated the getting the start and end date into their own function. 
 When a blank input was given in the main menu option, the error message was appearing but the program terminated|The blank entry validation wasn’t in the try statement. It was added to the try statement
+Several of my lines of code were longer than the recommended 79 characters|I simplied a sentence where possible and, where it was the code to change the font colour, moved this to it's own line when necessary
 
 ### Unresolved Bugs
 
