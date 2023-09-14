@@ -362,6 +362,19 @@ Please refer to the testing information in the seperate [TESTING.md](/TESTING.md
 
 ## Code Used
 
+The lines from 16 to 26 were taken from the Code Institute Essentials project:
+
+SCOPE = [
+    "https://www.googleapis.com/auth/spreadsheets",
+    "https://www.googleapis.com/auth/drive.file",
+    "https://www.googleapis.com/auth/drive"
+    ]
+
+CREDS = Credentials.from_service_account_file('creds.json')
+SCOPED_CREDS = CREDS.with_scopes(SCOPE)
+GSPREAD_CLIENT = gspread.authorize(SCOPED_CREDS)
+SHEET = GSPREAD_CLIENT.open('expense-tracker')
+
 On line 604 the regex expression I have used, ^\-?[0-9]+(?:\.[0-9]{2})?$, was taken from the website:
 
 https://stackoverflow.com/questions/51401672/regex-for-validate-number-to-2-decimal-places
